@@ -1,26 +1,3 @@
-.nav-menus a {
-    gap: 10px;
-}
-.nav-menus {
-    gap: 20px;
-}
-.nav-menus a img {
-    max-width: 18px;
-}
-form.search-form img {
-    max-width: 20px;
-}
-.logo  img {
-    max-width: 60px;
-}
-.header-wrapper {
-    padding: .8rem 1rem;
-    box-shadow: 0px 4px 8px 0px #0000000A;
-    border-top: 1px solid #E5E7EA;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-}
 .buttons  a.button {
     display: flex;
     align-items: center;
