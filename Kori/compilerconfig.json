@@ -10,5 +10,9 @@
   {
     "outputFile": "wwwroot/css/App.css",
     "inputFile": "App.scss"
+  },
+  {
+    "outputFile": "Home/Index.razor.css",
+    "inputFile": "Home/Index.razor.scss"
   }
 ]
