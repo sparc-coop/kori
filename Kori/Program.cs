@@ -1,4 +1,4 @@
-using Kori.Components;
+using Kori;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +21,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
+app.MapRazorComponents<Html>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
