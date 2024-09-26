@@ -1,19 +1,17 @@
 ﻿<div id="default-mode" class="default-mode">
-    <p class="default-mode__location">@NavigationManager.Uri</p>
+    <p class="default-mode__location">@Nav.Uri</p>
     <div class="vertical-divider"></div>
     <p class="default-mode__page-name">@GetPageName()</p>
 </div>
 
 @code {
-    [Inject] NavigationManager NavigationManager { get; set; }
-
     private string GetPageName()
     {
-        var cleanUri = NavigationManager.Uri.Split('?')[0].Split('#')[0];
+        var cleanUri = Nav.Uri.Split('?')[0].Split('#')[0];
 
         var lastSegment = cleanUri.Split('/').Last();
 
-        if (string.IsNullOrEmpty(lastSegment) || cleanUri == NavigationManager.BaseUri)
+        if (string.IsNullOrEmpty(lastSegment) || cleanUri == Nav.BaseUri)
         {
             return "Home";
         }

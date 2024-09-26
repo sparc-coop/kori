@@ -6,7 +6,7 @@
         </div>
         <div class="kori-login__input">
             <img src="/_content/Kori/icons/User.svg" />
-            <input type="text" placeholder="Phone or Email" @* pattern=@($"^([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3})|(\d{3}-\d{3}-\d{4})$")" *@ required />
+            <input type="text" placeholder="Phone or Email" required />
         </div>
         <div class="kori-login__keep">
             <input id="kori-login__keep" type="checkbox" />
@@ -20,5 +20,5 @@
 </div>
 
 @code {
-    string regex = @"^([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3})|(\d{3}-\d{3}-\d{4})$";
+    // string regex = @"^([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3})|(\d{3}-\d{3}-\d{4})$";
 }

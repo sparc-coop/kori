@@ -1,17 +1,18 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Components.Forms;
 
-namespace Kori;
+namespace Sparc.Kori;
+
 public record KoriWord(string Text, long Duration, long Offset);
 public record KoriAudioContent(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudioContent Audio, List<object>? Nodes, bool Submitted = true);
-public class Kori(IJSRuntime js) : IAsyncDisposable
+public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
     public string RoomSlug { get; set; } = "";
@@ -22,7 +23,7 @@ public class Kori(IJSRuntime js) : IAsyncDisposable
     private HttpClient Client { get; set; } = new() { BaseAddress = new Uri("https://localhost:7117/") };
 
     //readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Kori/KoriWidget.razor.js").AsTask());
-    readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Kori/KoriTopBar.razor.js").AsTask()); 
+    readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Kori/KoriTopBar.razor.js").AsTask());
 
     public TagManager TagManager { get; } = new TagManager();
 
@@ -43,37 +44,37 @@ public class Kori(IJSRuntime js) : IAsyncDisposable
     }
 
     public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> nodes)
-    {        
+    {
         if (nodes.Count == 0)
             return nodes;
 
         var js = await KoriJs.Value;
-        
+
         var keysToTranslate = nodes.Where(x => !_content.ContainsKey(x.Key)).Select(x => x.Key).Distinct().ToList();
-                
+
         var messagesDictionary = keysToTranslate.ToDictionary(key => key, key => nodes[key]);
-               
+
         var request = new { RoomSlug, Language, Messages = messagesDictionary, AsHtml = false };
-                
+
         var content = await PostAsync<IbisContent>("publicapi/PostContent", request);
-                
+
         if (content == null)
             return nodes;
-                
+
         foreach (var item in content.Content)
-        {            
+        {
             _content[item.Tag] = item with { Nodes = new List<object>() };
         }
-               
+
         foreach (var key in nodes.Keys.ToList())
         {
             if (_content.TryGetValue(key, out KoriTextContent? value))
             {
-                nodes[key] = value.Text;  
+                nodes[key] = value.Text;
             }
         }
 
-        return nodes; 
+        return nodes;
     }
     public async Task EditAsync()
     {
@@ -168,7 +169,7 @@ public class Kori(IJSRuntime js) : IAsyncDisposable
         var result = await response.Content.ReadAsStringAsync();
         var savedImg = JsonSerializer.Deserialize<KoriTextContent>(result, JsonOptions);
 
-        if (response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode && savedImg != null)
         {
             var js = await KoriJs.Value;
             await js.InvokeVoidAsync("updateImageSrc", key, savedImg.Text);
@@ -245,7 +246,7 @@ public class Kori(IJSRuntime js) : IAsyncDisposable
             var result = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<TResponse>(result, JsonOptions);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return default;
         }
@@ -265,7 +266,7 @@ public class Kori(IJSRuntime js) : IAsyncDisposable
 
     public void OpenBlogMenu()
     {
-        Mode = "Blog";        
+        Mode = "Blog";
     }
 
     public void OpenABTestingMenu()

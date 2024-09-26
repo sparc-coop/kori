@@ -1,3 +1,6 @@
-﻿@using Microsoft.AspNetCore.Components.Web
-@using Markdig
-@using PSC.Blazor.Components.MarkdownEditor
+﻿@using Microsoft.JSInterop
+@using Sparc.Kori.Modes
+
+@inject KoriEngine Kori
+@inject NavigationManager Nav
+@inject IJSRuntime Js

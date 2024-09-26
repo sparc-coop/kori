@@ -2,15 +2,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 
-namespace Kori;
+namespace Sparc.Kori;
 
 public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddKori(this WebApplicationBuilder builder, Uri baseUri)
     {
         builder.Services.AddLocalization();
-        builder.Services.AddScoped<Kori>();
-        Kori.BaseUri = baseUri;
+        builder.Services.AddScoped<KoriEngine>();
+        KoriEngine.BaseUri = baseUri;
         return builder;
     }
 

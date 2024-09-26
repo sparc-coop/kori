@@ -1,14 +1,11 @@
-@using Microsoft.JSInterop
 <section id="@_id" class="kori-content @ModeClass">
     @ChildContent
 </section>
 
-<Kori.KoriLogin />
-<Kori.KoriTopBar OnModeChanged="HandleModeChanged" />
-<Kori.KoriWidget />
+<KoriLogin />
+<KoriTopBar OnModeChanged="HandleModeChanged" />
+<KoriWidget />
 
-@inject Kori Kori
-@inject NavigationManager Nav
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
