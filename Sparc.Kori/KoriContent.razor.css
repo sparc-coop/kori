@@ -1,6 +1,6 @@
 ﻿.kori__border_orange-15-16, ::deep .kori-enabled.selected {
   border: 15px solid transparent;
-  border-image: url("/_content/Kori/borders/orange-16.svg") 15 round;
+  border-image: url("/_content/Sparc.Kori/borders/orange-16.svg") 15 round;
   border-image-outset: 4px;
   border-radius: 16px;
 }

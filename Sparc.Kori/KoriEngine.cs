@@ -22,8 +22,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
     Dictionary<string, KoriTextContent> _content { get; set; } = [];
     private HttpClient Client { get; set; } = new() { BaseAddress = new Uri("https://localhost:7117/") };
 
-    //readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Kori/KoriWidget.razor.js").AsTask());
-    readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Kori/KoriTopBar.razor.js").AsTask());
+    readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Sparc.Kori/KoriTopBar.razor.js").AsTask());
 
     public TagManager TagManager { get; } = new TagManager();
 

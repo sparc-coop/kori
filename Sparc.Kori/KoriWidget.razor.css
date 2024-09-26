@@ -1,12 +1,12 @@
 ﻿@font-face {
   font-family: "Love Ya Like A Sister";
   font-weight: 400;
-  src: url("/_content/Kori/fonts/LoveYaLikeASister-Regular.ttf") format("truetype");
+  src: url("/_content/Sparc.Kori/fonts/LoveYaLikeASister-Regular.ttf") format("truetype");
 }
 @font-face {
   font-family: "ArticulatCF";
   font-weight: 500;
-  src: url("/_content/Kori/fonts/ArticulatCF-Medium.otf") format("opentype");
+  src: url("/_content/Sparc.Kori/fonts/ArticulatCF-Medium.otf") format("opentype");
 }
 .kori-widget {
   display: none;
@@ -358,20 +358,20 @@
 
 .kori__border_black-10-8, .kori-widget__actions .kori-translation__options select, .kori-widget__actions .kori-search__header .kori-search__searchbar, .kori__btn, .kori__btn-primary {
   border: 10px solid transparent;
-  border-image: url("/_content/Kori/borders/black-8.svg") 15 round;
+  border-image: url("/_content/Sparc.Kori/borders/black-8.svg") 15 round;
   border-image-outset: 2px;
   border-radius: 8px;
 }
 
 .kori__border_black-10-16 {
   border: 10px solid transparent;
-  border-image: url("/_content/Kori/borders/black-16.svg") 15 round;
+  border-image: url("/_content/Sparc.Kori/borders/black-16.svg") 15 round;
   border-image-outset: 2px;
   border-radius: 16px;
 }
 
 .kori__border_black-15-16, .kori-widget__actions .kori-widget__content, .kori-widget__actions .kori-edit, .kori-widget__actions .kori-translation, .kori-widget__actions .kori-search {
-  border-image: url("/_content/Kori/borders/black-16.svg") 15 round;
+  border-image: url("/_content/Sparc.Kori/borders/black-16.svg") 15 round;
   border-image-outset: 2px;
   border-radius: 16px;
   border-image-width: 15px;
@@ -379,7 +379,7 @@
 
 .kori__border_orange-15-16 {
   border: 15px solid transparent;
-  border-image: url("/_content/Kori/borders/orange-16.svg") 15 round;
+  border-image: url("/_content/Sparc.Kori/borders/orange-16.svg") 15 round;
   border-image-outset: 4px;
   border-radius: 16px;
 }

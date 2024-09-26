@@ -18,7 +18,7 @@
 
 <div class="bottom-bar">
     <div class="logo">
-        <img src="/_content/Kori/images/Kori_Logo.svg" alt="Logo" />
+        <img src="/_content/Sparc.Kori/images/Kori_Logo.svg" alt="Logo" />
     </div>
     <div class="content">
         @switch (Kori.Mode)
@@ -53,7 +53,7 @@
 
     bool isToggledOn = false;
     void TogglePower() => isToggledOn = !isToggledOn;
-    string PowerIcon => isToggledOn ? "_content/Kori/icons/On.svg" : "_content/Kori/icons/Off.svg";
+    string PowerIcon => isToggledOn ? "_content/Sparc.Kori/icons/On.svg" : "_content/Sparc.Kori/icons/Off.svg";
 
     async Task ModeChanged(string mode)
     {

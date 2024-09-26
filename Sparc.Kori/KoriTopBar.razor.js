@@ -868,7 +868,7 @@ function login() {
 //        dockButton.title = 'Undock';
 
 //        // Change the icon to undock
-//        dockIcon.src = '/_content/Kori/images/undock-icon.svg';
+//        dockIcon.src = '/_content/Sparc.Kori/images/undock-icon.svg';
 
 //        // remove the ability to drag
 //        widgetActions.onmousedown = null;
@@ -880,7 +880,7 @@ function login() {
 //        dockButton.title = 'Dock';
 
 //        // Change the icon to dock
-//        dockIcon.src = '/_content/Kori/images/dock-icon.svg';
+//        dockIcon.src = '/_content/Sparc.Kori/images/dock-icon.svg';
 
 //        resetWidgetPosition();
 
