@@ -1,7 +1,7 @@
 <div id="kori-top-bar" class="kori-top-bar kori-ignore">
     <div class="top-bar-buttons">
         <div class="left-buttons">
-            <button class="top-bar-button toggle-button @(isToggledOn ? "toggle-on" : "toggle-off")" @onclick="ToggleButton">
+            <button class="top-bar-button toggle-button @(isToggledOn ? "toggle-on" : "toggle-off")" @onclick="TogglePower">
                 <img src="@PowerIcon" alt="Toggle icon" class="icon icon-on-off" />
             </button>
             <KoriTopBarButton Mode="Language" Icon="Lang" OnClick="ModeChanged" />
