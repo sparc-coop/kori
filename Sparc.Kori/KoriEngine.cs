@@ -134,8 +134,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
     {
         var request = new { RoomSlug, Language, Tag = key, Text = text };
         var result = await PostAsync<KoriTextContent>("publicapi/TypeMessage", request);
-
-        return result;
+        return result!;
     }
 
     public async Task<string> GetActiveImageSrcFromJs()
@@ -144,7 +143,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
         return await js.InvokeAsync<string>("getActiveImageSrc");
     }
 
-    private IBrowserFile selectedImage;
+    private IBrowserFile? selectedImage;
 
     public void OnImageSelected(InputFileChangeEventArgs e)
     {

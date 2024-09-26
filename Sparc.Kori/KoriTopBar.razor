@@ -1,125 +1,66 @@
 <div id="kori-top-bar" class="kori-top-bar kori-ignore">
     <div class="top-bar-buttons">
         <div class="left-buttons">
-            @foreach (var button in LeftButtons)
-            {
-                if (button.Text == null)
-                {
-                    <button class="top-bar-button toggle-button @(isToggledOn ? "toggle-on" : "toggle-off")" @onclick="() => ToggleButton()">
-                        <img src="@(isToggledOn ? button.IconSelectedPath : button.IconPath)" alt="Toggle icon" class="icon icon-on-off" />
-                    </button>
-                }
-                else
-                {
-                    <button class="top-bar-button @(SelectedButton == button ? "selected" : "")" @onclick="() => OnButtonClick(button)">
-                        <img src="@button.IconPath" alt="@button.Text icon" class="icon normal-icon @(SelectedButton == button ? "hidden" : "")" />
-                        <img src="@button.IconHoverPath" alt="@button.Text icon hover" class="icon hover-icon @(SelectedButton == button ? "" : "hidden")" />
-                        <img src="@button.IconSelectedPath" alt="@button.Text icon selected" class="icon selected-icon @(SelectedButton == button ? "" : "hidden")" />
-                        <span class="btn-text">@button.Text</span> 
-                    </button>
-                }
-            }
+            <button class="top-bar-button toggle-button @(isToggledOn ? "toggle-on" : "toggle-off")" @onclick="ToggleButton">
+                <img src="@PowerIcon" alt="Toggle icon" class="icon icon-on-off" />
+            </button>
+            <KoriTopBarButton Mode="Language" Icon="Lang" OnClick="ModeChanged" />
+            <KoriTopBarButton Mode="Blog" Icon="Blog" OnClick="ModeChanged" />
+            <KoriTopBarButton Mode="A/B Testing" Icon="AB" OnClick="ModeChanged" />
         </div>
-
         <div class="right-buttons">
-            @foreach (var button in RightButtons)
-            {
-                <button class="top-bar-button @(SelectedButton == button ? "selected" : "")" @onclick="() => OnButtonClick(button)">
-                    <img src="@button.IconPath" alt="@button.Text icon" class="icon normal-icon @(SelectedButton == button ? "hidden" : "")" />
-                    <img src="@button.IconHoverPath" alt="@button.Text icon hover" class="icon hover-icon @(SelectedButton == button ? "" : "hidden")" />
-                    <img src="@button.IconSelectedPath" alt="@button.Text icon selected" class="icon selected-icon @(SelectedButton == button ? "" : "hidden")" />
-                </button>
-            }
-        </div>
-    </div>
-
-    <div class="bottom-bar">
-        <div class="logo">
-            <img src="/_content/Kori/images/Kori_Logo.svg" alt="Logo" />
-        </div>
-        <div class="content">
-            @if (SelectedButton != null)
-            {
-                @if (Kori.Mode == "Search")
-                {
-                    <Kori.Modes.SearchMode />
-                }
-                else if (Kori.Mode == "Translate")
-                {
-                    <Kori.Modes.TranslateMode />
-                }
-                else if (Kori.Mode == "Blog")
-                {
-                    <Kori.Modes.BlogMode />
-                }
-                else if (Kori.Mode == "ABTesting")
-                {
-                    <Kori.Modes.ABTestingMode />
-                }
-                else if (Kori.Mode == "Edit")
-                {
-                    <Kori.Modes.EditTextMode />
-                }
-                else if (Kori.Mode == "EditImage")
-                {
-                    <Kori.Modes.EditImageMode />
-                }
-            }
-            else
-            {
-                <div>
-                    <Kori.Modes.DefaultMode />
-                </div>
-            }
+            <KoriTopBarButton Mode="Search" Icon="Search2" OnClick="ModeChanged" />
+            <KoriTopBarButton Mode="History" Icon="History" OnClick="ModeChanged" />
+            <KoriTopBarButton Mode="Tutorial" Icon="Tutorial" OnClick="ModeChanged" />
         </div>
     </div>
 </div>
 
-@inject Kori Kori
+<div class="bottom-bar">
+    <div class="logo">
+        <img src="/_content/Kori/images/Kori_Logo.svg" alt="Logo" />
+    </div>
+    <div class="content">
+        @switch (Kori.Mode)
+        {
+            case "Search":
+                <SearchMode />
+                break;
+            case "Translate":
+                <TranslateMode />
+                break;
+            case "Blog":
+                <BlogMode />
+                break;
+            case "ABTesting":
+                <ABTestingMode />
+                break;
+            case "Edit":
+                <EditTextMode />
+                break;
+            case "EditImage":
+                <EditImageMode />
+                break;
+            default:
+                <DefaultMode />
+                break;
+        }
+    </div>
+</div>
 
 @code {
     [Parameter] public EventCallback<string> OnModeChanged { get; set; }
 
-    private TopBarButton SelectedButton;
-    private bool isToggledOn = false;
+    bool isToggledOn = false;
+    void TogglePower() => isToggledOn = !isToggledOn;
+    string PowerIcon => isToggledOn ? "_content/Kori/icons/On.svg" : "_content/Kori/icons/Off.svg";
 
-    public class TopBarButton
+    async Task ModeChanged(string mode)
     {
-        public string? Text { get; set; }
-        public string IconPath { get; set; }
-        public string IconHoverPath { get; set; }
-        public string IconSelectedPath { get; set; }
-        public string Mode { get; set; }
-    }
+        Kori.Mode = mode;
+        await OnModeChanged.InvokeAsync(mode);
 
-    private List<TopBarButton> LeftButtons = new List<TopBarButton>
-    {
-        new TopBarButton { IconPath = "/_content/Kori/icons/Off.svg", IconSelectedPath = "/_content/Kori/icons/On.svg" },
-        new TopBarButton { IconPath = "/_content/Kori/icons/Lang.svg", IconHoverPath = "/_content/Kori/icons/Lang-hover.svg", IconSelectedPath = "/_content/Kori/icons/Lang-selected.svg", Text = "Language" },
-        new TopBarButton { IconPath = "/_content/Kori/icons/Blog.svg", IconHoverPath = "/_content/Kori/icons/Blog-hover.svg", IconSelectedPath = "/_content/Kori/icons/Blog-selected.svg", Text = "Blog" },
-        new TopBarButton { IconPath = "/_content/Kori/icons/AB.svg", IconHoverPath = "/_content/Kori/icons/AB-hover.svg", IconSelectedPath = "/_content/Kori/icons/AB-selected.svg", Text = "A/B Testing" }
-    };
-
-    private List<TopBarButton> RightButtons = new List<TopBarButton>
-    {
-        new TopBarButton { IconPath = "/_content/Kori/icons/Search2.svg", IconHoverPath = "/_content/Kori/icons/Search2-hover.svg", IconSelectedPath = "/_content/Kori/icons/Search2-selected.svg", Text = "Search" },
-        new TopBarButton { IconPath = "/_content/Kori/icons/History.svg", IconHoverPath = "/_content/Kori/icons/History-hover.svg", IconSelectedPath = "/_content/Kori/icons/History-selected.svg", Text = "History" },
-        new TopBarButton { IconPath = "/_content/Kori/icons/Tutorial.svg", IconHoverPath = "/_content/Kori/icons/Tutorial-hover.svg", IconSelectedPath = "/_content/Kori/icons/Tutorial-selected.svg", Text = "Tutorial" }
-    };
-
-    private void ToggleButton()
-    {
-        isToggledOn = !isToggledOn; 
-    }
-
-    private async Task OnButtonClick(TopBarButton button)
-    {
-        SelectedButton = button;
-        Kori.Mode = button.Mode;
-
-        await OnModeChanged.InvokeAsync(button.Mode);
-
-        switch (button.Mode)
+        switch (Kori.Mode)
         {
             case "Search":
                 await Kori.OpenSearchMenuAsync();
@@ -130,7 +71,7 @@
             case "Blog":
                 Kori.OpenBlogMenu();
                 break;
-            case "ABTesting":
+            case "A/B Testing":
                 Kori.OpenABTestingMenu();
                 break;
             case "Edit":
