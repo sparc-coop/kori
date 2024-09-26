@@ -253,7 +253,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
     public void OpenTranslationMenu()
     {
-        Mode = "Translate";
+        Mode = "Language";
     }
 
     public async Task OpenSearchMenuAsync()

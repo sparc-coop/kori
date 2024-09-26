@@ -26,8 +26,8 @@
             case "Search":
                 <SearchMode />
                 break;
-            case "Translate":
-                <TranslateMode />
+            case "Language":
+                <LanguageMode />
                 break;
             case "Blog":
                 <BlogMode />
@@ -57,6 +57,13 @@
 
     async Task ModeChanged(string mode)
     {
+        if (Kori.Mode == mode)
+        {
+            Kori.Mode = string.Empty;
+            await OnModeChanged.InvokeAsync(string.Empty);
+            return;
+        }
+
         Kori.Mode = mode;
         await OnModeChanged.InvokeAsync(mode);
 
@@ -65,7 +72,7 @@
             case "Search":
                 await Kori.OpenSearchMenuAsync();
                 break;
-            case "Translate":
+            case "Language":
                 Kori.OpenTranslationMenu();
                 break;
             case "Blog":
