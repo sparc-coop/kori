@@ -1,0 +1,24 @@
+﻿.default-mode {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 4px;
+  cursor: default;
+  height: 19px;
+}
+.default-mode p {
+  font-family: "Articulat CF";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+}
+.default-mode__location {
+  color: #73809E;
+}
+.default-mode__page-name {
+  color: #485269;
+}
+.default-mode .vertical-divider {
+  width: 1px;
+  background: #485269;
+}

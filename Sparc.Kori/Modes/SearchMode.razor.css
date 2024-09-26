@@ -1,0 +1,91 @@
+﻿.kori-search {
+  width: 317px;
+  padding: 20px 0px;
+  background: var(--white);
+  align-items: flex-start;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  gap: 20px;
+  /*display: flex;*/
+  flex-direction: column;
+  font-family: "ArticulatCF";
+  font-weight: 500;
+  display: none;
+}
+.kori-search.show {
+  display: flex;
+}
+.kori-search__header {
+  display: flex;
+  padding: 0px 24px;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+.kori-search__header .kori-search__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.kori-search__header .kori-search__title h5 {
+  font-size: 14px;
+  color: #1F232B;
+}
+.kori-search__header .kori-search__title .close-icon {
+  background: transparent;
+  padding: 0;
+}
+.kori-search__header .kori-search__searchbar {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  text-align: start;
+}
+.kori-search__header .kori-search__searchbar input {
+  padding: 4px;
+  border: none;
+}
+.kori-search__header .kori-search__searchbar input::placeholder {
+  color: #5E6A85;
+  font-size: 14px;
+}
+.kori-search__divider {
+  width: 100%;
+  height: 1px;
+  background-color: #DDE5F5;
+}
+.kori-search__list {
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kori-search__list .kori__content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kori-search__list .kori__content-container .kori__content-elements {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kori-search__list .kori__content-container .kori__content-page, .kori-search__list .kori__content-container .kori__content-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-family: "ArticulatCF";
+  font-size: 14px;
+}
+.kori-search__list .kori__content-container .kori__content-page {
+  padding: 4px 8px;
+}
+.kori-search__list .kori__content-container .kori__content-item {
+  padding: 4px 8px 4px 48px;
+}

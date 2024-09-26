@@ -1,0 +1,38 @@
+﻿[
+  {
+    "outputFile": "KoriLogin.razor.css",
+    "inputFile": "KoriLogin.razor.scss"
+  },
+  {
+    "outputFile": "KoriWidget.razor.css",
+    "inputFile": "KoriWidget.razor.scss"
+  },
+  {
+    "outputFile": "KoriContent.razor.css",
+    "inputFile": "KoriContent.razor.scss"
+  },
+  {
+    "outputFile": "KoriTopBar.razor.css",
+    "inputFile": "KoriTopBar.razor.scss"
+  },
+  {
+    "outputFile": "Modes/SearchMode.razor.css",
+    "inputFile": "Modes/SearchMode.razor.scss"
+  },
+  {
+    "outputFile": "Modes/TranslateMode.razor.css",
+    "inputFile": "Modes/TranslateMode.razor.scss"
+  },
+  {
+    "outputFile": "Modes/BlogMode.razor.css",
+    "inputFile": "Modes/BlogMode.razor.scss"
+  },
+  {
+    "outputFile": "Modes/ABTestingMode.razor.css",
+    "inputFile": "Modes/ABTestingMode.razor.scss"
+  },
+  {
+    "outputFile": "Modes/DefaultMode.razor.css",
+    "inputFile": "Modes/DefaultMode.razor.scss"
+  }
+]

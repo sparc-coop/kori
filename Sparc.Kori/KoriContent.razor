@@ -1,0 +1,77 @@
+@using Microsoft.JSInterop
+<section id="@_id" class="kori-content @ModeClass">
+    @ChildContent
+</section>
+
+<Kori.KoriLogin />
+<Kori.KoriTopBar OnModeChanged="HandleModeChanged" />
+<Kori.KoriWidget />
+
+@inject Kori Kori
+@inject NavigationManager Nav
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string ModeClass => !string.IsNullOrEmpty(CurrentMode) ? $"mode-{CurrentMode.ToLower()}" : "";
+    private string CurrentMode { get; set; } = string.Empty;
+
+    string _id = $"kori-{Guid.NewGuid()}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            
+            await Kori.InitializeAsync(this, Nav.Uri, _id);
+            Nav.LocationChanged += async (sender, args) => await Kori.InitializeAsync(this, args.Location, _id);
+            StateHasChanged();
+        }
+    }
+
+    [JSInvokable]
+    public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> content)
+    {
+        return await Kori.TranslateAsync(content);
+    }
+
+    [JSInvokable]
+    public async Task<KoriTextContent> SaveAsync(string key, string text)
+    {
+        var result = await Kori.SaveAsync(key, text);
+        StateHasChanged();
+        return result;
+    }
+
+    [JSInvokable]
+    public async Task<bool> BackToEditAsync()
+    {
+        Kori.BackToEdit();
+        StateHasChanged();
+
+        return await Task.FromResult(true);
+    }
+
+    // private void HandleModeChanged(string newMode)
+    // {
+    //     CurrentMode = newMode;
+    //     StateHasChanged();
+    // }
+
+    private void HandleModeChanged(string newMode)
+    {
+        Console.WriteLine($"New mode received: '{newMode}'");
+
+        if (string.IsNullOrEmpty(newMode))
+        {
+            CurrentMode = string.Empty;
+            Console.WriteLine("Mode removed, CurrentMode now is empty.");
+        }
+        else
+        {
+            CurrentMode = newMode;
+            Console.WriteLine($"Mode defined as: '{CurrentMode}'");
+        }
+
+        StateHasChanged();
+    }
+}
