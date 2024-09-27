@@ -1,3 +1,39 @@
+
+h2, figcaption {
+    font-family: 'Encode Sans Semi Expanded';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 160%;
+    color: var(--grey-50);
+}
+
+p, aside {
+    font-family: 'Encode Sans Expanded';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+    color: var(--grey-300);
+}
+
+button {
+    font-family: 'Encode Sans Expanded';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+    color: white;
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+    opacity: 0.7;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &:active {
+        opacity: 0.7;
+    }
+}
+
 .login-component {
     width: fit-content;
     padding: 12px;
@@ -9,50 +45,55 @@
     right: 16px;
     z-index: 1000;
 
-    .login-component__toggle {
+    > button {
         width: 24px;
         height: 24px;
-        padding: 0 !important;
-        background: #1a1a1a !important;
-        border: none !important;
+        padding: 0;
+        background: #1a1a1a;
+        border: none;
         border-radius: 50%;
         cursor: pointer;
+        border: 1px solid var(--grey-50);
+        border-radius: 50%;
 
-        .login-user-icon {
-            width: 36px !important;
-            height: auto !important;
+        ::deep svg {
+            width: 36px;
+            height: auto;
         }
+    }
 
-        &.loggedout {
-            border: 1px solid var(--grey-50);
-            border-radius: 50%;
-        }
-
-        &.loggedin {
+    &.loggedin {
+        > button {
             display: none;
             border: 1px solid var(--green-500);
             border-radius: 50%;
+        }
 
-            &.show {
-                display: block;
+        button {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+
+            img {
+                margin: 0;
             }
         }
     }
 
-    &__btn {
-        padding: 8px 0 !important;
-        background: none !important;
-        border: none !important;
-        font-family: 'Encode Sans Expanded' !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
-        line-height: 140% !important;
-        text-align: left !important;
-        color: white !important;
+    button {
+        padding: 8px 0;
+        background: none;
+        border: none;
+        font-family: 'Encode Sans Expanded';
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 140%;
+        text-align: left;
+        color: white;
         cursor: pointer;
     }
 
-    &__menu {
+    section {
         display: none;
         width: 256px;
         height: fit-content;
@@ -73,40 +114,20 @@
         }
     }
 
-    .login-component__menu {
-        &-header-wrapper {
-            @extend .login-component__text-primary;
-
-            p {
-                @extend .login-component__text-secondary;
-            }
-        }
-    }
-
-    .login-component__account-btn, .login-component__profile-btn, .login-component__setup-btn, .login-component__logout-btn {
-        display: flex;
-        gap: 14px !important;
-        align-items: center !important;
-
-        img {
-            margin: 0 !important;
-        }
-    }
-
-    &__menu-actions {
+    menu {
         width: 100%;
         display: flex;
         flex-direction: column;
         gap: 8px;
 
-        .login-component__menu-divider {
+        hr {
             width: 100%;
             border-bottom: 1px solid rgba(255, 255, 255, 0.80);
         }
 
         button {
-            padding: 8px 0 !important;
-            border-radius: 4px !important;
+            padding: 8px 0;
+            border-radius: 4px;
 
             img {
                 width: 16px;
@@ -114,52 +135,41 @@
             }
         }
 
-        .login-component__login-btn, login-component__account-btn {
-            display: flex !important;
-            gap: 14px !important;
-            align-items: center !important;
-            padding: 6px 8px !important;
-            background: var(--grey-800) !important;
-            text-align: left !important;
+        li button {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            padding: 6px 8px;
+            background: var(--grey-800);
+            text-align: left;
             transition: 300ms ease-in-out;
 
             &:hover {
-                background: var(--grey-700) !important;
+                background: var(--grey-700);
             }
 
             &:active {
-                background: var(--grey-800) !important;
+                background: var(--grey-800);
             }
 
             &__content {
-                text-align: left !important;
-
-                figcaption {
-                    @extend .login-component__text-primary;
-                }
-
-                aside {
-                    @extend .login-component__text-secondary;
-                }
+                text-align: left;
             }
         }
 
-        .login-component__use-passkey {
+        figure {
             width: 100%;
+            display: flex;
+            align-content: center;
+            align-items: center;
+            gap: 12px;
 
-            button {
-                display: flex;
-                align-content: center;
-                align-items: center;
-                gap: 12px;
-
-                img {
-                    margin: 0 !important;
-                }
+            img {
+                margin: 0;
             }
         }
 
-        .login-component__different-email {
+        aside {
             width: 100%;
             margin: 12px 0;
 
@@ -171,26 +181,26 @@
             }
 
             button {
-                padding: 0 !important;
+                padding: 0;
             }
         }
     }
 
-    &__form {
+    form {
         display: flex;
         flex-direction: column;
         gap: 4px;
 
-        .login-component__input {
+        input {
             display: flex;
             flex-direction: column;
             gap: 4px;
-            width: 100% !important;
-            height: fit-content !important;
-            padding: 8px 12px !important;
-            background: var(--grey-800) !important;
-            border-radius: 4px !important;
-            border: none !important;
+            width: 100%;
+            height: fit-content;
+            padding: 8px 12px;
+            background: var(--grey-800);
+            border-radius: 4px;
+            border: none;
             color: var(--grey-50);
             font-family: 'Encode Sans Expanded';
             font-size: 14px;
@@ -198,15 +208,15 @@
             line-height: 160%;
 
             &:focus {
-                border: var(--grey-50) !important;
-                backdrop-filter: brightness(120%) !important;
+                border: var(--grey-50);
+                backdrop-filter: brightness(120%);
             }
         }
 
-        .login-component__submit-btn {
-            width: 100% !important;
-            padding: 8px 12px !important;
-            background: var(--grey-800) !important;
+        button[type=submit] {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--grey-800);
             font-family: 'Encode Sans Expanded';
             font-size: 14px;
             font-weight: 400;
@@ -214,40 +224,31 @@
             transition: 300ms ease-in-out;
 
             &:hover {
-                background: var(--grey-700) !important;
+                background: var(--grey-700);
             }
 
             &:active {
-                background: var(--grey-800) !important;
+                background: var(--grey-800);
             }
         }
 
-        .login-component__form-error {
-            display: none;
-
-            span {
-                margin-top: 8px;
-                color: white;
-                opacity: 0.7;
-            }
-
-            &.show {
-                display: block;
-            }
-        }
-    }
-
-    &__overlay {
-        &.show {
-            width: 100vw;
-            height: 100vh;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
+        label.error {
+            margin-top: 8px;
+            color: white;
+            opacity: 0.7;
         }
     }
 }
+
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
 
 @keyframes login-component__fadeIn {
     0% {
@@ -256,40 +257,5 @@
 
     100% {
         opacity: 1;
-    }
-}
-
-.login-component__text-primary {
-    font-family: 'Encode Sans Semi Expanded' !important;
-    font-size: 16px !important;
-    font-weight: 400 !important;
-    line-height: 160% !important;
-    color: var(--grey-50) !important;
-}
-
-.login-component__text-secondary {
-    font-family: 'Encode Sans Expanded' !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
-    line-height: 140% !important;
-    color: var(--grey-300) !important;
-}
-
-.login-component__text-btn {
-    font-family: 'Encode Sans Expanded' !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
-    line-height: 140% !important;
-    color: white !important;
-    cursor: pointer !important;
-    transition: 300ms ease-in-out !important;
-    opacity: 0.7 !important;
-
-    &:hover {
-        opacity: 1 !important;
-    }
-
-    &:active {
-        opacity: 0.7 !important;
     }
 }
