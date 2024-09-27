@@ -11,7 +11,7 @@
     bool IsHovering;
     void Hover() => IsHovering = true;
     void StopHover() => IsHovering = false;
-    async Task ModeChanged() => await OnClick.InvokeAsync(Mode);
+    async Task ModeChanged(MouseEventArgs args) => await OnClick.InvokeAsync(Mode);
 
     bool IsSelected => Kori.Mode == Mode;
     string IconPath => IsSelected ? $"_content/Sparc.Kori/icons/{Icon}-selected.svg"

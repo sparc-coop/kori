@@ -67,6 +67,9 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
         await js.InvokeVoidAsync("save");
     }
 
+    public async Task<KoriTextContent> SaveAsync(string key, string text)
+        => await http.SaveContentAsync(key, text);
+
     public async Task CancelAsync()
     {
         await js.InvokeVoidAsync("cancelEdit");

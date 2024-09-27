@@ -1,5 +1,4 @@
 ﻿using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 
 namespace Sparc.Kori;
@@ -28,14 +27,63 @@ public class KoriEngine(
         await InitializeAsync(context.Request.Path);
     }
 
-    public async Task InitializeAsync(ComponentBase component, string currentUrl, string elementId)
+    public async Task InitializeAsync(string currentUrl, string elementId)
     {
         await InitializeAsync(currentUrl);
         await js.InvokeVoidAsync("init", 
             elementId, 
             language.Value.Id, 
-            DotNetObjectReference.Create(component), 
+            DotNetObjectReference.Create(this), 
             content.Value);
+    }
+
+    public async Task ChangeMode(string mode)
+    {
+        if (Mode == mode)
+        {
+            Mode = string.Empty;
+            return;
+        }
+
+        Mode = mode;
+
+        switch (Mode)
+        {
+            case "Search":
+                await OpenSearchMenuAsync();
+                break;
+            case "Language":
+                OpenTranslationMenu();
+                break;
+            case "Blog":
+                OpenBlogMenu();
+                break;
+            case "A/B Testing":
+                OpenABTestingMenu();
+                break;
+            case "Edit":
+                await content.BeginEditAsync();
+                break;
+            case "EditImage":
+                await images.BeginEditAsync();
+                break;
+            default:
+                break;
+        }
+    }
+
+    [JSInvokable]
+    public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> newContent)
+        => await content.TranslateAsync(newContent);
+
+    [JSInvokable]
+    public async Task<KoriTextContent> SaveAsync(string key, string text)
+        => await content.SaveAsync(key, text);
+
+    [JSInvokable]
+    public void BackToEdit()
+    {
+        Mode = "";
     }
 
     public async Task BeginEditAsync()
@@ -79,11 +127,5 @@ public class KoriEngine(
     public void OpenABTestingMenu()
     {
         Mode = "ABTesting";
-    }
-
-
-    public void BackToEdit()
-    {
-        Mode = "";
     }
 }
