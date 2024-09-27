@@ -9,9 +9,12 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace Sparc.Kori;
 
-public record KoriWord(string Text, long Duration, long Offset);
-public record KoriAudioContent(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
+public record Language(string Id, string DisplayName, string NativeName, bool IsRightToLeft);
+public record KoriPage(string Name, string Slug, string Language, ICollection<KoriTextContent> Content);
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudioContent Audio, List<object>? Nodes, bool Submitted = true);
+public record KoriAudioContent(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
+public record KoriWord(string Text, long Duration, long Offset);
+
 public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
@@ -20,13 +23,8 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
     public string Mode { get; set; } = "";
 
     Dictionary<string, KoriTextContent> _content { get; set; } = [];
-    private HttpClient Client { get; set; } = new() { BaseAddress = new Uri("https://localhost:7117/") };
-
-    readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Sparc.Kori/KoriTopBar.razor.js").AsTask());
-
-    public TagManager TagManager { get; } = new TagManager();
-
-    public record IbisContent(string Name, string Slug, string Language, ICollection<KoriTextContent> Content);
+    HttpClient Client { get; set; } = new() { BaseAddress = new Uri("https://localhost:7117/") };
+    readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Sparc.Kori/js/Kori.js").AsTask());
 
     public async Task InitializeAsync(HttpContext context)
     {
@@ -42,6 +40,12 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
         await js.InvokeVoidAsync("init", elementId, Language, DotNetObjectReference.Create(component), _content);
     }
 
+    public async Task<List<Language>> GetLanguagesAsync()
+    {
+        return await Client.GetFromJsonAsync<List<Language>>("publicapi/Languages")
+            ?? [];
+    }
+
     public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> nodes)
     {
         if (nodes.Count == 0)
@@ -55,7 +59,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
         var request = new { RoomSlug, Language, Messages = messagesDictionary, AsHtml = false };
 
-        var content = await PostAsync<IbisContent>("publicapi/PostContent", request);
+        var content = await PostAsync<KoriPage>("publicapi/PostContent", request);
 
         if (content == null)
             return nodes;
@@ -230,7 +234,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
             Language
         };
 
-        var content = await PostAsync<IbisContent>("publicapi/PostContent", request);
+        var content = await PostAsync<KoriPage>("publicapi/PostContent", request);
         if (content != null)
             _content = content.Content.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
     }

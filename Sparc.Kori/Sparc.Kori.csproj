@@ -10,4 +10,12 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\js\Kori.js" />
+	</ItemGroup>
+
 </Project>
