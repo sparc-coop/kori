@@ -1,42 +1,36 @@
-﻿namespace Sparc.Kori;
+﻿using System.Text;
 
-public record KoriContentRequest(string Path, string Language);
+namespace Sparc.Kori;
+
 public record KoriPage(string Name, string Slug, string Language, ICollection<KoriTextContent> Content);
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudioContent Audio, List<object>? Nodes, bool Submitted = true);
 public record KoriAudioContent(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
-public class KoriContentEngine(HttpClient client, KoriJsEngine js)
+public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
 {
     public Dictionary<string, KoriTextContent> Value { get; set; } = [];
     public string EditMode { get; set; } = "Edit";
-    KoriContentRequest? CurrentRequest;
 
-    public async Task InitializeAsync(string path, string language)
+    public async Task InitializeAsync()
     {
-        CurrentRequest = new KoriContentRequest(path, language);
-
-        var content = await client.PostAsync<KoriPage>("publicapi/PostContent", CurrentRequest);
-        if (content != null)
-            Value = content.Content.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
+        Value = await http.GetContentAsync() ?? [];
     }
 
     public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> nodes)
     {
-        if (nodes.Count == 0 || CurrentRequest == null)
+        if (nodes.Count == 0)
             return nodes;
 
         var keysToTranslate = nodes.Where(x => !Value.ContainsKey(x.Key)).Select(x => x.Key).Distinct().ToList();
         var messagesDictionary = keysToTranslate.ToDictionary(key => key, key => nodes[key]);
-        var request = new { CurrentRequest.Path, CurrentRequest.Language, Messages = messagesDictionary, AsHtml = false };
-        var content = await client.PostAsync<KoriPage>("publicapi/PostContent", request);
-
+        var content = await http.TranslateAsync(messagesDictionary);
         if (content == null)
             return nodes;
 
-        foreach (var item in content.Content)
+        foreach (var item in content)
         {
-            Value[item.Tag] = item with { Nodes = new List<object>() };
+            Value[item.Tag] = item with { Nodes = [] };
         }
 
         foreach (var key in nodes.Keys.ToList())
@@ -78,14 +72,27 @@ public class KoriContentEngine(HttpClient client, KoriJsEngine js)
         await js.InvokeVoidAsync("cancelEdit");
     }
 
-    public async Task<KoriTextContent> SaveAsync(string key, string text)
+    static string LoremIpsum(int wordCount)
     {
-        if (CurrentRequest == null)
-            throw new InvalidOperationException("Content not initialized");
+        var words = new[]{"lorem", "ipsum", "dolor", "sit", "amet", "consectetuer",
+        "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod",
+        "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat"};
 
-        var request = new { CurrentRequest.Path, CurrentRequest.Language, Tag = key, Text = text };
-        var result = await client.PostAsync<KoriTextContent>("publicapi/TypeMessage", request);
-        return result!;
+        var rand = new Random();
+        StringBuilder result = new();
+
+        for (int i = 0; i < wordCount; i++)
+        {
+            var word = words[rand.Next(words.Length)];
+            var punctuation = i == wordCount - 1 ? "." : rand.Next(8) == 2 ? "," : "";
+
+            if (i > 0)
+                result.Append($" {word}{punctuation}");
+            else
+                result.Append($"{word[0].ToString().ToUpper()}{word.AsSpan(1)}");
+        }
+
+        return result.ToString();
     }
 
 

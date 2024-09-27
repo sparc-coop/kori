@@ -11,7 +11,7 @@
     <ul class="login-component__language-list @(ShowLanguageSettings? "show" : "")">
         @if (Languages != null)
         {
-            @foreach (var language in Languages)
+            @foreach (var language in Languages.AllLanguages)
             {
                 <li>
                     <button class="login-component__change-language-btn login-component__text-btn" @onclick=@(() => ChangeLanguage(language))>
@@ -36,28 +36,21 @@
     </ul>
 </div> 
 
+@inject KoriLanguageEngine Languages
 @code {
-    [Parameter] public Language? SelectedLanguage { get; set; }
-    [Parameter] public EventCallback<Language> LanguageChanged { get; set; }
-    //string? SelectedLanguageId { get; set; }
-    // Language? selectedLanguage;
-    List<Language>? Languages { get; set; }
-
+    [Parameter] public KoriLanguage? SelectedLanguage { get; set; }
+    [Parameter] public EventCallback<KoriLanguage> LanguageChanged { get; set; }
     bool ShowLanguageSettings = false;
 
     protected override async Task OnInitializedAsync()
     {
-        //SelectedLanguageId = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-        Languages = await GetLanguagesAsync();
-        Languages = Languages.OrderBy(x => x.DisplayName).ToList();
-        //SelectedLanguage = Languages.First(x => x.Id == SelectedLanguageId);
+        await Languages.InitializeAsync(SelectedLanguage);
     }
 
-    async Task<List<Language>> GetLanguagesAsync()
+    async Task ChangeLanguage(KoriLanguage language)
     {
-        var client = new HttpClient { BaseAddress = new Uri("https://ibis-web-kori.azurewebsites.net/") };
-        return await client.GetFromJsonAsync<List<Language>>("publicapi/Languages")
-               ?? new List<Language>();
+        await Languages.InitializeAsync(language);
+        ToggleLanguageSettings();
     }
 
     void ToggleLanguageSettings()
@@ -65,9 +58,4 @@
         ShowLanguageSettings = !ShowLanguageSettings;
     }
 
-    async Task ChangeLanguage(Language language)
-    {
-        await LanguageChanged.InvokeAsync(language);
-        ToggleLanguageSettings();
-    }
 }

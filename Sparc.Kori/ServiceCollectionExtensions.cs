@@ -11,7 +11,15 @@ public static class ServiceCollectionExtensions
     public static WebApplicationBuilder AddKori(this WebApplicationBuilder builder, Uri baseUri)
     {
         builder.Services.AddLocalization();
-        builder.Services.AddScoped<KoriEngine>();
+        builder.Services.AddHttpClient<KoriHttpEngine>(client => client.BaseAddress = new Uri("https://localhost:7132"));
+
+        builder.Services.AddScoped<KoriEngine>()
+            .AddScoped<KoriLanguageEngine>()
+            .AddScoped<KoriContentEngine>()
+            .AddScoped<KoriSearchEngine>()
+            .AddScoped<KoriImageEngine>()
+            .AddScoped<KoriJsEngine>();
+
         KoriEngine.BaseUri = baseUri;
         return builder;
     }

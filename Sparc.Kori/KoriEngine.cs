@@ -1,5 +1,4 @@
 ﻿using Microsoft.JSInterop;
-using System.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 
@@ -10,27 +9,31 @@ public class KoriEngine(
     KoriContentEngine content,
     KoriSearchEngine search,
     KoriImageEngine images,
-    KoriJsEngine js)
+    KoriJsEngine js,
+    KoriHttpEngine http)
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
-    public string CurrentUrl { get; set; } = "";
     public string Mode { get; set; } = "";
+
+    public async Task InitializeAsync(string currentUrl)
+    {
+        var url = new Uri(currentUrl);
+        await http.InitializeAsync(BaseUri, url.PathAndQuery, language.Value.Id);
+        await content.InitializeAsync();
+        await images.InitializeAsync();
+    }
 
     public async Task InitializeAsync(HttpContext context)
     {
-        CurrentUrl = $"{BaseUri.Host}{context.Request.Path}";
-        await content.InitializeAsync(CurrentUrl, language.Value);
-        await images.InitializeAsync(CurrentUrl, language.Value);
+        await InitializeAsync(context.Request.Path);
     }
 
     public async Task InitializeAsync(ComponentBase component, string currentUrl, string elementId)
     {
-        CurrentUrl = new Uri(currentUrl).AbsolutePath;
-        await content.InitializeAsync(CurrentUrl, language.Value);
-        await images.InitializeAsync(CurrentUrl, language.Value);
+        await InitializeAsync(currentUrl);
         await js.InvokeVoidAsync("init", 
             elementId, 
-            language.Value, 
+            language.Value.Id, 
             DotNetObjectReference.Create(component), 
             content.Value);
     }
@@ -56,28 +59,6 @@ public class KoriEngine(
         await search.CloseAsync();
     }
 
-    static string LoremIpsum(int wordCount)
-    {
-        var words = new[]{"lorem", "ipsum", "dolor", "sit", "amet", "consectetuer",
-        "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod",
-        "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat"};
-
-        var rand = new Random();
-        StringBuilder result = new();
-
-        for (int i = 0; i < wordCount; i++)
-        {
-            var word = words[rand.Next(words.Length)];
-            var punctuation = i == wordCount - 1 ? "." : rand.Next(8) == 2 ? "," : "";
-
-            if (i > 0)
-                result.Append($" {word}{punctuation}");
-            else
-                result.Append($"{word[0].ToString().ToUpper()}{word.AsSpan(1)}");
-        }
-
-        return result.ToString();
-    }
 
     public void OpenTranslationMenu()
     {
