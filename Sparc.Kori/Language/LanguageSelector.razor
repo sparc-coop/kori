@@ -1,0 +1,73 @@
+@using System.Net.Http.Json
+@using System.Globalization
+
+<div class="login-component__language">
+    <button class="login-component__language-btn" @onclick=ToggleLanguageSettings>
+        <div class="login-component__language-btn-content login-component__text-btn">
+            <img src="_content/Kori/icons/Language.svg" /> @SelectedLanguage?.DisplayName
+        </div>
+        <img class="login-component__expand-icon @(ShowLanguageSettings ? "rotate": "")" src="_content/Kori/icons/Expand.svg" />
+    </button>
+    <ul class="login-component__language-list @(ShowLanguageSettings? "show" : "")">
+        @if (Languages != null)
+        {
+            @foreach (var language in Languages)
+            {
+                <li>
+                    <button class="login-component__change-language-btn login-component__text-btn" @onclick=@(() => ChangeLanguage(language))>
+                        @language.DisplayName
+
+                        @if (language.DisplayName != language.NativeName)
+                        {
+                            <aside>@language.NativeName</aside>
+                        }
+
+                        @* @if (User.Language == language.Id)
+                {
+                <div class="right">
+                <img src="icons/Check.svg" />
+                </div>
+                }
+                *@
+                    </button>
+                </li>
+            }
+        }
+    </ul>
+</div> 
+
+@code {
+    [Parameter] public Language? SelectedLanguage { get; set; }
+    [Parameter] public EventCallback<Language> LanguageChanged { get; set; }
+    //string? SelectedLanguageId { get; set; }
+    // Language? selectedLanguage;
+    List<Language>? Languages { get; set; }
+
+    bool ShowLanguageSettings = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //SelectedLanguageId = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        Languages = await GetLanguagesAsync();
+        Languages = Languages.OrderBy(x => x.DisplayName).ToList();
+        //SelectedLanguage = Languages.First(x => x.Id == SelectedLanguageId);
+    }
+
+    async Task<List<Language>> GetLanguagesAsync()
+    {
+        var client = new HttpClient { BaseAddress = new Uri("https://ibis-web-kori.azurewebsites.net/") };
+        return await client.GetFromJsonAsync<List<Language>>("publicapi/Languages")
+               ?? new List<Language>();
+    }
+
+    void ToggleLanguageSettings()
+    {
+        ShowLanguageSettings = !ShowLanguageSettings;
+    }
+
+    async Task ChangeLanguage(Language language)
+    {
+        await LanguageChanged.InvokeAsync(language);
+        ToggleLanguageSettings();
+    }
+}

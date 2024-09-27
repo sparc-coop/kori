@@ -1,0 +1,107 @@
+﻿.login-component__language {
+  padding-bottom: 8px;
+}
+.login-component__language .login-component__language-btn {
+  width: 100%;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 8px 0 !important;
+  background: none !important;
+  border: none !important;
+  font-family: "Encode Sans Expanded" !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 140% !important;
+  text-align: left !important;
+  color: white !important;
+  cursor: pointer;
+}
+.login-component__language .login-component__language-btn-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  font-family: "Encode Sans Expanded" !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 140% !important;
+  color: white !important;
+  opacity: 0.7 !important;
+}
+.login-component__language .login-component__language-btn .login-component__expand-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 1000ms ease-in-out;
+  opacity: 0.7;
+}
+.login-component__language .login-component__language-btn .login-component__expand-icon.rotate {
+  transform: rotate(-180deg);
+}
+.login-component__language .login-component__language-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  list-style: none;
+  width: 100%;
+  margin-right: -16px;
+  padding-right: 16px;
+  max-height: 0px;
+  opacity: 0;
+  transition: all 1s ease-in-out;
+}
+.login-component__language .login-component__language-list.show {
+  max-height: 400px;
+  opacity: 1;
+}
+.login-component__language .login-component__language-list li {
+  list-style: none;
+}
+.login-component__language .login-component__language-list button {
+  padding: 4px 8px;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  text-align: left !important;
+}
+.login-component__language .login-component__language-list button aside {
+  font-family: "Encode Sans Expanded" !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 140% !important;
+  color: var(--grey-300) !important;
+}
+
+.login-component__text-btn, .login-component__language .login-component__language-btn, .login-component__language .login-component__language-list button {
+  font-family: "Encode Sans Expanded" !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 140% !important;
+  color: white !important;
+  cursor: pointer !important;
+  transition: 300ms ease-in-out !important;
+  opacity: 0.7 !important;
+}
+.login-component__text-btn:hover, .login-component__language .login-component__language-btn:hover, .login-component__language .login-component__language-list button:hover {
+  opacity: 1 !important;
+}
+.login-component__text-btn:active, .login-component__language .login-component__language-btn:active, .login-component__language .login-component__language-list button:active {
+  opacity: 0.7 !important;
+}
+
+.login-component__text-btn, .login-component__language .login-component__language-btn, .login-component__language .login-component__language-list button {
+  font-family: "Encode Sans Expanded" !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 140% !important;
+  color: white !important;
+  cursor: pointer !important;
+  transition: 300ms ease-in-out !important;
+  opacity: 0.7 !important;
+}
+.login-component__text-btn:hover, .login-component__language .login-component__language-btn:hover, .login-component__language .login-component__language-list button:hover {
+  opacity: 1 !important;
+}
+.login-component__text-btn:active, .login-component__language .login-component__language-btn:active, .login-component__language .login-component__language-list button:active {
+  opacity: 0.7 !important;
+}

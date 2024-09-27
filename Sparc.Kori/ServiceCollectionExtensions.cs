@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Sparc.Kori;
 
@@ -27,5 +29,20 @@ public static class ServiceCollectionExtensions
         //app.UseMiddleware<KoriMiddleware>();
 
         return app;
+    }
+
+    static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
+    public static async Task<TResponse?> PostAsync<TResponse>(this HttpClient client, string url, object request)
+    {
+        try
+        {
+            var response = await client.PostAsJsonAsync(url, request);
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<TResponse>(result, JsonOptions);
+        }
+        catch (Exception)
+        {
+            return default;
+        }
     }
 }
