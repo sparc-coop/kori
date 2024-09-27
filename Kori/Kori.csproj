@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>2a3fb6a1-976c-4a46-9d65-f474d4676eb1</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
     <ProjectReference Include="..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj" />
     <ProjectReference Include="..\..\blossom\Sparc.Blossom.Server.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj" OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\blossom\Sparc.Blossom.Server\Sparc.Blossom.csproj" />
+    <ProjectReference Include="..\Sparc.Kori\Sparc.Kori.csproj" />
   </ItemGroup>
 
 </Project>
