@@ -1,0 +1,53 @@
+.top-bar-button {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    gap: 6px;
+    height: 40px;
+    justify-content: center;
+    background: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    position: relative;
+
+    .icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .btn-text {
+        font-family: 'ArticulatCF';
+        font-weight: 500;
+        color: #485269;
+        font-size: 14px;
+        font-style: normal;
+    }
+
+    &:hover:not(.toggle-button) {
+        background: #EEF2FA;
+        box-shadow: inset 0 0 0 4px #FFFFFF;
+        padding: 8px;
+       
+        .btn-text {
+            color: #5377FC;
+        }
+    }
+
+    &:focus:not(.toggle-button) {
+        outline: none;
+        box-shadow: inset 0 0 0 4px #FFFFFF;
+    }
+
+    &.selected:not(.toggle-button) {
+        background: #EEF2FA;
+        transition: background 0.3s ease;
+        box-shadow: inset 0 0 0 4px #FFFFFF;
+        padding: 8px;        
+
+        .btn-text {
+            color: #4162DC;
+        }
+    }
+}

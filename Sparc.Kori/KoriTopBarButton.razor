@@ -1,12 +1,16 @@
-<button class="top-bar-button @(IsSelected ? "selected" : "")" @onclick="ModeChanged" @onmouseover="Hover" @onmouseout="StopHover">
+﻿<button class="top-bar-button @(IsSelected ? "selected" : "")" onclick="@ModeChanged" onmouseover="@Hover" onmouseout="@StopHover">
     <img src="@IconPath" alt="@Mode icon" class="icon normal-icon" />
-    <span class="btn-text">@Mode</span>
+    @if (ShowText)
+    {
+        <span class="btn-text">@Mode</span>
+    }
 </button>
 
 @code {
     [Parameter] public required string Mode { get; set; }
     [Parameter] public required string Icon { get; set; }
     [Parameter] public EventCallback<string> OnClick { get; set; }
+    [Parameter] public bool ShowText { get; set; } = true;
 
     bool IsHovering;
     void Hover() => IsHovering = true;

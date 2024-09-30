@@ -101,7 +101,6 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
     public async Task CloseAsync()
     {
-        Console.WriteLine("Closing search side bar in Kori.cs");
         Mode = "Default";
         var js = await KoriJs.Value;
         await js.InvokeVoidAsync("closeSearch");

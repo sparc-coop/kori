@@ -34,5 +34,13 @@
   {
     "outputFile": "Modes/DefaultMode.razor.css",
     "inputFile": "Modes/DefaultMode.razor.scss"
+  },
+  {
+    "outputFile": "KoriTopBarButton.css",
+    "inputFile": "KoriTopBarButton.scss"
+  },
+  {
+    "outputFile": "KoriTopBarButton.razor.css",
+    "inputFile": "KoriTopBarButton.razor.scss"
   }
 ]

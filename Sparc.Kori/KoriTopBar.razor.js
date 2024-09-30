@@ -50,7 +50,7 @@ function buildTranslationCache(serverTranslationCache) {
         }
     }
 
-    //console.log('Kori translation cache initialized from Ibis, ', translationCache);
+    console.log('Kori translation cache initialized from Ibis, ', translationCache);
 }
 
 function initKoriElement(targetElementId) {
@@ -61,22 +61,14 @@ function initKoriElement(targetElementId) {
     }
 }
 
-//function initKoriWidget() {
-//    widget = document.getElementById("kori-widget");
-//    widgetActions = document.getElementById("kori-widget__actions");
-//    document.getElementById("dockButton").addEventListener("click", toggleDock);
-
-//    console.log('Kori widget initialized.');
-//}
-
 function initKoriTopBar() {
     topBar = document.getElementById("kori-top-bar");   
 
-    //console.log('Kori top bar initialized.');
+    console.log('Kori top bar initialized.');
 }
 
 function initElement(targetElementId) {
-    //console.log("Initializing element");
+    console.log("Initializing element");
 
     app = document.getElementById(targetElementId);
 
@@ -86,13 +78,13 @@ function initElement(targetElementId) {
     observer = new MutationObserver(observeCallback);
     observer.observe(app, { childList: true, characterData: true, subtree: true });
 
-    //console.log('Observer registered for ' + targetElementId + '.');
+    console.log('Observer registered for ' + targetElementId + '.');
 }
 
 function registerNodesUnder(el) {
     var n, walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, koriIgnoreFilter);
     while (n = walk.nextNode()){
-        //console.log('Registering node', n.nodeName);
+        console.log('Registering node', n.nodeName);
         registerNode(n);
     }
 }
@@ -142,10 +134,7 @@ function observeCallback(mutations) {
 
     mutations.forEach(function (mutation) {
         if (mutation.target.classList?.contains('kori-ignore') || mutation.target.parentElement?.classList.contains('kori-ignore'))
-            return;
-
-        //console.log("-----mutation.target", mutation.target);
-        //console.log("-----mutation.target.parentElement", mutation.target.parentElement);
+            return;        
 
         if (mutation.type == 'characterData')
             registerNode(mutation.target, NodeType.TEXT);
@@ -157,7 +146,7 @@ function observeCallback(mutations) {
 }
 
 function translateNodes() {
-    //console.log('translateNodes');
+    console.log('translateNodes');
 
     var contentToTranslate = {};
 
@@ -182,7 +171,7 @@ function translateNodes() {
     }    
 
     dotNet.invokeMethodAsync("TranslateAsync", contentToTranslate).then(translations => {
-        //console.log('Received new translations from Ibis.', translations);
+        console.log('Received new translations from Ibis.', translations);
 
         for (var key in translations) {
             if (translations[key] === "") {
@@ -209,12 +198,12 @@ function isPlaceholder(text) {
 function replaceWithTranslatedText() {
     observer.disconnect();
 
-    //console.log('replaceWithTranslatedText - translationCache', translationCache);
+    console.log('replaceWithTranslatedText - translationCache', translationCache);
 
     for (let key in translationCache) {
         var translation = translationCache[key];
 
-        //console.log('translation', translation);
+        console.log('translation', translation);
 
         if (!translation.Translation)
             continue;
@@ -245,7 +234,7 @@ function replaceWithTranslatedText() {
         }
     }
 
-    //console.log('Translated page from Ibis and enabled Kori widget.');
+    console.log('Translated page from Ibis and enabled Kori top bar.');
 
     observer.observe(app, { childList: true, characterData: true, subtree: true });
 }
@@ -286,46 +275,11 @@ function mouseClickHandler(e) {
 }
 
 // selecting and unselecting kori-enabled elements
-//function toggleSelected(t) {
-//    document.getElementsByClassName("selected")[0]?.classList.remove("selected");
-//    //document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-//    var topBar = document.getElementById("kori-top-bar");
-
-//    var koriElem = t.closest('.kori-enabled');
-//    if (!koriElem) {
-//        // clicked outside of all kori elements
-//        //document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-        
-//        if (topBar && topBar.classList.contains("show")) {
-//            topBar.classList.remove("show");
-//            document.body.style.marginTop = '0';
-//        }
-
-//        // reset right margin if widget is docked
-//        if (widget.classList.contains("docked")) {
-//            document.body.style.marginRight = '0';
-//        }
-
-//        if (activeMessageId) {
-//            cancelEdit();
-//        }
-
-//        activeNode = null;
-//        return;
-//    }
-
-//    if (!koriElem.classList.contains("selected")) {
-//        koriElem.classList.add("selected");
-//        //document.getElementsByClassName("show")[0]?.classList.remove("show");
-//        toggleWidget(koriElem);
-//    }
-//}
-
 function toggleSelected(t) {
     document.getElementsByClassName("selected")[0]?.classList.remove("selected");
     document.getElementsByClassName("show")[0]?.classList.remove("show");
+
+    var topBar = document.getElementById('kori-top-bar');
 
     var koriElem = t.closest('.kori-enabled');
     console.log('koriElem', koriElem);
@@ -335,6 +289,16 @@ function toggleSelected(t) {
 
         if (!topBar.classList.contains("show")) {
             document.body.style.marginTop = '0';
+
+            var buttons = topBar.querySelectorAll('.top-bar-button');
+            buttons.forEach(function (button) {
+                if (!button.classList.contains('toggle-button')) {
+                    var iconImg = button.querySelector('img');
+                    if (iconImg) {
+                        iconImg.src = iconImg.src.replace('-selected.svg', '.svg');
+                    }
+                }
+            });
         }          
 
         if (activeMessageId) {
@@ -352,61 +316,18 @@ function toggleSelected(t) {
     }
 }
 
-// showing and hiding kori widget
-//function toggleWidget(t) {
-//    console.log('toggleWidget', t);
-
-//    var widget = document.getElementById("kori-widget");
-//    //var widgetActions = document.getElementById("kori-widget__actions");
-//    console.log('wdiget', widget);
-//    t.appendChild(widget);
-
-//    widget.classList.add("show");
-//    //widgetActions.classList.add("show");
-
-//    console.log('toggleWidget', t);
-//    console.log('parent id', t.getAttribute('kori-id'));
-//    const koriId = t.getAttribute('kori-id');
-//    // search for matching node in translation cache
-//    for (let key in translationCache) {
-//        for (var i = 0; i < translationCache[key].Nodes.length; i++)
-
-//            if (t.contains(translationCache[key].Nodes[i])) {
-//                activeNode = translationCache[key].Nodes[i];
-//                activeMessageId = key;
-//                break;
-//            }
-
-//        if (koriId != null && koriId == translationCache[key].id) {
-//            activeNode = t;
-//            activeMessageId = key;
-//            break;
-//        }
-
-
-//    }
-
-//    console.log('Set active node', activeNode);
-
-//    // after the widget is shown, make it draggable
-//    makeWidgetDraggable();
-//}
-
-function toggleTopBar(t) {
+// showing and hiding kori top bar
+function toggleTopBar(t) {  
     var topBar = document.getElementById("kori-top-bar");
 
     t.appendChild(topBar);
 
     topBar.classList.add("show");
 
-    //console.log('toggleTopBar: ', t);
-
     if (topBar.classList.contains("show")) {
         // adjusts the top margin to match the top-bar height
         document.body.style.marginTop = '100px';
     }
-
-    console.log('parent id', t.getAttribute('kori-id'));
 
     const koriId = t.getAttribute('kori-id');
     // search for matching node in translation cache
@@ -426,7 +347,7 @@ function toggleTopBar(t) {
         }
     }
 
-    //console.log('Set active node', activeNode);
+    console.log('Set active node', activeNode);
 }
 
 function getActiveImageSrc() {
@@ -438,36 +359,6 @@ function getActiveImageSrc() {
     //console.log('Active node is not an image', activeNode)
     return null;
 }
-
-//function edit() {
-//    if (!activeNode) {
-//        console.log('Unable to edit element', activeNode);
-//        return;
-//    }
-
-//    var translation = translationCache[activeMessageId];
-
-//    if (isTranslationAlreadySaved(translation)) {
-//        var activeNodeParent = getActiveNodeParentByKoriId(translation);
-//        activateNodeEdition(activeNodeParent);
-//        replaceInnerHtmlBeforeWidget(activeNodeParent, getTranslationRawMarkdownText(translation));
-//    }
-//    else {
-//        var parentElement = activeNode.parentElement;
-//        activateNodeEdition(parentElement);
-
-//        // If the Translation is empty or contains only whitespace
-//        if (!translation || !translation.Translation || translation.Translation.trim() === "") {
-
-//            // Insert a temporary space to ensure the cursor appears
-//            activeNode.textContent = "\u200B"; // Zero-width space character
-//        } else {
-//            activeNode.textContent = getTranslationRawMarkdownText(translation);
-//        }
-//    }
-
-//    document.getElementById("kori-widget").contentEditable = "false";
-//}
 
 function edit() {
     if (!activeNode) {
@@ -513,7 +404,6 @@ function deactivateNodeEdition(node, translation) {
     node.classList.remove('kori-ignore');
     node.classList.remove('selected');
 
-    //resetWidget();
     resetTopBar();
 
     node.innerHTML = translation.html;
@@ -561,21 +451,16 @@ function showSidebar() {
 }
 
 function hideSidebar() {
-    console.log("hiding sidebar in hideSideBar funcion in JS code");
     document.body.style.marginRight = "0px";
 }
 
 function cancelEdit() {
-    console.log("cancelling edit in JS");
-
     var translation = translationCache[activeMessageId];
 
     if (isTranslationAlreadySaved(translation)) {
-        console.log("entrou na condição de isTranslationAlreadySaved");
         var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
         deactivateNodeEdition(activeNodeParent, translation);
     } else {
-        console.log("entrou na condição de else");
         activeNode.textContent = translation.Translation;
         activeNode.parentElement.contentEditable = "false";
         activeNode.parentElement.classList.remove('selected');
@@ -584,53 +469,19 @@ function cancelEdit() {
 }
 
 function closeSearch() {
-    console.log("closing edit in JS");
-
-    // Manter o elemento selecionado e editável
     activeNode.parentElement.contentEditable = "true";
-    activeNode.parentElement.classList.add('selected'); // Mantenha a seleção ativa no elemento
+    activeNode.parentElement.classList.add('selected'); 
 
-    // Fechar a sidebar
     hideSidebar();
 
-    // Deselecionar o modo na top bar e exibir o normal-icon
     var topBar = document.getElementById('kori-top-bar');
     if (topBar) {
-        // Remover a seleção de todos os botões da top bar
         var selectedButton = topBar.querySelector('.top-bar-button.selected');
-        if (selectedButton) {
-            // Remover a classe 'selected'
+        if (selectedButton) {          
             selectedButton.classList.remove('selected');
-
-            // Exibir o normal-icon e ocultar o hover-icon
-            var normalIcon = selectedButton.querySelector('.normal-icon');
-            var hoverIcon = selectedButton.querySelector('.hover-icon');
-
-            if (normalIcon && hoverIcon) {
-                normalIcon.classList.remove('hidden');  // Mostrar o normal-icon
-                hoverIcon.classList.add('hidden');     // Ocultar o hover-icon
-            }
         }
     }
-
-    // Avisar o KoriContent.razor para remover o modo ativo
-    DotNet.invokeMethodAsync('Kori', 'OnModeChanged', '').then(() => {
-        console.log("Modo removido com sucesso.");
-    });
-
-    console.log("sidebar closed, element kept editable, top bar deselected, mode removed");
 }
-
-
-
-//function getActiveNodeTextContent(translation) {
-//    var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
-
-//    var copyNode = activeNodeParent.cloneNode(true);
-//    var koriWidget = copyNode.querySelector('#kori-widget');
-
-//    return copyNode.textContent.replace(koriWidget.textContent, '');
-//}
 
 function getActiveNodeTextContent(translation) {
     var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
@@ -658,16 +509,14 @@ function save() {
     dotNet.invokeMethodAsync("BackToEditAsync").then(r => {
 
         dotNet.invokeMethodAsync("SaveAsync", activeMessageId, textContent).then(content => {
-            //console.log('Saved new content to Ibis.', content);
+            console.log('Saved new content to Ibis.', content);
 
             translationCache[activeMessageId].Translation = content.text;
             translationCache[activeMessageId].text = content.text;
             translationCache[activeMessageId].html = content.html;
 
             activeNode.parentElement.contentEditable = "false";
-            activeNode.parentElement.classList.remove('kori-ignore');
-
-            //console.log("-------------activeNode.parentElement" ,activeNode.parentElement);
+            activeNode.parentElement.classList.remove('kori-ignore');            
 
             if (translation.id) {
 
@@ -681,8 +530,6 @@ function save() {
 
         });
     });
-
-
 }
 
 // function to check if an element is a descendant of an element with a specific class
@@ -766,146 +613,15 @@ function login() {
     console.log("logging in...");
 }
 
-//function makeWidgetDraggable() {
-//    // if widget is docked, do not make it draggable
-//    if (widget.classList.contains("docked")) {
-//        console.log("Widget is docked, cannot be dragged.");
-//        return;
-//    }
-
-//    // add mouse event to start dragging
-//    widgetActions.onmousedown = function (e) {
-//        e.preventDefault();
-//        pos3 = e.clientX;
-//        pos4 = e.clientY;
-//        document.onmouseup = closeDragElement;
-//        document.onmousemove = elementDrag;
-
-//        // add 'no-transition' class when starting drag
-//        widget.classList.add("no-transition");
-//    };
-
-//    // function to drag the element
-//    function elementDrag(e) {
-//        e.preventDefault();
-//        pos1 = pos3 - e.clientX;
-//        pos2 = pos4 - e.clientY;
-//        pos3 = e.clientX;
-//        pos4 = e.clientY;
-
-//        // get parent element bounds
-//        var parentElem = widgetActions.parentElement;
-//        var parentRect = parentElem.getBoundingClientRect();
-
-//        // calculate new positions
-//        var newLeft = widgetActions.offsetLeft - pos1;
-//        var newTop = widgetActions.offsetTop - pos2;
-
-//        // get viewport dimensions
-//        var viewportWidth = window.innerWidth;
-//        var viewportHeight = window.innerHeight;
-
-//        // get widget dimensions
-//        var widgetWidth = widgetActions.offsetWidth;
-//        var widgetHeight = widgetActions.offsetHeight;
-
-//        const topBarHeight = 110;
-
-//        // calculate max and min positions
-//        var maxLeft = viewportWidth - (parentRect.left + widgetWidth);
-//        var maxTop = viewportHeight - (parentRect.top + (widgetHeight / 2));
-//        var minLeft = -parentRect.left;
-//        var minTop = -parentRect.top + topBarHeight;
-
-//        // constrain the widget within the viewport, considering parent element bounds
-//        newLeft = Math.max(minLeft, Math.min(maxLeft, newLeft));
-//        newTop = Math.max(minTop, Math.min(maxTop, newTop));
-
-//        // set the new widget position
-//        widgetActions.style.left = newLeft + "px";
-//        widgetActions.style.top = newTop + "px";
-//    }
-
-//    // function to stop dragging
-//    function closeDragElement() {
-//        document.onmouseup = null;
-//        document.onmousemove = null;
-
-//        // remove 'no-transition' class when stopping dragging
-//        widget.classList.remove("no-transition");
-//    }
-//}
-
-//function resetWidget() {
-//    resetWidgetPosition();
-
-//    // Move the widget back to the body root
-//    document.body.appendChild(widget);
-
-//    // Hide the widget
-//    widget.style.display = 'none';
-//}
-//function resetWidgetPosition() {
-//    // do not reset position if widget is docked
-//    if (widget.classList.contains("docked")) {
-//        return;
-//    }
-
-//    widgetActions.style.left = initialPosition.left + 'px';
-//    widgetActions.style.top = '';
-//}
-
-
-//function toggleDock() {
-//    var dockButton = document.getElementById("dockButton");
-//    var dockIcon = dockButton.querySelector("img");
-
-//    if (!widget.classList.contains("docked")) {
-//        widget.classList.add("docked");
-//        widgetActions.style.left = '';
-//        widgetActions.style.right = '';
-//        widgetActions.style.top = '';
-//        dockButton.title = 'Undock';
-
-//        // Change the icon to undock
-//        dockIcon.src = '/_content/Sparc.Kori/images/undock-icon.svg';
-
-//        // remove the ability to drag
-//        widgetActions.onmousedown = null;
-
-//        // adjusts the right margin to match the sidebar width
-//        document.body.style.marginRight = '298px';
-//    } else {
-//        widget.classList.remove("docked");
-//        dockButton.title = 'Dock';
-
-//        // Change the icon to dock
-//        dockIcon.src = '/_content/Sparc.Kori/images/dock-icon.svg';
-
-//        resetWidgetPosition();
-
-//        widget.classList.add("animate-right-to-left");
-
-//        // add the ability to drag
-//        makeWidgetDraggable();
-
-//        // remove dynamic page size adjustment
-//        document.body.style.marginRight = '0';
-//    }
-//}
-
 function resetTopBar() {
-    /*resetWidgetPosition();*/
-
     var topBar = document.getElementById("kori-top-bar");
 
-    // Move the widget back to the body root
+    // Move the top bar back to the body root
     document.body.appendChild(topBar);
 
-    // Hide the widget
-    //widget.style.display = 'none';
+    // Hide the top bar
+    topBar.style.display = 'none';
 }
-
 
 function applyMarkdown(symbol) {
     const selectedText = window.getSelection().toString();
@@ -921,7 +637,7 @@ function updateImageSrc(currentSrc, newSrc) {
     if (img) {
         img.src = newSrc;
         translationCache[activeMessageId].text = newSrc;
-        //console.log("Image src updated", img);
+        console.log("Image src updated", img);
     }
 }
 

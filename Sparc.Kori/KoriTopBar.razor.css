@@ -27,11 +27,6 @@
   padding: 0px 16px;
   gap: 8px;
   border: 1px solid #E5E7EA;
-  /*&.toggle-button {
-      padding: 0;
-      background: none;
-      box-shadow: none;
-  }*/
 }
 .kori-top-bar .top-bar-buttons .hidden {
   display: none;
@@ -43,71 +38,10 @@
 .kori-top-bar .top-bar-buttons .right-buttons .top-bar-button {
   width: 40px;
 }
-.kori-top-bar .top-bar-buttons .top-bar-button {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  gap: 6px;
-  height: 40px;
-  justify-content: center;
-  background: none;
-  border-radius: 16px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-  position: relative;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button.toggle-button {
-  padding: 0 8px 0 0;
+.kori-top-bar .top-bar-buttons .left-buttons .toggle-button {
+  padding: 0;
   background: none;
   box-shadow: none;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button .icon {
-  width: 16px;
-  height: 16px;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button .icon-on-off {
-  width: 28px;
-  height: 28px;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button:hover:not(.toggle-button) {
-  background: #EEF2FA;
-  box-shadow: inset 0 0 0 4px #FFFFFF;
-  padding: 8px;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button:hover:not(.toggle-button) .normal-icon {
-  display: none;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button:hover:not(.toggle-button) .selected-icon {
-  display: none;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button:hover:not(.toggle-button) .hover-icon {
-  display: inline;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button:hover:not(.toggle-button) .btn-text {
-  color: #5377FC;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button:focus:not(.toggle-button) {
-  outline: none;
-  box-shadow: inset 0 0 0 4px #FFFFFF;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button.selected:not(.toggle-button) {
-  background: #EEF2FA;
-  transition: background 0.3s ease;
-  box-shadow: inset 0 0 0 4px #FFFFFF;
-  padding: 8px;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button.selected:not(.toggle-button) .normal-icon {
-  display: none;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button.selected:not(.toggle-button) .hover-icon {
-  display: none;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button.selected:not(.toggle-button) .selected-icon {
-  display: inline;
-}
-.kori-top-bar .top-bar-buttons .top-bar-button.selected:not(.toggle-button) .btn-text {
-  color: #4162DC;
 }
 .kori-top-bar .bottom-bar {
   display: flex;
