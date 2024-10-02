@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Kori.Users;
+namespace Kori;
 
 public class AvatarColor
 {

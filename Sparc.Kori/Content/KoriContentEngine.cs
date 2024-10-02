@@ -3,8 +3,8 @@
 namespace Sparc.Kori;
 
 public record KoriPage(string Name, string Slug, string Language, ICollection<KoriTextContent> Content);
-public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudioContent Audio, List<object>? Nodes, bool Submitted = true);
-public record KoriAudioContent(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
+public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudio? Audio, List<object>? Nodes, bool Submitted = true);
+public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
 public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)

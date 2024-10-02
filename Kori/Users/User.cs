@@ -1,9 +1,10 @@
 ﻿using Sparc.Blossom.Authentication;
 
-namespace Kori.Users;
+namespace Kori;
 
-public class User() : BlossomUser()
+public class User(string tenantUri) : BlossomUser()
 {
+    public string TenantUri { get; set; } = tenantUri;
     public string? Name { get; private set; }
     public string Initials => string.IsNullOrWhiteSpace(Name) ? "" : string.Join(string.Empty, Name.Split(' ').Select(x => x[0]));
     public bool IsOnline { get; private set; }
