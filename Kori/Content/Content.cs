@@ -3,8 +3,8 @@
 public class Content(string containerUri, string language, string path, string id, string type) 
     : BlossomEntity<string>(id)
 {
-    public Content(Content sourceContent, string language, string translatedText)
-        : this(sourceContent.ContainerUri, language, sourceContent.Path, sourceContent.Id, sourceContent.Type)
+    public Content(Content sourceContent, Language language, string translatedText)
+        : this(sourceContent.ContainerUri, language.Id, sourceContent.Path, sourceContent.Id, sourceContent.Type)
     {
         Text = translatedText;
         Author = sourceContent.Author;

@@ -39,7 +39,7 @@ public class AzureTranslator : ITranslator
                 
                 foreach (Translation t in translatedText.Translations)
                 {
-                    var translated = new Content(content, t.To, t.Text);
+                    var translated = new Content(content, languageDictionary[t.To], t.Text);
                     translatedMessages.Add(translated);
 
                     var cost = content.Text!.Length / 1_000_000M * -10.00M; // $10 per 1M characters

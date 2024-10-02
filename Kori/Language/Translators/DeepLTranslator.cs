@@ -1,36 +1,30 @@
 ﻿using DeepL;
 using DeepL.Model;
 
-namespace Ibis._Plugins;
+namespace Kori;
 
-public class DeepLTranslator : ITranslator
+public class DeepLTranslator(IConfiguration configuration) : ITranslator
 {
-    readonly DeepL.Translator Client;
+    readonly Translator Client = new(configuration["DeepLApi"]!);
 
-    public static SourceLanguage[]? Languages;
+    static SourceLanguage[]? Languages;
 
-    public DeepLTranslator(IConfiguration configuration)
+    public async Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages)
     {
-        Client = new(configuration["DeepLApi"]!);
-    }
-
-    public async Task<List<Message>> TranslateAsync(Message message, List<Language> toLanguages)
-    {
-        var translatedMessages = new List<Message>();
+        var translatedMessages = new List<Content>();
         TextTranslateOptions options = new()
         {
             SentenceSplittingMode = SentenceSplittingMode.Off
         };
 
-        // Split the translations into 10 max per call
         foreach (var language in toLanguages)
         {
             var toLanguage = language.Id.ToUpper() == "EN" ? "en-US" : language.Id;
             var result = await Client.TranslateTextAsync(message.Text!, message.Language, toLanguage, options);
-            var translatedMessage = new Message(message, language, result.Text, new());
+            var translatedMessage = new Content(message, language, result.Text);
             translatedMessages.Add(translatedMessage);
             var cost = message.Text!.Length / 1_000_000M * -25.00M; // $25 per 1M characters
-            message.AddCharge(0, cost, $"Translate message from {message.User.Name} from {message.Language} to {toLanguage}");
+            //message.AddCharge(0, cost, $"Translate message from {message.User.Name} from {message.Language} to {toLanguage}");
         }
 
         return translatedMessages;
