@@ -4,7 +4,7 @@ public class AzureTranslator : ITranslator
 {
     readonly HttpClient Client;
 
-    public static LanguageList? Languages;
+    static LanguageList? Languages;
 
     public AzureTranslator(IConfiguration configuration)
     {
