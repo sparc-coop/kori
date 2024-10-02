@@ -1,3 +1,7 @@
+.kori-ignore {
+    -webkit-text-stroke: initial;
+}
+
 .kori-top-bar {
     display: none;
     position: fixed;
@@ -8,7 +12,10 @@
     flex-direction: column;
     z-index: 1000;
     background: var(--white);
-    cursor: default;
+    font-family: 'ArticulatCF';
+    font-weight: 500;
+    line-height: normal;
+    //cursor: default;
 
     &.show {
         display: flex;
@@ -22,13 +29,17 @@
         font-style: normal;
     }
 
+    section {
+        width: calc(100% - 32px);
+    }
+
     .top-bar-buttons {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0px 16px;
+        height: 40px;
+        padding: 6px 16px;
         gap: 8px;
-        border: 1px solid #E5E7EA;
 
         .hidden {
             display: none;
@@ -37,6 +48,7 @@
         .left-buttons, .right-buttons {
             display: flex;
             align-items: center;
+            gap: 8px;
         }
 
         .right-buttons {
@@ -47,37 +59,58 @@
 
         .left-buttons {
             .toggle-button {
+                width: 36px;
+                height: 36px;
                 padding: 0;
                 background: none;
                 box-shadow: none;
+                cursor: pointer;
+
+                img {
+                    cursor: pointer;
+                }
+
+                &.toggle-off {
+                    img {
+                        width: 28px;
+                        height: 28px;
+                    }
+                }
             }
         }
     }
 
     .bottom-bar {
         display: flex;
+        justify-content: flex-start;
         align-items: center;
         padding: 8px 16px;
-        height: 60px;
+        height: 44px;
         box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.04), 0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 0px 1px 0px rgba(0, 0, 0, 0.04);
 
-        .logo {
-            margin-right: auto;
+        header {
             display: flex;
+            margin: 0 !important;
+            width: fit-content !important;
 
             img {
                 width: 60px;
-                height: 27px;
+                height: auto;
+                margin-top: -4px;
             }
         }
 
         .content {
-            flex-grow: 1;
-            text-align: center;
-            padding-right: 76px;
-            gap: 4px;
-            justify-content: center;
+            width: 100%;
             display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            padding-right: 76px;
+            text-align: center;
+
+            button {
+                cursor: pointer;
+            }
         }
     }
 }

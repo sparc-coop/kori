@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 4px;
   cursor: default;
   height: 19px;
 }
 .default-mode p {
-  font-family: "Articulat CF";
+  font-family: "ArticulatCF";
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -20,5 +21,6 @@
 }
 .default-mode .vertical-divider {
   width: 1px;
+  height: 100%;
   background: #485269;
 }
