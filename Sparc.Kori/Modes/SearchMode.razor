@@ -1,38 +1,39 @@
-﻿<div id="kori-search" class="kori-search @(Kori.Mode == "Search" ? "show" : "")">
-    <div class="kori-search__header">
-        <div class="kori-search__title">
+﻿<aside id="kori-search" class="kori-search @(Kori.Mode == "Search" ? "show" : "")" aria-label="Sidebar Navigation">
+    <header>
+        <div>
             <h5>Navigation</h5>
-            <button class="close-icon" onclick="@Kori.CloseAsync">
+            <button class="close-icon" onclick="@Kori.CloseAsync" aria-label="Close search" aria-controls="kori-search">
                 <img src="/_content/Sparc.Kori/icons/Close.svg" alt="Close" />
             </button>
-            
         </div>
-        <div class="kori-search__searchbar">
-            <img src="/_content/Sparc.Kori/icons/Search2.svg" />
-            <input id="kori-searchbar" type="text" placeholder="Type to find..." />
-        </div>
-    </div>
-    <div class="kori-search__divider"></div>
-    <div class="kori-search__list">
-        <div class="kori__content-container">
-            <div class="kori__content-page">
-                <img src="/_content/Sparc.Kori/icons/PageIcon.svg" /> Page name
-            </div>
-            <div class="kori__content-elements">
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-            </div>
-        </div>
-        <div class="kori__content-container">
-            <div class="kori__content-page">
-                <img src="/_content/Sparc.Kori/icons/PageIcon.svg" /> Page name
-            </div>
-            <div class="kori__content-elements">
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-            </div>
-        </div>
-    </div>
-</div>
+        <label>
+            <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />
+            <input type="search" placeholder="Type to find..." aria-label="Search input" />
+        </label>
+    </header>
+
+    <hr />
+
+    <nav aria-label="Page and Content Navigation">
+        <article class="kori__content-container">
+            <header>
+                <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Page icon" />
+                Page name
+            </header>
+            <ul>
+                <li>
+                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
+                    Content name
+                </li>
+                <li>
+                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
+                    Content name
+                </li>
+                <li>
+                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
+                    Content name
+                </li>
+            </ul>
+        </article>
+    </nav>
+</aside>

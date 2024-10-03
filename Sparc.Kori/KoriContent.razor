@@ -46,27 +46,17 @@
         StateHasChanged();
 
         return await Task.FromResult(true);
-    }
-
-    // private void HandleModeChanged(string newMode)
-    // {
-    //     CurrentMode = newMode;
-    //     StateHasChanged();
-    // }
+    }    
 
     private void HandleModeChanged(string newMode)
     {
-        Console.WriteLine($"New mode received: '{newMode}'");
-
         if (string.IsNullOrEmpty(newMode))
         {
             CurrentMode = string.Empty;
-            Console.WriteLine("Mode removed, CurrentMode now is empty.");
         }
         else
         {
             CurrentMode = newMode;
-            Console.WriteLine($"Mode defined as: '{CurrentMode}'");
         }
 
         StateHasChanged();
