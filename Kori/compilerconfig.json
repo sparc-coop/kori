@@ -14,5 +14,9 @@
   {
     "outputFile": "Home/Index.razor.css",
     "inputFile": "Home/Index.razor.scss"
+  },
+  {
+    "outputFile": "_Imports.css",
+    "inputFile": "_Imports.scss"
   }
 ]
