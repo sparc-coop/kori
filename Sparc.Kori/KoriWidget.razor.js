@@ -378,7 +378,7 @@ function toggleTopBar(t) {
 
     if (!topBar.classList.contains("show")) {
         // adjusts the top margin to match the top-bar height
-        document.body.style.marginTop = '100px';
+        document.body.style.marginTop = '84px';
     }
 
     const koriId = t.getAttribute('kori-id');

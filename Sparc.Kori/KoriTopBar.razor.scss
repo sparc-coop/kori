@@ -15,7 +15,7 @@
     font-family: 'ArticulatCF';
     font-weight: 500;
     line-height: normal;
-    //cursor: default;
+    cursor: default;
 
     &.show {
         display: flex;
@@ -30,7 +30,7 @@
     }
 
     section {
-        width: calc(100% - 32px);
+        width: 100%;
     }
 
     .top-bar-buttons {
@@ -65,8 +65,22 @@
                 background: none;
                 box-shadow: none;
                 cursor: pointer;
+                transition: background 0.3s ease;
+
+                &.toggle-on {
+                    &:hover img {
+                        background: #EEF2FA;
+                        border-radius: 50%;
+                    }
+
+                    &:active {
+                        transform: scale(0.9);
+                    }
+                }
 
                 img {
+                    width: 36px;
+                    height: 36px;
                     cursor: pointer;
                 }
 
@@ -74,6 +88,14 @@
                     img {
                         width: 28px;
                         height: 28px;
+                    }
+
+                    &:hover img {
+                        transform: scale(1.05);
+                    }
+
+                    &:active img {
+                        transform: scale(1);
                     }
                 }
             }
@@ -109,6 +131,10 @@
             text-align: center;
 
             button {
+                cursor: pointer;
+            }
+
+            img {
                 cursor: pointer;
             }
         }
