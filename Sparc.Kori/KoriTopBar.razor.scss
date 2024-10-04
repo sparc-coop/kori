@@ -59,43 +59,35 @@
 
         .left-buttons {
             .toggle-button {
-                width: 36px;
-                height: 36px;
+                width: 28px;
+                height: 28px;
                 padding: 0;
                 background: none;
                 box-shadow: none;
                 cursor: pointer;
                 transition: background 0.3s ease;
 
-                &.toggle-on {
-                    &:hover img {
-                        background: #EEF2FA;
-                        border-radius: 50%;
-                    }
-
-                    &:active {
-                        transform: scale(0.9);
-                    }
+                &:hover {
+                    background: #EEF2FA;
+                    border-radius: 50%;
                 }
 
                 img {
-                    width: 36px;
-                    height: 36px;
+                    width: 28px;
+                    height: 28px;
+                    margin: auto;
                     cursor: pointer;
                 }
 
                 &.toggle-off {
                     img {
-                        width: 28px;
-                        height: 28px;
+                        width: 24px;
+                        height: 24px;
+                        margin-top: -1px;
                     }
 
-                    &:hover img {
-                        transform: scale(1.05);
-                    }
-
-                    &:active img {
-                        transform: scale(1);
+                    &:active {
+                        transform: scale(0.9);
                     }
                 }
             }
