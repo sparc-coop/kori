@@ -1,5 +1,4 @@
 ﻿<button class="top-bar-button @(IsSelected ? "selected" : "")" onclick="@ModeChanged">
-    @* <img src="@IconPath" alt="@Mode icon" class="icon normal-icon" /> *@
     <TopBarIcons Mode="@Mode" />
     @if (ShowText)
     {
@@ -15,12 +14,4 @@
 
     async Task ModeChanged() => await OnClick.InvokeAsync(Mode);
     bool IsSelected => Kori.Mode == Mode;
-
-    // bool IsHovering;
-    // void Hover() => IsHovering = true;
-    // void StopHover() => IsHovering = false;
-
-    // string IconPath => IsSelected ? $"_content/Sparc.Kori/icons/{Icon}-selected.svg"
-    // : IsHovering ? $"_content/Sparc.Kori/icons/{Icon}-hover.svg"
-    // : $"_content/Sparc.Kori/icons/{Icon}.svg";
 }
