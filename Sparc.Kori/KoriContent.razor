@@ -9,6 +9,7 @@
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
+
     private string ModeClass => !string.IsNullOrEmpty(CurrentMode) ? $"mode-{CurrentMode.ToLower()}" : "";
     private string CurrentMode { get; set; } = string.Empty;
 

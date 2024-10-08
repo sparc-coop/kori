@@ -124,10 +124,13 @@
 
             button {
                 cursor: pointer;
-            }
+                transition: 0.3s ease-in-out;
 
-            img {
-                cursor: pointer;
+                &:hover {
+                    .icon path, .icon circle {
+                        stroke: #4162DC !important;
+                    }
+                }
             }
         }
     }

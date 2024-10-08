@@ -104,7 +104,8 @@
 }
 .kori-top-bar .bottom-bar .content button {
   cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
-.kori-top-bar .bottom-bar .content img {
-  cursor: pointer;
+.kori-top-bar .bottom-bar .content button:hover .icon path, .kori-top-bar .bottom-bar .content button:hover .icon circle {
+  stroke: #4162DC !important;
 }
