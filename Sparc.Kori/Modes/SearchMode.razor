@@ -1,4 +1,4 @@
-﻿<aside id="kori-search" class="kori-search @(Kori.Mode == "Search" ? "show" : "")" aria-label="Sidebar Navigation">
+﻿<aside id="kori-search" class="kori-search @(Kori.Mode == "Search" ? "show" : "")" aria-label="Sidebar Navigation" onclick="event.stopPropagation()">
     <header>
         <div>
             <h5>Navigation</h5>
@@ -8,7 +8,8 @@
         </div>
         <label>
             <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />
-            <input type="search" placeholder="Type to find..." aria-label="Search input" />
+            @* <input type="search" placeholder="Type to find..." aria-label="Search input" @bind-="@searchTerm" oninput="@Kori.SearchAsync" /> *@
+            <input type="search" placeholder="Type to find..." aria-label="Search input" @bind="searchTerm" @bind:event="oninput" @bind:after="HandleSearchInput" />
         </label>
     </header>
 
@@ -36,4 +37,20 @@
             </ul>
         </article>
     </nav>
+    
 </aside>
+
+@code {
+    string? searchTerm = "";
+
+    private async Task HandleSearchInput(ChangeEventArgs e)
+    {
+        searchTerm = e.Value?.ToString() ?? string.Empty;
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            await Kori.SearchAsync(searchTerm);
+            StateHasChanged(); 
+        }
+    }
+}

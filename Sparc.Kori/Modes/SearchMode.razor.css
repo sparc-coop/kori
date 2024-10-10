@@ -53,6 +53,16 @@
   color: #5E6A85;
   font-size: 14px;
 }
+.kori-search header label input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.kori-search header label input[type=search]::-ms-clear {
+  display: none;
+}
+.kori-search header label input[type=search]::-moz-cancel-button {
+  display: none;
+}
 .kori-search hr {
   width: 100%;
   height: 1px;
