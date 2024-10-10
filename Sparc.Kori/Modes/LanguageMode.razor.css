@@ -38,26 +38,3 @@
 .kori-translation__options select option:checked {
   background-color: none;
 }
-.kori-translation__options .swap-translation {
-  display: flex;
-  width: 32px;
-  height: 32px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-.kori-translation__options button {
-  display: flex;
-  gap: 8px;
-  border: none;
-  background: none;
-  padding: 8px;
-}
-.kori-translation__options button:hover {
-  border-radius: 8px;
-  background: #EEF2FA;
-}
-.kori-translation__options button:active {
-  border-radius: 8px;
-  background: #EEF2FA;
-}

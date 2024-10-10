@@ -18,6 +18,9 @@
   margin: 0;
   margin-top: -3px;
 }
+.top-bar-button .icon.right {
+  margin-top: 0 !important;
+}
 .top-bar-button .btn-text {
   font-family: "ArticulatCF";
   font-weight: 500;

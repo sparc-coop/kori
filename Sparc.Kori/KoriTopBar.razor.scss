@@ -123,13 +123,35 @@
             text-align: center;
 
             button {
-                cursor: pointer;
-                transition: 0.3s ease-in-out;
+                display: flex;
+                height: 32px;
+                padding: 4px 12px;
+                justify-content: center;
+                align-items: center;
+                border-radius: 8px;
+                border: 1px solid #4162DC;
+                background: #5377FC;
+                font-family: 'ArticulatCF';
+                font-size: 14px;
+                font-style: normal;
+                transition: all 0.3s ease-in-out;
+
+                &.icon-btn {
+                    svg {
+                        margin-top: 0 !important;
+                    }
+                }
 
                 &:hover {
-                    .icon path, .icon circle {
-                        stroke: #4162DC !important;
-                    }
+                    background: #EEF2FA;
+                    color: #5377FC;
+                    border-color: transparent;
+                }
+
+                &:active {
+                    background: #EEF2FA;
+                    color: #4162DC;
+                    border-color: transparent;
                 }
             }
         }

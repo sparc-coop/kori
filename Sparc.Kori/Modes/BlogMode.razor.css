@@ -13,32 +13,11 @@
   height: 32px;
   justify-content: center;
   align-items: center;
+  font-family: "ArticulatCF";
   font-size: 14px;
 }
 .kori-blog input::placeholder {
   color: #485269;
-  font-size: 14px;
-}
-.kori-blog button {
-  display: flex;
-  height: 32px;
-  padding: 4px 12px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  border: 1px solid #4162DC;
-  background: #5377FC;
   font-family: "ArticulatCF";
   font-size: 14px;
-  font-style: normal;
-}
-.kori-blog button:hover {
-  background: #EEF2FA;
-  color: #5377FC;
-  border-color: transparent;
-}
-.kori-blog button:active {
-  background: #EEF2FA;
-  color: #4162DC;
-  border-color: transparent;
 }
