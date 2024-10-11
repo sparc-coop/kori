@@ -2,7 +2,7 @@
   -webkit-text-stroke: initial;
 }
 
-.kori-top-bar {
+#kori-top-bar {
   display: none;
   position: fixed;
   width: 100%;
@@ -17,20 +17,20 @@
   line-height: normal;
   cursor: default;
 }
-.kori-top-bar.show {
+#kori-top-bar.show {
   display: flex;
 }
-.kori-top-bar .btn-text, .kori-top-bar .content {
+#kori-top-bar .btn-text, #kori-top-bar .content {
   font-family: "ArticulatCF";
   font-weight: 500;
   color: #485269;
   font-size: 14px;
   font-style: normal;
 }
-.kori-top-bar section {
+#kori-top-bar section {
   width: 100%;
 }
-.kori-top-bar .top-bar-buttons {
+#kori-top-bar .top-bar-buttons {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,18 +38,18 @@
   padding: 6px 16px;
   gap: 8px;
 }
-.kori-top-bar .top-bar-buttons .hidden {
+#kori-top-bar .top-bar-buttons .hidden {
   display: none;
 }
-.kori-top-bar .top-bar-buttons .left-buttons, .kori-top-bar .top-bar-buttons .right-buttons {
+#kori-top-bar .top-bar-buttons .left-buttons, #kori-top-bar .top-bar-buttons .right-buttons {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.kori-top-bar .top-bar-buttons .right-buttons .top-bar-button {
+#kori-top-bar .top-bar-buttons .right-buttons .top-bar-button {
   width: 40px;
 }
-.kori-top-bar .top-bar-buttons .left-buttons .toggle-button {
+#kori-top-bar .top-bar-buttons .left-buttons .toggle-button {
   width: 28px;
   height: 28px;
   padding: 0;
@@ -58,25 +58,25 @@
   cursor: pointer;
   transition: background 0.3s ease;
 }
-.kori-top-bar .top-bar-buttons .left-buttons .toggle-button:hover {
+#kori-top-bar .top-bar-buttons .left-buttons .toggle-button:hover {
   background: #EEF2FA;
   border-radius: 50%;
 }
-.kori-top-bar .top-bar-buttons .left-buttons .toggle-button img {
+#kori-top-bar .top-bar-buttons .left-buttons .toggle-button img {
   width: 28px;
   height: 28px;
   margin: auto;
   cursor: pointer;
 }
-.kori-top-bar .top-bar-buttons .left-buttons .toggle-button.toggle-off img {
+#kori-top-bar .top-bar-buttons .left-buttons .toggle-button.toggle-off img {
   width: 24px;
   height: 24px;
   margin-top: -1px;
 }
-.kori-top-bar .top-bar-buttons .left-buttons .toggle-button.toggle-off:active {
+#kori-top-bar .top-bar-buttons .left-buttons .toggle-button.toggle-off:active {
   transform: scale(0.9);
 }
-.kori-top-bar .bottom-bar {
+#kori-top-bar .bottom-bar {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -84,17 +84,17 @@
   height: 44px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.04), 0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 0px 1px 0px rgba(0, 0, 0, 0.04);
 }
-.kori-top-bar .bottom-bar header {
+#kori-top-bar .bottom-bar header {
   display: flex;
   margin: 0 !important;
   width: fit-content !important;
 }
-.kori-top-bar .bottom-bar header img {
+#kori-top-bar .bottom-bar header img {
   width: 60px;
   height: auto;
   margin-top: -4px;
 }
-.kori-top-bar .bottom-bar .content {
+#kori-top-bar .bottom-bar .content {
   width: 100%;
   display: flex;
   flex-grow: 1;
@@ -102,10 +102,11 @@
   padding-right: 76px;
   text-align: center;
 }
-.kori-top-bar .bottom-bar .content button {
+#kori-top-bar .bottom-bar .content button {
   display: flex;
+  width: 32px;
   height: 32px;
-  padding: 4px 12px;
+  padding: 8px;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
@@ -116,15 +117,15 @@
   font-style: normal;
   transition: all 0.3s ease-in-out;
 }
-.kori-top-bar .bottom-bar .content button.icon-btn svg {
+#kori-top-bar .bottom-bar .content button.icon-btn svg {
   margin-top: 0 !important;
 }
-.kori-top-bar .bottom-bar .content button:hover {
+#kori-top-bar .bottom-bar .content button:hover {
   background: #EEF2FA;
   color: #5377FC;
   border-color: transparent;
 }
-.kori-top-bar .bottom-bar .content button:active {
+#kori-top-bar .bottom-bar .content button:active {
   background: #EEF2FA;
   color: #4162DC;
   border-color: transparent;

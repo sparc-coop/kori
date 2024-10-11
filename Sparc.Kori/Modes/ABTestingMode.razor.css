@@ -1,4 +1,4 @@
-﻿.ab-testing {
+﻿#kori-abtesting {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -6,7 +6,7 @@
   width: 220px;
   height: 32px;
 }
-.ab-testing select {
+#kori-abtesting select {
   display: flex;
   padding: 8px 16px;
   text-align: left;
@@ -18,15 +18,46 @@
   border: 1px solid #CCD5EB;
   background-position: calc(100% - 12px) center;
 }
-.ab-testing select option {
+#kori-abtesting select option {
   background-color: var(--white);
   font-family: "ArticulatCF";
   font-size: 14px;
   line-height: 100%;
 }
-.ab-testing select option:hover {
+#kori-abtesting select option:hover {
   background-color: var(--grey-200);
 }
-.ab-testing select option:checked {
+#kori-abtesting select option:checked {
   background-color: none;
+}
+#kori-abtesting button {
+  display: flex;
+  height: 32px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #4162DC;
+  background: #5377FC;
+  font-family: "ArticulatCF";
+  font-size: 14px;
+  font-style: normal;
+  transition: all 0.3s ease-in-out;
+}
+#kori-abtesting button.icon-btn {
+  background: #EEF2FA;
+  border: 1px solid #EEF2FA;
+}
+#kori-abtesting button.icon-btn svg {
+  margin-top: -2px !important;
+}
+#kori-abtesting button:hover {
+  background: #EEF2FA;
+  color: #5377FC;
+  border-color: transparent;
+}
+#kori-abtesting button:active {
+  background: #EEF2FA;
+  color: #4162DC;
+  border-color: transparent;
 }

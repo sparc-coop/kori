@@ -574,7 +574,7 @@ function checkSelectedContentType() {
 // show and hide translation menu
 function toggleTranslation(isOpen) {
     console.log("opening translation menu");
-    var translation = document.getElementById("kori-translation");
+    var translation = document.getElementById("kori-language");
     var widgetActions = document.getElementById("kori-widget__actions");
 
     if (!translation.classList.contains("show") && isOpen == true) {

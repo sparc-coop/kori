@@ -1,0 +1,15 @@
+#kori-texteditor {
+    .toolbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 8px;
+
+        button {
+            padding: 8px;
+            border: none;
+            border-radius: 0px;
+            background: none;
+        }
+    }
+}

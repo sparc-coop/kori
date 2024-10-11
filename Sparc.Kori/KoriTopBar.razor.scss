@@ -2,7 +2,7 @@
     -webkit-text-stroke: initial;
 }
 
-.kori-top-bar {
+#kori-top-bar {
     display: none;
     position: fixed;
     width: 100%;
@@ -124,8 +124,9 @@
 
             button {
                 display: flex;
+                width: 32px;
                 height: 32px;
-                padding: 4px 12px;
+                padding: 8px;
                 justify-content: center;
                 align-items: center;
                 border-radius: 8px;

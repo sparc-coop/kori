@@ -1,4 +1,4 @@
-.kori-blog {
+#kori-blog {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -20,6 +20,42 @@
             color: #485269;
             font-family: 'ArticulatCF';
             font-size: 14px;
+        }
+    }
+
+    button {
+        display: flex;
+        height: 32px;
+        padding: 8px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        border: 1px solid #4162DC;
+        background: #5377FC;
+        font-family: 'ArticulatCF';
+        font-size: 14px;
+        font-style: normal;
+        transition: all 0.3s ease-in-out;
+
+        &.icon-btn {
+            background: #EEF2FA;
+            border: 1px solid #EEF2FA;
+
+            svg {
+                margin-top: -2px !important;
+            }
+        }
+
+        &:hover {
+            background: #EEF2FA;
+            color: #5377FC;
+            border-color: transparent;
+        }
+
+        &:active {
+            background: #EEF2FA;
+            color: #4162DC;
+            border-color: transparent;
         }
     }
 }

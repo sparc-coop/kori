@@ -20,8 +20,8 @@
     "inputFile": "Modes/SearchMode.razor.scss"
   },
   {
-    "outputFile": "Modes/TranslateMode.razor.css",
-    "inputFile": "Modes/TranslateMode.razor.scss"
+    "outputFile": "Modes/LanguageMode.razor.css",
+    "inputFile": "Modes/LanguageMode.razor.scss"
   },
   {
     "outputFile": "Modes/BlogMode.razor.css",
@@ -32,12 +32,12 @@
     "inputFile": "Modes/ABTestingMode.razor.scss"
   },
   {
-    "outputFile": "Modes/DefaultMode.razor.css",
-    "inputFile": "Modes/DefaultMode.razor.scss"
+    "outputFile": "Modes/EditTextMode.razor.css",
+    "inputFile": "Modes/EditTextMode.razor.scss"
   },
   {
-    "outputFile": "KoriTopBarButton.css",
-    "inputFile": "KoriTopBarButton.scss"
+    "outputFile": "Modes/DefaultMode.razor.css",
+    "inputFile": "Modes/DefaultMode.razor.scss"
   },
   {
     "outputFile": "KoriTopBarButton.razor.css",

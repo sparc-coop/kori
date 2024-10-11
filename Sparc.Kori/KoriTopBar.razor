@@ -1,6 +1,6 @@
 <AuthorizeView>
     <Authorized>
-        <div id="kori-top-bar" class="kori-top-bar kori-ignore">
+        <div id="kori-top-bar" class="kori-ignore">
             <section class="top-bar-buttons">
                 <div class="left-buttons">
                     <button class="top-bar-button toggle-button @(isToggledOn ? "toggle-on" : "toggle-off")" onclick="@TogglePower">
@@ -56,16 +56,24 @@
     @@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap);
     @@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap);
 
+    .top-bar-button .icon, .bottom-bar .icon {
+        margin-top: -2px !important;
+    }
+
+    .top-bar-button .icon path, .top-bar-button .icon circle {
+        fill: none !important;
+    }
+
     .top-bar-button:hover .icon path, .top-bar-button:hover .icon circle, .top-bar-button.selected .icon path, .top-bar-button.selected .icon circle {
         stroke: #4162DC !important;
+    }
+
+    .bottom-bar .content button.icon-btn .icon path, .bottom-bar .content button.icon-btn .icon circle {
+        fill: none !important;
     }
        
     .bottom-bar .content button.icon-btn:hover .icon path, .bottom-bar .content button.icon-btn:hover .icon circle {
         stroke: #4162DC !important;
-    }
-
-    .right-buttons button svg, .bottom-bar .content button.icon-btn svg {
-        margin-top: 0 !important;
     }
 </style>
 

@@ -1,11 +1,11 @@
-﻿.kori-translation__options {
+﻿#kori-language {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 4px;
   flex-wrap: wrap;
 }
-.kori-translation__options .first-language, .kori-translation__options .second-language {
+#kori-language .first-language, #kori-language .second-language {
   display: flex;
   width: 220px;
   height: 32px;
@@ -13,7 +13,7 @@
   justify-content: center;
   align-items: center;
 }
-.kori-translation__options select {
+#kori-language select {
   display: flex;
   padding: 8px 16px;
   gap: 8px;
@@ -26,15 +26,46 @@
   border: 1px solid #CCD5EB;
   background-position: calc(100% - 12px) center;
 }
-.kori-translation__options select option {
+#kori-language select option {
   background-color: var(--white);
   font-family: "ArticulatCF";
   font-size: 14px;
   line-height: 100%;
 }
-.kori-translation__options select option:hover {
+#kori-language select option:hover {
   background-color: var(--grey-200);
 }
-.kori-translation__options select option:checked {
+#kori-language select option:checked {
   background-color: none;
+}
+#kori-language button {
+  display: flex;
+  height: 32px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #4162DC;
+  background: #5377FC;
+  font-family: "ArticulatCF";
+  font-size: 14px;
+  font-style: normal;
+  transition: all 0.3s ease-in-out;
+}
+#kori-language button.icon-btn {
+  background: #EEF2FA;
+  border: 1px solid #EEF2FA;
+}
+#kori-language button.icon-btn svg {
+  margin-top: -2px !important;
+}
+#kori-language button:hover {
+  background: #EEF2FA;
+  color: #5377FC;
+  border-color: transparent;
+}
+#kori-language button:active {
+  background: #EEF2FA;
+  color: #4162DC;
+  border-color: transparent;
 }

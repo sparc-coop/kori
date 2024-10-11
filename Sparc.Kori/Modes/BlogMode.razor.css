@@ -1,10 +1,10 @@
-﻿.kori-blog {
+﻿#kori-blog {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 4px;
 }
-.kori-blog input {
+#kori-blog input {
   padding: 8px 16px;
   text-align: start;
   border-radius: 8px;
@@ -16,8 +16,39 @@
   font-family: "ArticulatCF";
   font-size: 14px;
 }
-.kori-blog input::placeholder {
+#kori-blog input::placeholder {
   color: #485269;
   font-family: "ArticulatCF";
   font-size: 14px;
+}
+#kori-blog button {
+  display: flex;
+  height: 32px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #4162DC;
+  background: #5377FC;
+  font-family: "ArticulatCF";
+  font-size: 14px;
+  font-style: normal;
+  transition: all 0.3s ease-in-out;
+}
+#kori-blog button.icon-btn {
+  background: #EEF2FA;
+  border: 1px solid #EEF2FA;
+}
+#kori-blog button.icon-btn svg {
+  margin-top: -2px !important;
+}
+#kori-blog button:hover {
+  background: #EEF2FA;
+  color: #5377FC;
+  border-color: transparent;
+}
+#kori-blog button:active {
+  background: #EEF2FA;
+  color: #4162DC;
+  border-color: transparent;
 }
