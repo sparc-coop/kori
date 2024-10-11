@@ -1,8 +1,9 @@
-.kori-blog {
+#kori-blog {
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 4px;
+    padding: 0;
 
     input {
         padding: 8px 16px;
@@ -33,7 +34,6 @@
         font-family: "Articulat CF";
         font-size: 14px;
         font-style: normal;
-
 
         &:hover {
             background: #EEF2FA;

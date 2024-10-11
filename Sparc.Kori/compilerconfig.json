@@ -20,8 +20,8 @@
     "inputFile": "Modes/SearchMode.razor.scss"
   },
   {
-    "outputFile": "Modes/TranslateMode.razor.css",
-    "inputFile": "Modes/TranslateMode.razor.scss"
+    "outputFile": "Modes/LanguageMode.razor.css",
+    "inputFile": "Modes/LanguageMode.razor.scss"
   },
   {
     "outputFile": "Modes/BlogMode.razor.css",

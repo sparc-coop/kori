@@ -1,11 +1,12 @@
-﻿.kori-translation__options {
+﻿#kori-translation {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 4px;
   flex-wrap: wrap;
+  padding: 0;
 }
-.kori-translation__options .first-language, .kori-translation__options .second-language {
+#kori-translation label {
   display: flex;
   width: 220px;
   height: 32px;
@@ -13,7 +14,7 @@
   justify-content: center;
   align-items: center;
 }
-.kori-translation__options select {
+#kori-translation label select {
   display: flex;
   padding: 8px 16px;
   gap: 8px;
@@ -26,38 +27,34 @@
   border: 1px solid #CCD5EB;
   background-position: calc(100% - 12px) center;
 }
-.kori-translation__options select option {
+#kori-translation label select option {
   background-color: var(--white);
   font-family: "ArticulatCF";
   font-size: 14px;
   line-height: 100%;
 }
-.kori-translation__options select option:hover {
+#kori-translation label select option:hover {
   background-color: var(--grey-200);
 }
-.kori-translation__options select option:checked {
+#kori-translation label select option:checked {
   background-color: none;
 }
-.kori-translation__options .swap-translation {
-  display: flex;
-  width: 32px;
-  height: 32px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-.kori-translation__options button {
+#kori-translation button {
   display: flex;
   gap: 8px;
   border: none;
   background: none;
   padding: 8px;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
 }
-.kori-translation__options button:hover {
+#kori-translation button:hover {
   border-radius: 8px;
   background: #EEF2FA;
 }
-.kori-translation__options button:active {
+#kori-translation button:active {
   border-radius: 8px;
   background: #EEF2FA;
 }

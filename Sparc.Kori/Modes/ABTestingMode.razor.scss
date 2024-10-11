@@ -1,10 +1,9 @@
-.ab-testing {
+#ab-testing {
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 4px;
-    width: 220px;
-    height: 32px;
+    padding: 0;
 
     select {
         display: flex;
@@ -17,6 +16,8 @@
         border-radius: 8px;
         border: 1px solid #CCD5EB;
         background-position: calc(100% - 12px) center;
+        width: 220px;
+        height: 32px;
 
         option {
             background-color: var(--white);

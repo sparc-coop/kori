@@ -6,7 +6,7 @@
             </button>
             <KoriTopBarButton Mode="Language" Icon="Lang" OnClick="ModeChanged" />
             <KoriTopBarButton Mode="Blog" Icon="Blog" OnClick="ModeChanged" />
-            <KoriTopBarButton Mode="A/B Testing" Icon="AB" OnClick="ModeChanged" />
+            <KoriTopBarButton Mode="ABTesting" Icon="AB" OnClick="ModeChanged" />
         </div>
         <div class="right-buttons">
             <KoriTopBarButton Mode="Search" Icon="Search2" OnClick="ModeChanged" ShowText="false" />
@@ -78,7 +78,7 @@
             case "Blog":
                 Kori.OpenBlogMenu();
                 break;
-            case "A/B Testing":
+            case "ABTesting":
                 Kori.OpenABTestingMenu();
                 break;
             case "Edit":

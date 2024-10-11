@@ -1,22 +1,21 @@
-﻿<aside id="kori-search" class="@(Kori.Mode == "Search" ? "show" : "")" aria-label="Sidebar Navigation" onclick="event.stopPropagation()">
+﻿<aside id="kori-search" class="@(Kori.Mode == "Search" ? "show" : "")">
     <header>
         <div>
             <h5>Navigation</h5>
-            <button class="close-icon" onclick="@Kori.CloseAsync" aria-label="Close search" aria-controls="kori-search">
+            <button onclick="@Kori.CloseAsync">
                 <img src="/_content/Sparc.Kori/icons/Close.svg" alt="Close" />
             </button>
         </div>
-        <label>
-            <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />
-            @* <input type="search" placeholder="Type to find..." aria-label="Search input" @bind-="@searchTerm" oninput="@Kori.SearchAsync" /> *@
-            <input type="search" placeholder="Type to find..." aria-label="Search input" @bind="searchTerm" @bind:event="oninput" @bind:after="HandleSearchInput" />
+        <label onclick="event.stopPropagation()">
+            <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />            
+            <input type="search" placeholder="Type to find..." @bind="searchTerm" @bind:event="oninput" @bind:after="HandleSearchInput" />
         </label>
     </header>
 
     <hr />
 
-    <nav aria-label="Page and Content Navigation">
-        <article class="kori__content-container">
+    <nav>
+        <article>
             <header>
                 <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Page icon" />
                 Page name
@@ -25,15 +24,7 @@
                 <li>
                     <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
                     Content name
-                </li>
-                <li>
-                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
-                    Content name
-                </li>
-                <li>
-                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
-                    Content name
-                </li>
+                </li>                
             </ul>
         </article>
     </nav>

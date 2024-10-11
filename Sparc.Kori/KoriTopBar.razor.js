@@ -447,11 +447,17 @@ function editImage() {
 }
 
 function showSidebar() {
-    document.body.style.marginRight = "317px"; 
+    document.body.style.marginRight = "317px";
+
+    var topBar = document.getElementById('kori-top-bar');
+    topBar.style.width = "calc(100% - 317px)";
 }
 
 function hideSidebar() {
     document.body.style.marginRight = "0px";
+
+    var topBar = document.getElementById('kori-top-bar');
+    topBar.style.width = "100%";
 }
 
 function cancelEdit() {

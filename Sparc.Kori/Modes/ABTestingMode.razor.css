@@ -1,12 +1,11 @@
-﻿.ab-testing {
+﻿#ab-testing {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 4px;
-  width: 220px;
-  height: 32px;
+  padding: 0;
 }
-.ab-testing select {
+#ab-testing select {
   display: flex;
   padding: 8px 16px;
   text-align: left;
@@ -17,16 +16,18 @@
   border-radius: 8px;
   border: 1px solid #CCD5EB;
   background-position: calc(100% - 12px) center;
+  width: 220px;
+  height: 32px;
 }
-.ab-testing select option {
+#ab-testing select option {
   background-color: var(--white);
   font-family: "ArticulatCF";
   font-size: 14px;
   line-height: 100%;
 }
-.ab-testing select option:hover {
+#ab-testing select option:hover {
   background-color: var(--grey-200);
 }
-.ab-testing select option:checked {
+#ab-testing select option:checked {
   background-color: none;
 }
