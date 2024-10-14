@@ -1,4 +1,6 @@
-﻿<aside id="kori-search" class="@(Kori.Mode == "Search" ? "show" : "")">
+﻿@using System.Text.Json
+
+<aside id="kori-search" class="@(Kori.Mode == "Search" ? "show" : "")">
     <header>
         <div>
             <h5>Navigation</h5>
@@ -7,41 +9,91 @@
             </button>
         </div>
         <label onclick="event.stopPropagation()">
-            <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />            
-            <input type="search" placeholder="Type to find..." @bind="searchTerm" @bind:event="oninput" @bind:after="HandleSearchInput" />
+            <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />
+            <input type="search" placeholder="Type to find..." value="@searchTerm" oninput="@HandleInput" />
         </label>
     </header>
 
     <hr />
 
-    <nav>
-        <article>
-            <header>
-                <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Page icon" />
-                Page name
-            </header>
-            <ul>
-                <li>
-                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
-                    Content name
-                </li>                
-            </ul>
-        </article>
-    </nav>
-    
+    @if (searchResults.ValueKind != JsonValueKind.Undefined)
+    {
+        <nav>
+            <article>
+                @if (searchResults.TryGetProperty("rooms", out JsonElement roomsElement) && roomsElement.ValueKind == JsonValueKind.Array && roomsElement.GetArrayLength() > 0)
+                {
+                    foreach (JsonElement room in roomsElement.EnumerateArray())
+                    {
+                        string roomName = room.GetProperty("name").GetString();
+                        string roomSlug = room.GetProperty("slug").GetString();
+                        <header>
+                            <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Page icon" />
+                            @roomName (@roomSlug)
+                        </header>
+                    }
+                }
+                else
+                {
+                    <p>No rooms found.</p>
+                }
+
+                @if (searchResults.TryGetProperty("messages", out JsonElement messagesElement) && messagesElement.ValueKind == JsonValueKind.Array && messagesElement.GetArrayLength() > 0)
+                {
+                    <ul>
+                        @foreach (JsonElement message in messagesElement.EnumerateArray())
+                        {
+                            string messageText = message.GetProperty("text").GetString();
+                            string messageTag = message.GetProperty("tag").GetString();
+                            <li>
+                                <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
+                                @messageText (@messageTag)
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No messages found.</p>
+                }
+            </article>
+        </nav>
+    }
+    else
+    {
+        <p>No results found</p>
+    }
 </aside>
+
 
 @code {
     string? searchTerm = "";
 
-    private async Task HandleSearchInput(ChangeEventArgs e)
+    // dynamic searchResults;
+
+    JsonElement searchResults;
+
+    private void HandleInput(ChangeEventArgs e)
     {
-        searchTerm = e.Value?.ToString() ?? string.Empty;
+        searchTerm = e.Value?.ToString();
+        Console.WriteLine($"Texto digitado: {searchTerm}");
+
+        _ = SearchAsync();
+    }
+
+    private async Task SearchAsync()
+    {
+        Console.WriteLine($"SearchAsync disparado. searchTerm: {searchTerm}");
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            await Kori.SearchAsync(searchTerm);
-            StateHasChanged(); 
+            try
+            {
+                searchResults = await Kori.SearchAsync(searchTerm);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao chamar a API: {ex.Message}");
+            }
         }
     }
 }
