@@ -75,6 +75,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
         return nodes;
     }
+
     public async Task EditAsync()
     {
         var js = await KoriJs.Value;

@@ -19,7 +19,7 @@
     {
         if (firstRender)
         {
-            
+
             await Kori.InitializeAsync(this, Nav.Uri, _id);
             Nav.LocationChanged += async (sender, args) => await Kori.InitializeAsync(this, args.Location, _id);
             StateHasChanged();
@@ -38,6 +38,14 @@
         var result = await Kori.SaveAsync(key, text);
         StateHasChanged();
         return result;
+    }
+
+    [JSInvokable]
+    public async Task EditAsync()
+    {
+        await Kori.EditAsync();
+        StateHasChanged();
+        return;
     }
 
     [JSInvokable]

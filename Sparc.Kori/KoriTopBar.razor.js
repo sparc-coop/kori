@@ -299,7 +299,7 @@ function toggleSelected(t) {
                     }
                 }
             });
-        }          
+        }
 
         if (activeMessageId) {
             cancelEdit();
@@ -307,6 +307,8 @@ function toggleSelected(t) {
 
         activeNode = null;
         return;
+    } else {
+        dotNet.invokeMethodAsync("EditAsync");
     }
 
     if (!koriElem.classList.contains("selected")) {
@@ -389,6 +391,7 @@ function edit() {
 
     document.getElementById("kori-top-bar").contentEditable = "false";
 }
+
 function getTranslationRawMarkdownText(translation) {
     return translation.text ?? translation.Translation;
 }
