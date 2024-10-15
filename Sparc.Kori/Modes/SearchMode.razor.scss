@@ -13,6 +13,7 @@
     font-family: 'ArticulatCF';
     font-weight: 500;
     display: none;
+    overflow: auto;
 
     &.show {
         display: flex;

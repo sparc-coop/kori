@@ -16,7 +16,7 @@
 
     <hr />
 
-    @if (searchResults.ValueKind != JsonValueKind.Undefined)
+    @if (searchResults.ValueKind != JsonValueKind.Undefined && searchResults.ValueKind != JsonValueKind.Null)
     {
         <nav>
             <article>
@@ -28,7 +28,7 @@
                         string roomSlug = room.GetProperty("slug").GetString();
                         <header>
                             <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Page icon" />
-                            @roomName (@roomSlug)
+                            @(roomName ?? roomSlug)
                         </header>
                     }
                 }
@@ -46,7 +46,7 @@
                             string messageTag = message.GetProperty("tag").GetString();
                             <li>
                                 <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
-                                @messageText (@messageTag)
+                                @(messageText ?? messageTag)
                             </li>
                         }
                     </ul>
@@ -68,21 +68,19 @@
 @code {
     string? searchTerm = "";
 
-    // dynamic searchResults;
-
     JsonElement searchResults;
 
     private void HandleInput(ChangeEventArgs e)
     {
         searchTerm = e.Value?.ToString();
-        Console.WriteLine($"Texto digitado: {searchTerm}");
+        Console.WriteLine($"Typed text: {searchTerm}");
 
         _ = SearchAsync();
     }
 
     private async Task SearchAsync()
     {
-        Console.WriteLine($"SearchAsync disparado. searchTerm: {searchTerm}");
+        Console.WriteLine($"SearchAsync triggered. searchTerm: {searchTerm}");
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
@@ -92,7 +90,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao chamar a API: {ex.Message}");
+                Console.WriteLine($"Error calling the API: {ex.Message}");
             }
         }
     }
