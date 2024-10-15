@@ -571,20 +571,20 @@ function checkSelectedContentType() {
     return "text";
 }
 
-// show and hide translation menu
-function toggleTranslation(isOpen) {
-    console.log("opening translation menu");
-    var translation = document.getElementById("kori-language");
+// show and hide language menu
+function toggleLanguage(isOpen) {
+    console.log("opening language menu");
+    var language = document.getElementById("kori-language");
     var widgetActions = document.getElementById("kori-widget__actions");
 
-    if (!translation.classList.contains("show") && isOpen == true) {
+    if (!language.classList.contains("show") && isOpen == true) {
         widgetActions.classList.remove("show");
-        translation.classList.add("show");
+        language.classList.add("show");
         widgetActions.classList.remove("show");
     }
 
-    if (translation.classList.contains("show") && isOpen == false) {
-        translation.classList.remove("show");
+    if (language.classList.contains("show") && isOpen == false) {
+        language.classList.remove("show");
         widgetActions.classList.add("show");
     }
 }
