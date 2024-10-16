@@ -12,6 +12,9 @@ namespace Sparc.Kori;
 public record KoriWord(string Text, long Duration, long Offset);
 public record KoriAudioContent(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudioContent Audio, List<object>? Nodes, bool Submitted = true);
+public record SearchContentResponse(List<RoomSummary> Rooms, List<MessageSummary> Message);
+public record RoomSummary(string Id, string Name, string Slug);
+public record MessageSummary(string Id, string RoomId, string Text, string Tag);
 public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
@@ -234,12 +237,10 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
             _content = content.Content.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
     }    
 
-    public async Task<dynamic?> SearchAsync(string searchTerm)
+    public async Task<SearchContentResponse> SearchAsync(string searchTerm)
     {
         var request = new { SearchTerm = searchTerm };
-
-        var result = await PostAsync<dynamic>("publicapi/SearchContent", request);
-
+        var result = await PostAsync<SearchContentResponse>("publicapi/SearchContent", request);
         return result;
     }
 
