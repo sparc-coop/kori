@@ -6,6 +6,81 @@
                 <img src="/_content/Sparc.Kori/icons/Close.svg" alt="Close" />
             </button>
         </div>
+    </header>
+
+    <BetterSearch IsLoading="@IsLoading" Placeholder="Type to find..." TItem="object" OnSearch="SearchAsync" OnSelect="Go">
+        <ItemTemplate>
+            @if (context is RoomSummary room)
+            {
+                <div @onclick="@(() => Go(room))">
+                    <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Room icon" />
+                    <span>@(room.Name ?? room.Slug)</span>
+                </div>
+            }
+            else if (context is MessageSummary message)
+            {
+                <div @onclick="@(() => Go(message))">
+                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Message icon" />
+                    <span>@(message.Text ?? message.Tag)</span>
+                </div>
+            }
+        </ItemTemplate>
+    </BetterSearch>
+
+    <hr />
+</aside>
+
+@code {
+    bool IsLoading;
+    List<RoomSummary> _roomResults = new();
+    List<MessageSummary> _messageResults = new();
+    string searchTerm = "";
+
+    void HandleInput(ChangeEventArgs e)
+    {
+        searchTerm = e.Value.ToString();
+        Console.WriteLine($"Input detected: {searchTerm}"); 
+        _ = SearchAsync(searchTerm); 
+    }
+
+    async Task<IEnumerable<object>> SearchAsync(string? searchTerm)
+    {      
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            return Array.Empty<object>();
+        }
+
+        IsLoading = true;
+        var result = await Kori.SearchAsync(searchTerm);
+        _roomResults = result.Rooms;
+        _messageResults = result.Message;
+        IsLoading = false;
+        
+        return _roomResults.Cast<object>().Concat(_messageResults.Cast<object>());
+    }
+
+    async Task Go(object selectedItem)
+    {
+        if (selectedItem is RoomSummary room)
+        {
+            // Nav.NavigateTo($"/{room.Slug}");
+        }
+        else if (selectedItem is MessageSummary message)
+        {
+            // Nav.NavigateTo($"/{message.Text}");
+        }
+    }
+}
+
+
+@* <aside id="kori-search" class="@(Kori.Mode == "Search" ? "show" : "")">
+    <header>
+        <div>
+            <h5>Navigation</h5>
+            <button onclick="@Kori.CloseAsync">
+                <img src="/_content/Sparc.Kori/icons/Close.svg" alt="Close" />
+            </button>
+        </div>
         <label onclick="event.stopPropagation()">
             <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />
             <input type="search" placeholder="Type to find..." value="@searchTerm" oninput="@HandleInput" />
@@ -91,4 +166,4 @@
             searchResults = null;
         }
     }
-}
+} *@
