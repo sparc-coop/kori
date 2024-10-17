@@ -626,11 +626,19 @@ function resetTopBar() {
     topBar.style.display = 'none';
 }
 
-function applyMarkdown(symbol) {
+function applyMarkdown(symbol, position) {
+    console.log("Applying markdown", symbol, position);
     const selectedText = window.getSelection().toString();
     if (selectedText) {
-        const newText = symbol + selectedText + symbol;
-        document.execCommand('insertText', false, newText);
+        if (position == "wrap") {
+            const newText = symbol + selectedText + symbol;
+            document.execCommand('insertText', false, newText);
+        }
+
+        if (position == "before") {
+            const newText = symbol + selectedText;
+            document.execCommand('insertText', false, newText);
+        }
     }
 }
 
