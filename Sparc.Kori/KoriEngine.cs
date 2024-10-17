@@ -78,6 +78,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
         return nodes;
     }
+
     public async Task EditAsync()
     {
         var js = await KoriJs.Value;
@@ -282,10 +283,11 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
     }
 
 
-    public async Task ApplyMarkdown(string symbol)
+    public async Task ApplyMarkdown(string symbol, string position)
     {
+        Console.WriteLine("Apply Markdown");
         var js = await KoriJs.Value;
-        await js.InvokeVoidAsync("applyMarkdown", symbol);
+        await js.InvokeVoidAsync("applyMarkdown", symbol, position);
     }
 
     public void BackToEdit()

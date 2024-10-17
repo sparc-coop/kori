@@ -1,35 +1,22 @@
-#kori-default {
+#kori-history {
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    align-items: center;
     gap: 4px;
-    cursor: default;
-    height: 19px;
 
-    p {
-        font-family: 'ArticulatCF';
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 500;
+    // buttons
 
-        &:first-of-type {
-            color: #73809E;
+    button {
+        .icon-btn {
+            width: 32px;
+
+            svg {
+                margin-top: 0 !important;
+            }
         }
-
-        &:nth-of-type(2) {
-            color: #485269;
-        }
-    }
-
-    hr {
-        width: 1px;
-        background: #485269;
     }
 
     .kori-btn__primary {
         display: flex;
-        width: 118px;
         height: 32px;
         padding: 8px 16px;
         justify-content: center;
@@ -67,7 +54,6 @@
 
     .kori-btn__secondary {
         display: flex;
-        width: 118px;
         height: 32px;
         padding: 8px 16px;
         justify-content: center;
@@ -103,7 +89,6 @@
 
     .kori-btn__tertiary {
         display: flex;
-        width: 118px;
         height: 32px;
         padding: 8px 16px;
         justify-content: center;

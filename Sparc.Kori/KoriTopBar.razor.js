@@ -299,7 +299,7 @@ function toggleSelected(t) {
                     }
                 }
             });
-        }          
+        }
 
         if (activeMessageId) {
             cancelEdit();
@@ -307,6 +307,8 @@ function toggleSelected(t) {
 
         activeNode = null;
         return;
+    } else {
+        dotNet.invokeMethodAsync("EditAsync");
     }
 
     if (!koriElem.classList.contains("selected")) {
@@ -326,7 +328,7 @@ function toggleTopBar(t) {
 
     if (topBar.classList.contains("show")) {
         // adjusts the top margin to match the top-bar height
-        document.body.style.marginTop = '100px';
+        document.body.style.marginTop = '84px';
     }
 
     const koriId = t.getAttribute('kori-id');
@@ -389,6 +391,7 @@ function edit() {
 
     document.getElementById("kori-top-bar").contentEditable = "false";
 }
+
 function getTranslationRawMarkdownText(translation) {
     return translation.text ?? translation.Translation;
 }
@@ -577,20 +580,20 @@ function checkSelectedContentType() {
     return "text";
 }
 
-// show and hide translation menu
-function toggleTranslation(isOpen) {
-    console.log("opening translation menu");
-    var translation = document.getElementById("kori-translation");
+// show and hide language menu
+function toggleLanguage(isOpen) {
+    console.log("opening language menu");
+    var language = document.getElementById("kori-language");
     var widgetActions = document.getElementById("kori-widget__actions");
 
-    if (!translation.classList.contains("show") && isOpen == true) {
+    if (!language.classList.contains("show") && isOpen == true) {
         widgetActions.classList.remove("show");
-        translation.classList.add("show");
+        language.classList.add("show");
         widgetActions.classList.remove("show");
     }
 
-    if (translation.classList.contains("show") && isOpen == false) {
-        translation.classList.remove("show");
+    if (language.classList.contains("show") && isOpen == false) {
+        language.classList.remove("show");
         widgetActions.classList.add("show");
     }
 }
@@ -629,11 +632,19 @@ function resetTopBar() {
     topBar.style.display = 'none';
 }
 
-function applyMarkdown(symbol) {
+function applyMarkdown(symbol, position) {
+    console.log("Applying markdown", symbol, position);
     const selectedText = window.getSelection().toString();
     if (selectedText) {
-        const newText = symbol + selectedText + symbol;
-        document.execCommand('insertText', false, newText);
+        if (position == "wrap") {
+            const newText = symbol + selectedText + symbol;
+            document.execCommand('insertText', false, newText);
+        }
+
+        if (position == "before") {
+            const newText = symbol + selectedText;
+            document.execCommand('insertText', false, newText);
+        }
     }
 }
 

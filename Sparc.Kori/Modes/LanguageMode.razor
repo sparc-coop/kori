@@ -1,5 +1,5 @@
-﻿<section id="kori-translation" onclick="event.stopPropagation()">
-    <label>
+﻿<div id="kori-language" onclick="event.stopPropagation()">
+    <div class="first-language">
         <select>
             <option>English</option>
             <option>Spanish</option>
@@ -8,11 +8,14 @@
             <option>Japanese</option>
             <option>Thai</option>
         </select>
-    </label>
+    </div>
     <button>
         <img src="/_content/Sparc.Kori/icons/SwapHorizontal.svg" alt="Swap" />
     </button>
-    <label>
+    <div class="swap-translation">
+        <button class="icon-btn"><SwapIcon /></button>
+    </div>
+    <div class="second-language">
         <select>
             <option>English</option>
             <option>Spanish</option>
@@ -21,8 +24,8 @@
             <option>Japanese</option>
             <option>Thai</option>
         </select>
-    </label>
-    <button>
-        <img src="/_content/Sparc.Kori/icons/VolumeUp.svg" alt="Volume" />
-    </button>
-</section>
+    </div>
+    <div class="volume">
+        <button class="icon-btn"><VolumeIcon /></button>
+    </div>
+</div>

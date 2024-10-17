@@ -1,52 +1,84 @@
-<div id="kori-top-bar" class="kori-top-bar kori-ignore">
-    <div class="top-bar-buttons">
-        <div class="left-buttons">
-            <button class="top-bar-button toggle-button @(isToggledOn ? "toggle-on" : "toggle-off")" onclick="@TogglePower">
-                <img src="@PowerIcon" alt="Toggle icon" class="icon icon-on-off" />
-            </button>
-            <KoriTopBarButton Mode="Language" Icon="Lang" OnClick="ModeChanged" />
-            <KoriTopBarButton Mode="Blog" Icon="Blog" OnClick="ModeChanged" />
-            <KoriTopBarButton Mode="ABTesting" Icon="AB" OnClick="ModeChanged" />
-        </div>
-        <div class="right-buttons">
-            <KoriTopBarButton Mode="Search" Icon="Search2" OnClick="ModeChanged" ShowText="false" />
-            <KoriTopBarButton Mode="History" Icon="History" OnClick="ModeChanged" ShowText="false" />
-            <KoriTopBarButton Mode="Tutorial" Icon="Tutorial" OnClick="ModeChanged" ShowText="false" />
-        </div>
-    </div>
+<AuthorizeView>
+    <Authorized>
+        <div id="kori-top-bar" class="kori-ignore">
+            <section class="top-bar-buttons">
+                <div class="left-buttons">
+                    <button class="top-bar-button toggle-button @(isToggledOn ? "toggle-on" : "toggle-off")" onclick="@TogglePower">
+                        <img src="@PowerIcon" alt="Toggle icon" class="icon icon-on-off" />
+                    </button>
+                    <KoriTopBarButton Mode="Language" Icon="Lang" OnClick="ModeChanged" />
+                    <KoriTopBarButton Mode="Blog" Icon="Blog" OnClick="ModeChanged" />
+                    <KoriTopBarButton Mode="A/B Testing" Icon="AB" OnClick="ModeChanged" />
+                </div>
+                <div class="right-buttons">
+                    <KoriTopBarButton Mode="Search" Icon="Search2" OnClick="ModeChanged" ShowText="false" />
+                    <KoriTopBarButton Mode="History" Icon="History" OnClick="ModeChanged" ShowText="false" />
+                    <KoriTopBarButton Mode="Tutorial" Icon="Tutorial" OnClick="ModeChanged" ShowText="false" />
+                </div>
+            </section>
 
-    <div class="bottom-bar">
-        <div class="logo">
-            <img src="/_content/Sparc.Kori/images/Kori_Logo.svg" alt="Logo" />
+            <section class="bottom-bar">
+                <header>
+                    <img src="/_content/Sparc.Kori/images/Kori_Logo.svg" alt="Logo" />
+                </header>
+                <div class="content">
+                    @switch (Kori.Mode)
+                    {
+                        case "Search":
+                            <SearchMode />
+                            break;
+                        case "Language":
+                            <LanguageMode />
+                            break;
+                        case "Blog":
+                            <BlogMode />
+                            break;
+                        case "ABTesting":
+                            <ABTestingMode />
+                            break;
+                        case "Edit":
+                            <EditTextMode />
+                            break;
+                        case "EditImage":
+                            <EditImageMode />
+                            break;
+                        case "History":
+                            <HistoryMode />
+                            break;
+                        default:
+                            <DefaultMode />
+                            break;
+                    }
+                </div>
+            </section>
         </div>
-        <div class="content">
-            @switch (Kori.Mode)
-            {
-                case "Search":
-                    <SearchMode />
-                    break;
-                case "Language":
-                    <LanguageMode />
-                    break;
-                case "Blog":
-                    <BlogMode />
-                    break;
-                case "ABTesting":
-                    <ABTestingMode />
-                    break;
-                case "Edit":
-                    <EditTextMode />
-                    break;
-                case "EditImage":
-                    <EditImageMode />
-                    break;
-                default:
-                    <DefaultMode />
-                    break;
-            }
-        </div>
-    </div>
-</div>
+    </Authorized>
+</AuthorizeView>
+
+<style class="kori-ignore">
+    @@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap);
+    @@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap);
+
+    .top-bar-button .icon, .bottom-bar .icon {
+        margin-top: -2px !important;
+    }
+
+    .top-bar-button .icon path, .top-bar-button .icon circle {
+        fill: none !important;
+    }
+
+    .top-bar-button:hover .icon path, .top-bar-button:hover .icon circle, .top-bar-button.selected .icon path, .top-bar-button.selected .icon circle {
+        stroke: #4162DC !important;
+    }
+
+    .bottom-bar .content button.icon-btn .icon path, .bottom-bar .content button.icon-btn .icon circle {
+        fill: none !important;
+    }
+       
+    .bottom-bar .content button.icon-btn:hover .icon path, .bottom-bar .content button.icon-btn:hover .icon circle {
+        stroke: #4162DC !important;
+    }
+</style>
 
 @code {
     [Parameter] public EventCallback<string> OnModeChanged { get; set; }

@@ -3,7 +3,7 @@
         <div>
             <h5>Navigation</h5>
             <button onclick="@Kori.CloseAsync">
-                <img src="/_content/Sparc.Kori/icons/Close.svg" alt="Close" />
+                <CloseIcon />
             </button>
         </div>
     </header>
@@ -26,7 +26,7 @@
             }
         </ItemTemplate>
     </BetterSearch>
-    
+
 </aside>
 
 @code {
@@ -38,12 +38,12 @@
     void HandleInput(ChangeEventArgs e)
     {
         searchTerm = e.Value.ToString();
-        Console.WriteLine($"Input detected: {searchTerm}"); 
-        _ = SearchAsync(searchTerm); 
+        Console.WriteLine($"Input detected: {searchTerm}");
+        _ = SearchAsync(searchTerm);
     }
 
     async Task<IEnumerable<object>> SearchAsync(string? searchTerm)
-    {      
+    {
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
             return Array.Empty<object>();
@@ -54,7 +54,7 @@
         _roomResults = result.Rooms;
         _messageResults = result.Message;
         IsLoading = false;
-        
+
         return _roomResults.Cast<object>().Concat(_messageResults.Cast<object>());
     }
 
@@ -70,99 +70,3 @@
         }
     }
 }
-
-
-@* <aside id="kori-search" class="@(Kori.Mode == "Search" ? "show" : "")">
-    <header>
-        <div>
-            <h5>Navigation</h5>
-            <button onclick="@Kori.CloseAsync">
-                <img src="/_content/Sparc.Kori/icons/Close.svg" alt="Close" />
-            </button>
-        </div>
-        <label onclick="event.stopPropagation()">
-            <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />
-            <input type="search" placeholder="Type to find..." value="@searchTerm" oninput="@HandleInput" />
-        </label>
-    </header>
-
-    <hr />
-
-    @if (searchResults != null)
-    {
-        <nav>
-            <article>
-                @if (searchResults.Rooms != null && searchResults.Rooms.Count > 0)
-                {
-                    @foreach (var room in searchResults.Rooms)
-                    {
-                        <header>
-                            <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Page icon" />
-                            @(room.Name ?? room.Slug)
-                        </header>
-                    }
-                }
-                else
-                {
-                    <p>No rooms found.</p>
-                }
-
-                @if (searchResults.Message != null && searchResults.Message.Count > 0)
-                {
-                    <ul>
-                        @foreach (var message in searchResults.Message)
-                        {
-                            <li>
-                                <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Content icon" />
-                                @(message.Text ?? message.Tag)
-                            </li>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <p>No messages found.</p>
-                }
-            </article>
-        </nav>
-    }
-    else
-    {
-        <p>No results found</p>
-    }
-</aside>
-
-@code {
-    string? searchTerm = "";
-    SearchContentResponse? searchResults;
-
-    private void HandleInput(ChangeEventArgs e)
-    {
-        searchTerm = e.Value?.ToString() ?? "";
-        Console.WriteLine($"Typed text: {searchTerm}");
-
-        _ = SearchAsync();
-    }
-
-    private async Task SearchAsync()
-    {
-        Console.WriteLine($"SearchAsync triggered. searchTerm: {searchTerm}");
-
-        if (!string.IsNullOrWhiteSpace(searchTerm))
-        {
-            try
-            {
-                searchResults = await Kori.SearchAsync(searchTerm);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error calling the API: {ex.Message}");
-                searchResults = null;
-            }
-        }
-        else
-        {
-            searchResults = null;
-        }
-    }
-} *@
