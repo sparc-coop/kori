@@ -3,8 +3,10 @@
 <div>
     <label class="@(IsLoading ? "better-search-loading" : "")" onclick="event.stopPropagation()">
         <img src="/_content/Sparc.Kori/icons/Search2.svg" alt="Search icon" />
-        <input type="search" placeholder="@Placeholder" @bind-value="_searchText" @bind-value:event="OnInput" @bind-value:after="PerformSearch" />
+        <input type="search" placeholder="@Placeholder" @bind-value="_searchText" @bind-value:event="oninput" @bind-value:after="PerformSearch" />
     </label>
+
+    <hr />
 
     @if (ItemTemplate != null && _results.Any())
     {

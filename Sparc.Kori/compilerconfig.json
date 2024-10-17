@@ -42,5 +42,9 @@
   {
     "outputFile": "KoriTopBarButton.razor.css",
     "inputFile": "KoriTopBarButton.razor.scss"
+  },
+  {
+    "outputFile": "Modes/BetterSearch.razor.css",
+    "inputFile": "Modes/BetterSearch.razor.scss"
   }
 ]

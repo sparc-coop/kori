@@ -1,102 +1,65 @@
-﻿#kori-search {
-  width: 317px;
-  padding: 20px 0px;
-  background: var(--white);
-  align-items: flex-start;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  height: 100vh;
-  gap: 20px;
-  flex-direction: column;
-  font-family: "ArticulatCF";
-  font-weight: 500;
-  display: none;
-  overflow: auto;
-}
-#kori-search.show {
+﻿div {
+  position: relative;
   display: flex;
-}
-#kori-search header {
-  display: flex;
-  padding: 0px 24px;
   flex-direction: column;
   gap: 20px;
   width: 100%;
   margin-bottom: 0;
 }
-#kori-search header div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-#kori-search header div h5 {
-  font-size: 14px;
-  color: #1F232B;
-}
-#kori-search header div button {
-  background: transparent;
-  padding: 0;
-}
-#kori-search header label {
+div label {
   display: flex;
   flex-direction: row;
   gap: 8px;
   text-align: start;
+  padding: 0px 24px;
 }
-#kori-search header label input {
+div label input {
   padding: 4px;
   border: none;
 }
-#kori-search header label input::placeholder {
+div label input::placeholder {
   color: #5E6A85;
   font-size: 14px;
 }
-#kori-search header label input[type=search]::-webkit-search-cancel-button {
+div label input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
 }
-#kori-search header label input[type=search]::-ms-clear {
+div label input[type=search]::-ms-clear {
   display: none;
 }
-#kori-search header label input[type=search]::-moz-cancel-button {
+div label input[type=search]::-moz-cancel-button {
   display: none;
 }
-#kori-search hr {
+div label.better-search-loading .search-icon {
+  animation: rotate 1.5s linear infinite;
+}
+div label.better-search-loading .search-icon .material-icons {
+  color: var(--primary-500);
+}
+div hr {
   width: 100%;
   height: 1px;
   color: #DDE5F5;
 }
-#kori-search nav {
-  width: 100%;
-  padding: 0 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+div ul {
+  /*position: absolute;*/
+  top: 32px;
+  left: 0;
+  right: 0;
+  background-color: white;
+  list-style: none;
+  padding-left: 0;
+  z-index: 10;
+  border: 1px solid var(--text-gray);
+  border-top: 0;
+  padding: 20px;
 }
-#kori-search nav article {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-#kori-search nav article header, #kori-search nav article li {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  font-family: "ArticulatCF";
-  font-size: 14px;
-}
-#kori-search nav article header {
-  padding: 4px 8px;
-}
-#kori-search nav article ul {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-#kori-search nav article li {
-  padding: 4px 8px 4px 48px;
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

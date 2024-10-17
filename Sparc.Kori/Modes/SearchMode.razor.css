@@ -40,35 +40,6 @@
   background: transparent;
   padding: 0;
 }
-#kori-search header label {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  text-align: start;
-}
-#kori-search header label input {
-  padding: 4px;
-  border: none;
-}
-#kori-search header label input::placeholder {
-  color: #5E6A85;
-  font-size: 14px;
-}
-#kori-search header label input[type=search]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-}
-#kori-search header label input[type=search]::-ms-clear {
-  display: none;
-}
-#kori-search header label input[type=search]::-moz-cancel-button {
-  display: none;
-}
-#kori-search hr {
-  width: 100%;
-  height: 1px;
-  color: #DDE5F5;
-}
 #kori-search nav {
   width: 100%;
   padding: 0 24px;
