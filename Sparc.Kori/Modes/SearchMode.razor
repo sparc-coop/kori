@@ -13,14 +13,14 @@
             @if (context is RoomSummary room)
             {
                 <div @onclick="@(() => Go(room))">
-                    <img src="/_content/Sparc.Kori/icons/PageIcon.svg" alt="Room icon" />
+                    <PageIcon />
                     <span>@(room.Name ?? room.Slug)</span>
                 </div>
             }
             else if (context is MessageSummary message)
             {
                 <div @onclick="@(() => Go(message))">
-                    <img src="/_content/Sparc.Kori/icons/ContentIcon.svg" alt="Message icon" />
+                    <ContentIcon />
                     <span>@(message.Text ?? message.Tag)</span>
                 </div>
             }
