@@ -87,12 +87,12 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
         if (contentType == "image")
         {
-            Mode = "EditImage";
+            Mode = "EditImage";            
             await js.InvokeVoidAsync("editImage");
         }
         else
         {
-            Mode = "Edit";
+            Mode = "Edit";            
             await js.InvokeVoidAsync("edit");
         }
     }
@@ -108,6 +108,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
         Mode = "Default";
         var js = await KoriJs.Value;
         await js.InvokeVoidAsync("closeSearch");
+        Console.WriteLine("called the JS function");
     }
 
     public async Task BeginSaveAsync()
@@ -190,7 +191,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
         var js = await KoriJs.Value;
         await js.InvokeVoidAsync("playAudio", content.Audio.Url);
     }
-
+    
     public async ValueTask DisposeAsync()
     {
         if (KoriJs.IsValueCreated)

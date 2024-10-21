@@ -44,6 +44,8 @@
     public async Task EditAsync()
     {
         await Kori.EditAsync();
+        CurrentMode = Kori.Mode;    
+        Console.WriteLine("Edit mode recieved.");
         StateHasChanged();
         return;
     }
@@ -59,15 +61,27 @@
 
     private void HandleModeChanged(string newMode)
     {
+        Console.WriteLine($"New mode received: '{newMode}'");
+
         if (string.IsNullOrEmpty(newMode))
         {
             CurrentMode = string.Empty;
+            Console.WriteLine("Mode removed, CurrentMode now is empty.");
         }
         else
         {
             CurrentMode = newMode;
+            Console.WriteLine($"Mode defined as: '{CurrentMode}'");
         }
 
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public async Task SetDefaultMode()
+    {        
+        Kori.Mode = "Default";        
+        Console.WriteLine($"Mode defined as: '{Kori.Mode}'");
         StateHasChanged();
     }
 }
