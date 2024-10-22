@@ -50,7 +50,7 @@ function buildTranslationCache(serverTranslationCache) {
         }
     }
 
-    //console.log('Kori translation cache initialized from Ibis, ', translationCache);
+    console.log('Kori translation cache initialized from Ibis, ', translationCache);
 }
 
 function initKoriElement(targetElementId) {
@@ -84,7 +84,7 @@ function initElement(targetElementId) {
 function registerNodesUnder(el) {
     var n, walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, koriIgnoreFilter);
     while (n = walk.nextNode()){
-        //console.log('Registering node', n.nodeName);
+        console.log('Registering node', n.nodeName);
         registerNode(n);
     }
 }
@@ -104,7 +104,7 @@ function registerNode(node) {
 
     node.koriRegistered = language;
     node.koriContent = tag;
-    node.parentElement?.classList.add('kori-initializing');
+    node.parentElement?.classList.add('kori-initializing');           
 
     if (tag in translationCache && translationCache[tag].Nodes.indexOf(node) < 0) {
         translationCache[tag].Nodes.push(node);
@@ -122,7 +122,7 @@ function registerNode(node) {
 }
 
 function getTagContent(node) {
-    var tagContent = node.parentElement?.getAttribute('data-tag');
+    var tagContent = node.parentElement?.getAttribute('data-tag');    
     if (tagContent) {
         return tagContent.trim();
     }
@@ -171,7 +171,7 @@ function translateNodes() {
     }    
 
     dotNet.invokeMethodAsync("TranslateAsync", contentToTranslate).then(translations => {
-        //console.log('Received new translations from Ibis.', translations);
+        console.log('Received new translations from Ibis.', translations);
 
         for (var key in translations) {
             if (translations[key] === "") {
@@ -198,7 +198,7 @@ function isPlaceholder(text) {
 function replaceWithTranslatedText() {
     observer.disconnect();
 
-    //console.log('replaceWithTranslatedText - translationCache', translationCache);
+    console.log('replaceWithTranslatedText - translationCache', translationCache);
 
     for (let key in translationCache) {
         var translation = translationCache[key];
@@ -276,49 +276,6 @@ function mouseClickHandler(e) {
 }
 
 // selecting and unselecting kori-enabled elements
-//function toggleSelected(t) {
-//    document.getElementsByClassName("selected")[0]?.classList.remove("selected");
-//    document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-//    var topBar = document.getElementById('kori-top-bar');
-
-//    var koriElem = t.closest('.kori-enabled');
-//    console.log('koriElem', koriElem);
-//    if (!koriElem) {
-//        // clicked outside of all kori elements
-//        document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-//        if (!topBar.classList.contains("show")) {
-//            document.body.style.marginTop = '0';
-
-//            var buttons = topBar.querySelectorAll('.top-bar-button');
-//            buttons.forEach(function (button) {
-//                if (!button.classList.contains('toggle-button')) {
-//                    var iconImg = button.querySelector('img');
-//                    if (iconImg) {
-//                        iconImg.src = iconImg.src.replace('-selected.svg', '.svg');
-//                    }
-//                }
-//            });
-//        }
-
-//        if (activeMessageId) {
-//            cancelEdit();
-//        }
-
-//        activeNode = null;
-//        return;
-//    } else {
-//        /*dotNet.invokeMethodAsync("EditAsync");*///        
-//    }
-
-//    if (!koriElem.classList.contains("selected")) {
-//        koriElem.classList.add("selected");
-//        document.getElementsByClassName("show")[0]?.classList.remove("show");
-//        toggleTopBar(koriElem);
-//    }
-//}
-
 function toggleSelected(t) {
     document.getElementsByClassName("selected")[0]?.classList.remove("selected");
     document.getElementsByClassName("show")[0]?.classList.remove("show");
@@ -397,7 +354,7 @@ function getActiveImageSrc() {
 
 function edit() {
     if (!activeNode) {
-        //console.log('Unable to edit element', activeNode);
+        console.log('Unable to edit element', activeNode);
         return;
     }
 
@@ -405,6 +362,7 @@ function edit() {
 
     if (isTranslationAlreadySaved(translation)) {
         var activeNodeParent = getActiveNodeParentByKoriId(translation);
+        /*console.log("-----------activeNodeParent in edit: ", activeNodeParent);*/
         activateNodeEdition(activeNodeParent);
         replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
     }
@@ -440,7 +398,7 @@ function deactivateNodeEdition(node, translation) {
     node.classList.remove('kori-ignore');
     node.classList.remove('selected');
 
-    resetTopBar();
+    //resetTopBar();
 
     node.innerHTML = translation.html;
 }
@@ -467,7 +425,7 @@ function isTranslationAlreadySaved(translation) {
 
 function replaceInnerHtmlBeforeTopBar(node, markdownTxt) {
     while (node.firstChild) {
-        //console.log("-------------node.firstChild", node.firstChild)
+        console.log("-------------node.firstChild", node.firstChild)
         if (node.firstChild.id !== "kori-top-bar") {
             node.removeChild(node.firstChild);
         } else {
@@ -508,12 +466,9 @@ function cancelEdit() {
         activeNode.parentElement.contentEditable = "false";
         activeNode.parentElement.classList.remove('selected');
     }
-    hideSidebar();
 }
 
 function closeSearch() {
-    //activeNode.parentElement.contentEditable = "true";
-    //activeNode.parentElement.classList.add('selected');
     console.log("close search function");
 
     var searchSidebar = document.getElementById('kori-search');
@@ -521,15 +476,7 @@ function closeSearch() {
         searchSidebar.classList.remove('show');
     }
     
-    hideSidebar();    
-
-    var topBar = document.getElementById('kori-top-bar');
-    if (topBar) {
-        var selectedButton = topBar.querySelector('.top-bar-button.selected');
-        if (selectedButton) {          
-            selectedButton.classList.remove('selected');
-        }
-    }
+    hideSidebar();        
 }
 
 function getActiveNodeTextContent(translation) {
@@ -548,7 +495,7 @@ function save() {
         return;
 
     var translation = translationCache[activeMessageId];
-    //console.log("translation: ", translation);
+    console.log("translation: ", translation);
     var textContent = activeNode.textContent;
 
     if (isTranslationAlreadySaved(translation)) {
@@ -623,57 +570,33 @@ function checkSelectedContentType() {
 // show and hide language menu
 function toggleLanguage(isOpen) {
     console.log("opening language menu");
-    var language = document.getElementById("kori-language");
-    /*var widgetActions = document.getElementById("kori-widget__actions");*/
+    var language = document.getElementById("kori-language");    
 
-    if (!language.classList.contains("show") && isOpen == true) {
-        //widgetActions.classList.remove("show");
-        language.classList.add("show");
-        //widgetActions.classList.remove("show");
+    if (!language.classList.contains("show") && isOpen == true) {       
+        language.classList.add("show");        
     }
 
     if (language.classList.contains("show") && isOpen == false) {
-        language.classList.remove("show");
-        //widgetActions.classList.add("show");
+        language.classList.remove("show");       
     }
 }
-
-// show and hide search/content navigation menu
-
-//function toggleSearch(isOpen) {
-//    //console.log("opening search menu");
-//    var search = document.getElementById("kori-search");
-//    var widgetActions = document.getElementById("kori-widget__actions");
-
-//    if (!search.classList.contains("show") && isOpen == true) {
-//        widgetActions.classList.remove("show");
-//        search.classList.add("show");
-//        widgetActions.classList.remove("show");
-//    }
-
-//    if (search.classList.contains("show") && isOpen == false) {
-//        search.classList.remove("show");
-//        widgetActions.classList.add("show");
-//    }
-//}
 
 // login to use kori services
 function login() {
     console.log("logging in...");
 }
 
-function resetTopBar() {
-    var topBar = document.getElementById("kori-top-bar");
+//function resetTopBar() {
+//    var topBar = document.getElementById("kori-top-bar");
 
-    // Move the top bar back to the body root
-    document.body.appendChild(topBar);
+//    // Move the top bar back to the body root
+//    document.body.appendChild(topBar);
 
-    // Hide the top bar
-    topBar.style.display = 'none';
-}
+//    // Hide the top bar
+//    topBar.style.display = 'none';
+//}
 
 function applyMarkdown(symbol, position) {
-    console.log("ENTROU NA FUNÇÃO APPLYMARKDOWN--------");
     console.log("Applying markdown", symbol, position);
     const selectedText = window.getSelection().toString();
     if (selectedText) {
