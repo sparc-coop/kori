@@ -14,7 +14,7 @@ public record KoriAudioContent(string Url, long Duration, string Voice, ICollect
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudioContent Audio, List<object>? Nodes, bool Submitted = true);
 public record SearchContentResponse(List<RoomSummary> Rooms, List<MessageSummary> Message);
 public record RoomSummary(string Id, string Name, string Slug);
-public record MessageSummary(string Id, string RoomId, string Text, string Tag);
+public record MessageSummary(string Id, string RoomId, string Text, string Tag, string RoomName);
 public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
@@ -237,7 +237,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
         var content = await PostAsync<IbisContent>("publicapi/PostContent", request);
         if (content != null)
             _content = content.Content.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
-    }    
+    }
 
     public async Task<SearchContentResponse> SearchAsync(string searchTerm)
     {

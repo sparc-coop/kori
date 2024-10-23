@@ -58,15 +58,53 @@
         return _roomResults.Cast<object>().Concat(_messageResults.Cast<object>());
     }
 
+    // async Task Go(object selectedItem)
+    // {
+    //     if (selectedItem is RoomSummary room)
+    //     {
+    //         Nav.NavigateTo(room.Name, forceLoad: true, replace: true);
+    //     }
+    //     else if (selectedItem is MessageSummary message)
+    //     {
+    //         
+    //             Nav.NavigateTo($"{message.RoomName}#{message.Id}");
+    //         
+    //     }
+    // }
+
     async Task Go(object selectedItem)
     {
         if (selectedItem is RoomSummary room)
-        {
-            // Nav.NavigateTo($"/{room.Slug}");
+        {            
+            var fullUrl = room.Name.StartsWith("http") ? room.Name : $"https://{room.Name}";
+
+            // Just for testing
+            fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
+            
+            Nav.NavigateTo(fullUrl);
         }
         else if (selectedItem is MessageSummary message)
-        {
-            // Nav.NavigateTo($"/{message.Text}");
+        {           
+            var fullUrl = message.RoomName.StartsWith("http") ? message.RoomName : $"https://{message.RoomName}#{message.Id}";
+
+            // Just for testing
+            fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
+           
+            Nav.NavigateTo(fullUrl);
         }
     }
 }
+
+@* <script>
+    window.onload = function () {
+        // Verifica se há um fragmento na URL
+        const id = window.location.hash;
+        if (id) {
+            const element = document.querySelector(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
+</script> *@
+
