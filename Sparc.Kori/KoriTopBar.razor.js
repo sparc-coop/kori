@@ -228,7 +228,7 @@ function replaceWithTranslatedText() {
                 node.parentElement?.classList.add('empty-content');
             }
 
-            if (node.nodeName == '#text' && translation.text && node.parentElement) {
+            if (node.nodeName == '#text' && translation.html && node.parentElement) {
                 node.parentElement.innerHTML = translation.html;
             }
         }

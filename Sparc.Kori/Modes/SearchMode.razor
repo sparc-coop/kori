@@ -8,31 +8,33 @@
         </div>
     </header>
 
-    <BetterSearch IsLoading="@IsLoading" Placeholder="Type to find..." TItem="object" OnSearch="SearchAsync" OnSelect="Go">
+    <BetterSearch IsLoading="@IsLoading" Placeholder="Type to find..." TItem="SearchContentResponse" OnSearch="SearchAsync" OnSelect="Go">
         <ItemTemplate>
-            @if (context is RoomSummary room)
+            @foreach (var messagesByRoom in messageResults.GroupBy(x => x.MessageRoomId))
             {
-                <div @onclick="@(() => Go(room))">
+                var roomId = messagesByRoom.Key;
+                var roomName = messagesByRoom.First().MessageRoomName;
+
+                <div @onclick="@(() => GoRoom(roomId))">
                     <PageIcon />
-                    <span>@(room.Name ?? room.Slug)</span>
+                    <span>@roomName</span>
                 </div>
-            }
-            else if (context is MessageSummary message)
-            {
-                <div @onclick="@(() => Go(message))">
-                    <ContentIcon />
-                    <span>@(message.Text ?? message.Tag)</span>
-                </div>
+
+                @foreach (var message in messagesByRoom)
+                {
+                    <div @onclick="@(() => Go(message))">
+                        <ContentIcon />
+                        <span>@(message.MessageText ?? message.MessageTag)</span>
+                    </div>
+                }
             }
         </ItemTemplate>
     </BetterSearch>
-
 </aside>
 
 @code {
     bool IsLoading;
-    List<RoomSummary> _roomResults = new();
-    List<MessageSummary> _messageResults = new();
+    List<SearchContentResponse> messageResults = new();
     string searchTerm = "";
 
     void HandleInput(ChangeEventArgs e)
@@ -42,68 +44,44 @@
         _ = SearchAsync(searchTerm);
     }
 
-    async Task<IEnumerable<object>> SearchAsync(string? searchTerm)
+    async Task<IEnumerable<SearchContentResponse>> SearchAsync(string? searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            return Array.Empty<object>();
+            return Array.Empty<SearchContentResponse>();
         }
 
         IsLoading = true;
         var result = await Kori.SearchAsync(searchTerm);
-        _roomResults = result.Rooms;
-        _messageResults = result.Message;
+        messageResults = result; 
         IsLoading = false;
 
-        return _roomResults.Cast<object>().Concat(_messageResults.Cast<object>());
+        return messageResults;
     }
 
-    // async Task Go(object selectedItem)
-    // {
-    //     if (selectedItem is RoomSummary room)
-    //     {
-    //         Nav.NavigateTo(room.Name, forceLoad: true, replace: true);
-    //     }
-    //     else if (selectedItem is MessageSummary message)
-    //     {
-    //
-    //             Nav.NavigateTo($"{message.RoomName}#{message.Id}");
-    //
-    //     }
-    // }
-
-    async Task Go(object selectedItem)
+    async Task Go(SearchContentResponse selectedItem)
     {
-        if (selectedItem is RoomSummary room)
-        {
-            var fullUrl = room.Name.StartsWith("http") ? room.Name : $"https://{room.Name}";
+        var fullUrl = selectedItem.MessageRoomName.StartsWith("http")
+            ? selectedItem.MessageRoomName
+            : $"https://{selectedItem.MessageRoomName}#{selectedItem.MessageId}";
 
-            // Just for testing
-            fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
 
-            Nav.NavigateTo(fullUrl);
-        }
-        else if (selectedItem is MessageSummary message)
-        {
-            var fullUrl = message.RoomName.StartsWith("http") ? message.RoomName : $"https://{message.RoomName}#{message.Id}";
+        // Just for testing
+        fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
 
-            // Just for testing
-            fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
+        Nav.NavigateTo(fullUrl);
+    }
 
-            Nav.NavigateTo(fullUrl);
-        }
+    async Task GoRoom(string roomName)
+    {
+        var fullUrl = roomName.StartsWith("http")
+            ? roomName
+            : $"https://{roomName}";
+
+        // Just for testing
+        fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
+
+        Nav.NavigateTo(fullUrl);
     }
 }
-
-@* <script>
-    window.onload = function () {        
-        const id = window.location.hash;
-        if (id) {
-            const element = document.querySelector(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    };
-</script> *@
 

@@ -12,9 +12,8 @@ namespace Sparc.Kori;
 public record KoriWord(string Text, long Duration, long Offset);
 public record KoriAudioContent(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudioContent Audio, List<object>? Nodes, bool Submitted = true);
-public record SearchContentResponse(List<RoomSummary> Rooms, List<MessageSummary> Message);
-public record RoomSummary(string Id, string Name, string Slug);
-public record MessageSummary(string Id, string RoomId, string Text, string Tag, string RoomName);
+public record SearchContentResponse(string MessageId, string MessageRoomId, string MessageRoomName, string MessageText, string MessageTag);
+
 public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
@@ -28,8 +27,8 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
     readonly Lazy<Task<IJSObjectReference>> KoriJs = new(() => js.InvokeAsync<IJSObjectReference>("import", "./_content/Sparc.Kori/KoriTopBar.razor.js").AsTask());
 
     public TagManager TagManager { get; } = new TagManager();
-
-    public record IbisContent(string Name, string Slug, string Language, ICollection<KoriTextContent> Content);
+    
+    public record IbisContent(string Name, string Slug, string Language, Dictionary<string, KoriTextContent> Content);
 
     public async Task InitializeAsync(HttpContext context)
     {
@@ -65,7 +64,8 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
         foreach (var item in content.Content)
         {
-            _content[item.Tag] = item with { Nodes = new List<object>() };
+            _content[item.Key] = item.Value;
+            _content[item.Key] = _content[item.Key] with { Nodes = new List<object>() };
         }
 
         foreach (var key in nodes.Keys.ToList())
@@ -236,13 +236,13 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
 
         var content = await PostAsync<IbisContent>("publicapi/PostContent", request);
         if (content != null)
-            _content = content.Content.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
+            _content = content.Content.ToDictionary(x => x.Key, x => x.Value with { Nodes = [] });
     }    
 
-    public async Task<SearchContentResponse> SearchAsync(string searchTerm)
+    public async Task<List<SearchContentResponse>> SearchAsync(string searchTerm)
     {
         var request = new { SearchTerm = searchTerm };
-        var result = await PostAsync<SearchContentResponse>("publicapi/SearchContent", request);
+        var result = await PostAsync<List<SearchContentResponse>>("publicapi/SearchContent", request);
         return result;
     }
 
