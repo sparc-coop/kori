@@ -42,43 +42,36 @@
                 background: transparent;
                 padding: 0;
             }
-        }        
-    }    
+        }
+    }
 
-    nav {
-        width: 100%;
-        padding: 0 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+    article {
+        div {
+            cursor: pointer;
 
-        article {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-
-            header, li {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 6px;
-                font-family: 'ArticulatCF';
-                font-size: 14px;
-            }
-
-            header {
-                padding: 4px 8px;
-            }
-
-            ul {
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-            }
-
-            li {
-                padding: 4px 8px 4px 48px;
+            &:hover {
+                background: #EEF2FA;
             }
         }
+
+        div:nth-of-type(1) {
+            display: flex;
+            padding: 4px 8px 4px 30px;
+            align-items: center;
+            gap: 6px;
+        }
+
+        div:nth-of-type(n+2) {
+            display: flex;
+            padding: 4px 8px 4px 48px;
+            align-items: center;
+            gap: 6px;
+        }
+    }
+
+    span {
+        font-family: "Articulat CF";
+        font-size: 14px;
+        color: #363E51;
     }
 }

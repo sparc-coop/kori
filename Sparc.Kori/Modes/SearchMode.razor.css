@@ -40,34 +40,26 @@
   background: transparent;
   padding: 0;
 }
-#kori-search nav {
-  width: 100%;
-  padding: 0 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+#kori-search article div {
+  cursor: pointer;
 }
-#kori-search nav article {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+#kori-search article div:hover {
+  background: #EEF2FA;
 }
-#kori-search nav article header, #kori-search nav article li {
+#kori-search article div:nth-of-type(1) {
   display: flex;
-  flex-direction: row;
+  padding: 4px 8px 4px 30px;
   align-items: center;
   gap: 6px;
-  font-family: "ArticulatCF";
-  font-size: 14px;
 }
-#kori-search nav article header {
-  padding: 4px 8px;
-}
-#kori-search nav article ul {
+#kori-search article div:nth-of-type(n+2) {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-#kori-search nav article li {
   padding: 4px 8px 4px 48px;
+  align-items: center;
+  gap: 6px;
+}
+#kori-search span {
+  font-family: "Articulat CF";
+  font-size: 14px;
+  color: #363E51;
 }

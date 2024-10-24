@@ -4,7 +4,7 @@ div {
     flex-direction: column;
     gap: 20px;
     width: 100%;
-    margin-bottom: 0;    
+    margin-bottom: 0;
 
     label {
         display: flex;
@@ -56,19 +56,14 @@ div {
     }
 
     ul {
-        /*position: absolute;*/
-        top: 32px;
-        left: 0;
-        right: 0;
-        background-color: white;
-        list-style: none;
-        padding-left: 0;
-        z-index: 10;
-        border: 1px solid var(--text-gray);
-        border-top: 0;
-        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
         li {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
     }
 }

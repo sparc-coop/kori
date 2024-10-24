@@ -239,7 +239,7 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
             _content = content.Content.ToDictionary(x => x.Key, x => x.Value with { Nodes = [] });
     }    
 
-    public async Task<List<SearchContentResponse>> SearchAsync(string searchTerm)
+    public async Task<List<SearchContentResponse>> SearchContentAsync(string searchTerm)
     {
         var request = new { SearchTerm = searchTerm };
         var result = await PostAsync<List<SearchContentResponse>>("publicapi/SearchContent", request);
