@@ -8,15 +8,12 @@
 
     <hr />
 
-    @if (ItemTemplate != null && _results.Any())
+    @if (ItemTemplate != null && _results.Any() && _results.FirstOrDefault() is var item)
     {
         <ul>
-            @foreach (var item in _results)
-            {
-                <li onclick=@(() => Go(item))>
-                    @ItemTemplate(item)
-                </li>
-            }
+            <li onclick=@(() => Go(item))>
+                @ItemTemplate(item)
+            </li>
         </ul>
     }
 
