@@ -52,8 +52,8 @@
         IsLoading = false;
 
         return messageResults;
-    }    
-
+    } 
+    
     async Task Go(SearchContentResponse selectedItem)
     {
         string baseUrl = selectedItem.MessageRoomName.StartsWith("http")
@@ -67,11 +67,9 @@
         var fullUrl = $"{baseUrl}#:~:text={encodedTextFragment}";
 
         // Just for testing
-        fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044"); 
-        
-        await Kori.ResetJsState();
+        fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
 
-        Nav.NavigateTo(fullUrl);       
+        Nav.NavigateTo(fullUrl);
     }
 
     async Task GoRoom(string roomName)
@@ -83,8 +81,25 @@
         // Just for testing
         fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
 
-        await Kori.ResetJsState();
-
         Nav.NavigateTo(fullUrl);
     }
+
+    // async Task Go(SearchContentResponse selectedItem)
+    // {
+    //     string baseUrl = selectedItem.MessageRoomName;
+
+    //     string messageText = selectedItem.MessageText ?? selectedItem.MessageTag ?? "";
+
+    //     string encodedTextFragment = Uri.EscapeDataString(messageText);
+
+    //     var fullUrl = $"{baseUrl}#:~:text={encodedTextFragment}";
+
+    //     Nav.NavigateTo(fullUrl);
+    // }
+
+    // async Task GoRoom(string roomName)
+    // {
+    //     var fullUrl = roomName;
+    //     Nav.NavigateTo(fullUrl);
+    // }
 }

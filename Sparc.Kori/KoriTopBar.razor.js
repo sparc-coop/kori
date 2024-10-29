@@ -633,7 +633,7 @@ function resetState() {
 
     var koriElements = document.getElementsByClassName('kori-content');
 
-    if (koriElements.length > 0) 
+    if (koriElements.length > 0)
         var elementId = koriElements[0].id;
 
     var app = document.getElementById(elementId);
@@ -643,7 +643,7 @@ function resetState() {
     }
 
     if (app instanceof Node) {
-        observer = new MutationObserver(observeCallback); 
+        observer = new MutationObserver(observeCallback);
         observer.observe(app, { childList: true, characterData: true, subtree: true });
     } else {
         console.warn("'app' element not found in DOM.");
@@ -652,4 +652,20 @@ function resetState() {
     console.log('State reset');
 }
 
-export { init, replaceWithTranslatedText, getBrowserLanguage, playAudio, edit, cancelEdit, save, checkSelectedContentType, editImage, applyMarkdown, getActiveImageSrc, updateImageSrc, showSidebar, closeSearch, resetState };
+function observeUrlChange() {
+    let oldHref = document.location.href;
+    const body = document.querySelector('body');
+    const observer = new MutationObserver(mutations => {
+        if (oldHref !== document.location.href) {
+            oldHref = document.location.href;
+            console.log("URL changed to:", oldHref);
+            resetState();
+        }
+    });
+    observer.observe(body, { childList: true, subtree: true });
+};
+
+window.addEventListener("load", observeUrlChange());
+
+
+export { init, replaceWithTranslatedText, getBrowserLanguage, playAudio, edit, cancelEdit, save, checkSelectedContentType, editImage, applyMarkdown, getActiveImageSrc, updateImageSrc, showSidebar, closeSearch };

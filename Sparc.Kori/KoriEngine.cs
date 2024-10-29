@@ -43,11 +43,6 @@ public class KoriEngine(IJSRuntime js) : IAsyncDisposable
         var js = await KoriJs.Value;
         await js.InvokeVoidAsync("init", elementId, Language, DotNetObjectReference.Create(component), _content);
     }    
-    public async Task ResetJsState()
-    {
-        var js = await KoriJs.Value;
-        await js.InvokeVoidAsync("resetState");
-    }
 
     public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> nodes)
     {
