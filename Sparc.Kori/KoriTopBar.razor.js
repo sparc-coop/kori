@@ -134,10 +134,11 @@ function observeCallback(mutations) {
 
     mutations.forEach(function (mutation) {
         if (mutation.target.classList?.contains('kori-ignore') || mutation.target.parentElement?.classList.contains('kori-ignore'))
-            return;        
+            return;  
 
         if (mutation.type == 'characterData')
-            registerNode(mutation.target, NodeType.TEXT);
+            /*registerNode(mutation.target, NodeType.TEXT);*/     //I commented out this line because it always threw an error saying that 'NodeType is not defined' when redirecting to another page
+            registerNode(mutation.target);
         else
             mutation.addedNodes.forEach(registerNodesUnder);
 
@@ -622,5 +623,33 @@ function updateImageSrc(currentSrc, newSrc) {
     }
 }
 
+function resetState() {
+    translationCache = {};
+    language = getBrowserLanguage();
+    koriAuthorized = false;
+    topBar = {};
+    activeNode = null;
+    activeMessageId = null;
 
-export { init, replaceWithTranslatedText, getBrowserLanguage, playAudio, edit, cancelEdit, save, checkSelectedContentType, editImage, applyMarkdown, getActiveImageSrc, updateImageSrc, showSidebar, closeSearch };
+    var koriElements = document.getElementsByClassName('kori-content');
+
+    if (koriElements.length > 0) 
+        var elementId = koriElements[0].id;
+
+    var app = document.getElementById(elementId);
+
+    if (observer instanceof MutationObserver) {
+        observer.disconnect();
+    }
+
+    if (app instanceof Node) {
+        observer = new MutationObserver(observeCallback); 
+        observer.observe(app, { childList: true, characterData: true, subtree: true });
+    } else {
+        console.warn("'app' element not found in DOM.");
+    }
+
+    console.log('State reset');
+}
+
+export { init, replaceWithTranslatedText, getBrowserLanguage, playAudio, edit, cancelEdit, save, checkSelectedContentType, editImage, applyMarkdown, getActiveImageSrc, updateImageSrc, showSidebar, closeSearch, resetState };
