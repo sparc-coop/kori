@@ -8,22 +8,21 @@
         </div>
     </header>
 
-    <BetterSearch IsLoading="@IsLoading" Placeholder="Type to find..." TItem="SearchContentResponse" OnSearch="SearchAsync" OnSelect="Go">
+    <BetterSearch IsLoading="@IsLoading" Placeholder="Type to find..." TItem="SearchContentResponse" OnSearch="SearchAsync">
         <ItemTemplate>
             @foreach (var messagesByRoom in messageResults.GroupBy(x => x.MessageRoomId))
             {
                 var roomId = messagesByRoom.Key;
                 var roomName = messagesByRoom.First().MessageRoomName;
-
                 <article>
-                    <div @onclick="@(() => GoRoom(roomId))">
+                    <div onclick="@(() => GoRoom(roomId))">
                         <PageIcon />
                         <span>@roomName</span>
                     </div>
 
                     @foreach (var message in messagesByRoom)
                     {
-                        <div @onclick="@(() => Go(message))">
+                        <div onclick="@(() => Go(message))">
                             <ContentIcon />
                             <span>@(message.MessageText ?? message.MessageTag)</span>
                         </div>
@@ -52,8 +51,8 @@
         IsLoading = false;
 
         return messageResults;
-    } 
-    
+    }       
+
     async Task Go(SearchContentResponse selectedItem)
     {
         string baseUrl = selectedItem.MessageRoomName.StartsWith("http")
@@ -66,40 +65,17 @@
 
         var fullUrl = $"{baseUrl}#:~:text={encodedTextFragment}";
 
-        // Just for testing
-        fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
-
         Nav.NavigateTo(fullUrl);
     }
 
-    async Task GoRoom(string roomName)
+    async Task GoRoom(string roomId)
     {
+        var roomName = messageResults.FirstOrDefault(m => m.MessageRoomId == roomId)?.MessageRoomName;
+
         var fullUrl = roomName.StartsWith("http")
             ? roomName
             : $"https://{roomName}";
 
-        // Just for testing
-        fullUrl = fullUrl.Replace("sparc.coop", "localhost:7044");
-
         Nav.NavigateTo(fullUrl);
     }
-
-    // async Task Go(SearchContentResponse selectedItem)
-    // {
-    //     string baseUrl = selectedItem.MessageRoomName;
-
-    //     string messageText = selectedItem.MessageText ?? selectedItem.MessageTag ?? "";
-
-    //     string encodedTextFragment = Uri.EscapeDataString(messageText);
-
-    //     var fullUrl = $"{baseUrl}#:~:text={encodedTextFragment}";
-
-    //     Nav.NavigateTo(fullUrl);
-    // }
-
-    // async Task GoRoom(string roomName)
-    // {
-    //     var fullUrl = roomName;
-    //     Nav.NavigateTo(fullUrl);
-    // }
 }
