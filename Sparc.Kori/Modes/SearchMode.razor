@@ -65,7 +65,7 @@
 
         var fullUrl = $"{baseUrl}#:~:text={encodedTextFragment}";
 
-        Nav.NavigateTo(fullUrl);
+        Nav.NavigateTo(fullUrl, forceLoad: true);
     }
 
     async Task GoRoom(string roomId)
@@ -76,6 +76,6 @@
             ? roomName
             : $"https://{roomName}";
 
-        Nav.NavigateTo(fullUrl);
+        Nav.NavigateTo(fullUrl, forceLoad: true);
     }
 }

@@ -39,7 +39,7 @@ function init(targetElementId, selectedLanguage, dotNetObjectReference, serverTr
 function buildTranslationCache(serverTranslationCache) {
     if (serverTranslationCache) {
         translationCache = serverTranslationCache;
-        for (let key in translationCache)        
+        for (let key in translationCache)
             translationCache[key].Nodes = [];
     }
     else {
@@ -57,14 +57,14 @@ function initKoriElement(targetElementId) {
     if (/complete|interactive|loaded/.test(document.readyState)) {
         initElement(targetElementId);
     } else {
-        window.addEventListener('DOMContentLoaded', () => initElement(targetElementId));
+        window.addEventListener('DOMContentLoaded', () => initElement(targetElementId));        
     }
 }
 
 function initKoriTopBar() {
-    topBar = document.getElementById("kori-top-bar");   
+    topBar = document.getElementById("kori-top-bar");
 
-    console.log('Kori top bar initialized.');    
+    console.log('Kori top bar initialized.');
 }
 
 function initElement(targetElementId) {
@@ -73,12 +73,14 @@ function initElement(targetElementId) {
     app = document.getElementById(targetElementId);
 
     registerNodesUnder(app);
-    translateNodes();
+    translateNodes();    
 
     observer = new MutationObserver(observeCallback);
     observer.observe(app, { childList: true, characterData: true, subtree: true });
 
     console.log('Observer registered for ' + targetElementId + '.');
+
+    addTargetTextStyle();
 }
 
 function registerNodesUnder(el) {
@@ -104,7 +106,7 @@ function registerNode(node) {
 
     node.koriRegistered = language;
     node.koriContent = tag;
-    node.parentElement?.classList.add('kori-initializing');           
+    node.parentElement?.classList.add('kori-initializing');
 
     if (tag in translationCache && translationCache[tag].Nodes.indexOf(node) < 0) {
         translationCache[tag].Nodes.push(node);
@@ -122,7 +124,7 @@ function registerNode(node) {
 }
 
 function getTagContent(node) {
-    var tagContent = node.parentElement?.getAttribute('data-tag');    
+    var tagContent = node.parentElement?.getAttribute('data-tag');
     if (tagContent) {
         return tagContent.trim();
     }
@@ -134,7 +136,7 @@ function observeCallback(mutations) {
 
     mutations.forEach(function (mutation) {
         if (mutation.target.classList?.contains('kori-ignore') || mutation.target.parentElement?.classList.contains('kori-ignore'))
-            return;  
+            return;
 
         if (mutation.type == 'characterData')
             /*registerNode(mutation.target, NodeType.TEXT);*/     //I commented out this line because it always threw an error saying that 'NodeType is not defined' when redirecting to another page
@@ -158,18 +160,18 @@ function translateNodes() {
             let tag = key;
 
             translationCache[key].Nodes.forEach(node => {
-                let text = node.textContent || "";                 
+                let text = node.textContent || "";
 
                 if (isPlaceholder(text)) {
-                    contentToTranslate[tag] = "";                    
+                    contentToTranslate[tag] = "";
                 } else {
                     if (text.length > 0) {
-                        contentToTranslate[tag] = text; 
+                        contentToTranslate[tag] = text;
                     }
                 }
             });
         }
-    }    
+    }
 
     dotNet.invokeMethodAsync("TranslateAsync", contentToTranslate).then(translations => {
         console.log('Received new translations from Ibis.', translations);
@@ -190,7 +192,7 @@ function isPlaceholder(text) {
     const placeholders = [
         "Type your title here",
         "Author Name",
-        "Type blog post content here." 
+        "Type blog post content here."
     ];
 
     return placeholders.includes(text);
@@ -268,7 +270,7 @@ function mouseClickHandler(e) {
 
     if (koriAuthorized) {
         // click kori enabled elements        
-        toggleSelected(t);       
+        toggleSelected(t);
         toggleTopBar(t);
     } else {
         console.log("please login to use kori services");
@@ -290,7 +292,7 @@ function toggleSelected(t) {
         return;
     }
 
-    if (!koriElem) {       
+    if (!koriElem) {
         if (activeMessageId) {
             cancelEdit();
         }
@@ -305,23 +307,23 @@ function toggleSelected(t) {
     if (!koriElem.classList.contains("selected")) {
         koriElem.classList.add("selected");
         dotNet.invokeMethodAsync("EditAsync");
-        toggleTopBar(koriElem); 
+        toggleTopBar(koriElem);
     }
 }
 
 // showing and hiding kori top bar
-function toggleTopBar(t) {  
-    var topBar = document.getElementById("kori-top-bar");    
+function toggleTopBar(t) {
+    var topBar = document.getElementById("kori-top-bar");
 
-    document.body.appendChild(topBar);    
+    document.body.appendChild(topBar);
 
     topBar.classList.add("show");
-   
-    if (topBar.classList.contains("show")) {        
+
+    if (topBar.classList.contains("show")) {
         // adjusts the top margin to match the top-bar height
         document.body.style.marginTop = '84px';
     }
-        
+
     const koriId = t.getAttribute('kori-id');
     // search for matching node in translation cache
     for (let key in translationCache) {
@@ -476,15 +478,15 @@ function closeSearch() {
     if (searchSidebar) {
         searchSidebar.classList.remove('show');
     }
-    
-    hideSidebar();        
+
+    hideSidebar();
 }
 
 function getActiveNodeTextContent(translation) {
     var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
 
     var copyNode = activeNodeParent.cloneNode(true);
-    var koriTopBar = copyNode.querySelector('#kori-top-bar');    
+    var koriTopBar = copyNode.querySelector('#kori-top-bar');
 
     return copyNode.textContent.replace(koriTopBar.textContent, '');
 }
@@ -513,7 +515,7 @@ function save() {
             translationCache[activeMessageId].html = content.html;
 
             activeNode.parentElement.contentEditable = "false";
-            activeNode.parentElement.classList.remove('kori-ignore');            
+            activeNode.parentElement.classList.remove('kori-ignore');
 
             if (translation.id) {
 
@@ -571,14 +573,14 @@ function checkSelectedContentType() {
 // show and hide language menu
 function toggleLanguage(isOpen) {
     console.log("opening language menu");
-    var language = document.getElementById("kori-language");    
+    var language = document.getElementById("kori-language");
 
-    if (!language.classList.contains("show") && isOpen == true) {       
-        language.classList.add("show");        
+    if (!language.classList.contains("show") && isOpen == true) {
+        language.classList.add("show");
     }
 
     if (language.classList.contains("show") && isOpen == false) {
-        language.classList.remove("show");       
+        language.classList.remove("show");
     }
 }
 
@@ -667,5 +669,16 @@ function observeUrlChange() {
 
 window.addEventListener("load", observeUrlChange());
 
+function addTargetTextStyle() {
+    const style = document.createElement('style');
+    style.innerHTML = `
+    ::target-text {
+        background-color: rebeccapurple !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+    `;
+    document.head.appendChild(style);
+}
 
 export { init, replaceWithTranslatedText, getBrowserLanguage, playAudio, edit, cancelEdit, save, checkSelectedContentType, editImage, applyMarkdown, getActiveImageSrc, updateImageSrc, showSidebar, closeSearch };
