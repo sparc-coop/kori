@@ -39,7 +39,7 @@ function init(targetElementId, selectedLanguage, dotNetObjectReference, serverTr
 function buildTranslationCache(serverTranslationCache) {
     if (serverTranslationCache) {
         translationCache = serverTranslationCache;
-        for (let key in translationCache)        
+        for (let key in translationCache)
             translationCache[key].Nodes = [];
     }
     else {
@@ -50,49 +50,43 @@ function buildTranslationCache(serverTranslationCache) {
         }
     }
 
-    //console.log('Kori translation cache initialized from Ibis, ', translationCache);
+    console.log('Kori translation cache initialized from Ibis, ', translationCache);
 }
 
 function initKoriElement(targetElementId) {
     if (/complete|interactive|loaded/.test(document.readyState)) {
         initElement(targetElementId);
     } else {
-        window.addEventListener('DOMContentLoaded', () => initElement(targetElementId));
+        window.addEventListener('DOMContentLoaded', () => initElement(targetElementId));        
     }
 }
 
-//function initKoriWidget() {
-//    widget = document.getElementById("kori-widget");
-//    widgetActions = document.getElementById("kori-widget__actions");
-//    document.getElementById("dockButton").addEventListener("click", toggleDock);
-
-//    console.log('Kori widget initialized.');
-//}
-
 function initKoriTopBar() {
-    topBar = document.getElementById("kori-top-bar");   
+    topBar = document.getElementById("kori-top-bar");
 
-    //console.log('Kori top bar initialized.');
+    console.log('Kori top bar initialized.');
 }
 
 function initElement(targetElementId) {
-    //console.log("Initializing element");
+    console.log("Initializing element");
 
     app = document.getElementById(targetElementId);
 
     registerNodesUnder(app);
-    translateNodes();
+    translateNodes();    
 
     observer = new MutationObserver(observeCallback);
     observer.observe(app, { childList: true, characterData: true, subtree: true });
 
-    //console.log('Observer registered for ' + targetElementId + '.');
+    console.log('Observer registered for ' + targetElementId + '.');
+
+    addTargetTextStyle();
 }
 
 function registerNodesUnder(el) {
     var n, walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, koriIgnoreFilter);
     while (n = walk.nextNode()){
-        //console.log('Registering node', n.nodeName);
+        console.log('Registering node', n.nodeName);
         registerNode(n);
     }
 }
@@ -144,11 +138,9 @@ function observeCallback(mutations) {
         if (mutation.target.classList?.contains('kori-ignore') || mutation.target.parentElement?.classList.contains('kori-ignore'))
             return;
 
-        //console.log("-----mutation.target", mutation.target);
-        //console.log("-----mutation.target.parentElement", mutation.target.parentElement);
-
         if (mutation.type == 'characterData')
-            registerNode(mutation.target, NodeType.TEXT);
+            /*registerNode(mutation.target, NodeType.TEXT);*/     //I commented out this line because it always threw an error saying that 'NodeType is not defined' when redirecting to another page
+            registerNode(mutation.target);
         else
             mutation.addedNodes.forEach(registerNodesUnder);
 
@@ -157,7 +149,7 @@ function observeCallback(mutations) {
 }
 
 function translateNodes() {
-    //console.log('translateNodes');
+    console.log('translateNodes');
 
     var contentToTranslate = {};
 
@@ -168,21 +160,21 @@ function translateNodes() {
             let tag = key;
 
             translationCache[key].Nodes.forEach(node => {
-                let text = node.textContent || "";                 
+                let text = node.textContent || "";
 
                 if (isPlaceholder(text)) {
-                    contentToTranslate[tag] = "";                    
+                    contentToTranslate[tag] = "";
                 } else {
                     if (text.length > 0) {
-                        contentToTranslate[tag] = text; 
+                        contentToTranslate[tag] = text;
                     }
                 }
             });
         }
-    }    
+    }
 
     dotNet.invokeMethodAsync("TranslateAsync", contentToTranslate).then(translations => {
-        //console.log('Received new translations from Ibis.', translations);
+        console.log('Received new translations from Ibis.', translations);
 
         for (var key in translations) {
             if (translations[key] === "") {
@@ -200,7 +192,7 @@ function isPlaceholder(text) {
     const placeholders = [
         "Type your title here",
         "Author Name",
-        "Type blog post content here." 
+        "Type blog post content here."
     ];
 
     return placeholders.includes(text);
@@ -209,7 +201,7 @@ function isPlaceholder(text) {
 function replaceWithTranslatedText() {
     observer.disconnect();
 
-    //console.log('replaceWithTranslatedText - translationCache', translationCache);
+    console.log('replaceWithTranslatedText - translationCache', translationCache);
 
     for (let key in translationCache) {
         var translation = translationCache[key];
@@ -239,13 +231,13 @@ function replaceWithTranslatedText() {
                 node.parentElement?.classList.add('empty-content');
             }
 
-            if (node.nodeName == '#text' && translation.text && node.parentElement) {
+            if (node.nodeName == '#text' && translation.html && node.parentElement) {
                 node.parentElement.innerHTML = translation.html;
             }
         }
     }
 
-    //console.log('Translated page from Ibis and enabled Kori widget.');
+    console.log('Translated page from Ibis and enabled Kori top bar.');
 
     observer.observe(app, { childList: true, characterData: true, subtree: true });
 }
@@ -277,8 +269,9 @@ function mouseClickHandler(e) {
     }
 
     if (koriAuthorized) {
-        // click kori enabled elements
-        toggleSelected(t);        
+        // click kori enabled elements        
+        toggleSelected(t);
+        toggleTopBar(t);
     } else {
         console.log("please login to use kori services");
         return;
@@ -286,127 +279,50 @@ function mouseClickHandler(e) {
 }
 
 // selecting and unselecting kori-enabled elements
-//function toggleSelected(t) {
-//    document.getElementsByClassName("selected")[0]?.classList.remove("selected");
-//    //document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-//    var topBar = document.getElementById("kori-top-bar");
-
-//    var koriElem = t.closest('.kori-enabled');
-//    if (!koriElem) {
-//        // clicked outside of all kori elements
-//        //document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-        
-//        if (topBar && topBar.classList.contains("show")) {
-//            topBar.classList.remove("show");
-//            document.body.style.marginTop = '0';
-//        }
-
-//        // reset right margin if widget is docked
-//        if (widget.classList.contains("docked")) {
-//            document.body.style.marginRight = '0';
-//        }
-
-//        if (activeMessageId) {
-//            cancelEdit();
-//        }
-
-//        activeNode = null;
-//        return;
-//    }
-
-//    if (!koriElem.classList.contains("selected")) {
-//        koriElem.classList.add("selected");
-//        //document.getElementsByClassName("show")[0]?.classList.remove("show");
-//        toggleWidget(koriElem);
-//    }
-//}
-
 function toggleSelected(t) {
     document.getElementsByClassName("selected")[0]?.classList.remove("selected");
     document.getElementsByClassName("show")[0]?.classList.remove("show");
 
     var koriElem = t.closest('.kori-enabled');
     console.log('koriElem', koriElem);
+
+    var topBar = document.getElementById("kori-top-bar");
+
+    if (topBar && topBar.contains(t)) {
+        return;
+    }
+
     if (!koriElem) {
-        // clicked outside of all kori elements
-        document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-        if (!topBar.classList.contains("show")) {
-            document.body.style.marginTop = '0';
-        }          
-
         if (activeMessageId) {
             cancelEdit();
         }
 
         activeNode = null;
+
+        dotNet.invokeMethodAsync("SetDefaultMode");
+
         return;
     }
 
     if (!koriElem.classList.contains("selected")) {
         koriElem.classList.add("selected");
-        document.getElementsByClassName("show")[0]?.classList.remove("show");
+        dotNet.invokeMethodAsync("EditAsync");
         toggleTopBar(koriElem);
     }
 }
 
-// showing and hiding kori widget
-//function toggleWidget(t) {
-//    console.log('toggleWidget', t);
-
-//    var widget = document.getElementById("kori-widget");
-//    //var widgetActions = document.getElementById("kori-widget__actions");
-//    console.log('wdiget', widget);
-//    t.appendChild(widget);
-
-//    widget.classList.add("show");
-//    //widgetActions.classList.add("show");
-
-//    console.log('toggleWidget', t);
-//    console.log('parent id', t.getAttribute('kori-id'));
-//    const koriId = t.getAttribute('kori-id');
-//    // search for matching node in translation cache
-//    for (let key in translationCache) {
-//        for (var i = 0; i < translationCache[key].Nodes.length; i++)
-
-//            if (t.contains(translationCache[key].Nodes[i])) {
-//                activeNode = translationCache[key].Nodes[i];
-//                activeMessageId = key;
-//                break;
-//            }
-
-//        if (koriId != null && koriId == translationCache[key].id) {
-//            activeNode = t;
-//            activeMessageId = key;
-//            break;
-//        }
-
-
-//    }
-
-//    console.log('Set active node', activeNode);
-
-//    // after the widget is shown, make it draggable
-//    makeWidgetDraggable();
-//}
-
+// showing and hiding kori top bar
 function toggleTopBar(t) {
     var topBar = document.getElementById("kori-top-bar");
 
-    t.appendChild(topBar);
+    document.body.appendChild(topBar);
 
     topBar.classList.add("show");
 
-    //console.log('toggleTopBar: ', t);
-
     if (topBar.classList.contains("show")) {
         // adjusts the top margin to match the top-bar height
-        document.body.style.marginTop = '100px';
+        document.body.style.marginTop = '84px';
     }
-
-    console.log('parent id', t.getAttribute('kori-id'));
 
     const koriId = t.getAttribute('kori-id');
     // search for matching node in translation cache
@@ -426,7 +342,7 @@ function toggleTopBar(t) {
         }
     }
 
-    //console.log('Set active node', activeNode);
+    console.log('Set active node', activeNode);
 }
 
 function getActiveImageSrc() {
@@ -439,39 +355,9 @@ function getActiveImageSrc() {
     return null;
 }
 
-//function edit() {
-//    if (!activeNode) {
-//        console.log('Unable to edit element', activeNode);
-//        return;
-//    }
-
-//    var translation = translationCache[activeMessageId];
-
-//    if (isTranslationAlreadySaved(translation)) {
-//        var activeNodeParent = getActiveNodeParentByKoriId(translation);
-//        activateNodeEdition(activeNodeParent);
-//        replaceInnerHtmlBeforeWidget(activeNodeParent, getTranslationRawMarkdownText(translation));
-//    }
-//    else {
-//        var parentElement = activeNode.parentElement;
-//        activateNodeEdition(parentElement);
-
-//        // If the Translation is empty or contains only whitespace
-//        if (!translation || !translation.Translation || translation.Translation.trim() === "") {
-
-//            // Insert a temporary space to ensure the cursor appears
-//            activeNode.textContent = "\u200B"; // Zero-width space character
-//        } else {
-//            activeNode.textContent = getTranslationRawMarkdownText(translation);
-//        }
-//    }
-
-//    document.getElementById("kori-widget").contentEditable = "false";
-//}
-
 function edit() {
     if (!activeNode) {
-        //console.log('Unable to edit element', activeNode);
+        console.log('Unable to edit element', activeNode);
         return;
     }
 
@@ -479,8 +365,9 @@ function edit() {
 
     if (isTranslationAlreadySaved(translation)) {
         var activeNodeParent = getActiveNodeParentByKoriId(translation);
+        /*console.log("-----------activeNodeParent in edit: ", activeNodeParent);*/
         activateNodeEdition(activeNodeParent);
-        replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
+        //replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
     }
     else {
         var parentElement = activeNode.parentElement;
@@ -498,6 +385,7 @@ function edit() {
 
     document.getElementById("kori-top-bar").contentEditable = "false";
 }
+
 function getTranslationRawMarkdownText(translation) {
     return translation.text ?? translation.Translation;
 }
@@ -513,8 +401,7 @@ function deactivateNodeEdition(node, translation) {
     node.classList.remove('kori-ignore');
     node.classList.remove('selected');
 
-    //resetWidget();
-    resetTopBar();
+    //resetTopBar();
 
     node.innerHTML = translation.html;
 }
@@ -527,9 +414,10 @@ function isTranslationAlreadySaved(translation) {
     return translation.id;
 }
 
-//function replaceInnerHtmlBeforeWidget(node, markdownTxt) {
+//function replaceInnerHtmlBeforeTopBar(node, markdownTxt) {
 //    while (node.firstChild) {
-//        if (node.firstChild.id !== "kori-widget") {
+//        console.log("-------------node.firstChild", node.firstChild)
+//        if (node.firstChild.id !== "kori-top-bar") {
 //            node.removeChild(node.firstChild);
 //        } else {
 //            break;
@@ -539,104 +427,54 @@ function isTranslationAlreadySaved(translation) {
 //    node.firstChild.insertAdjacentHTML('beforebegin', markdownTxt);
 //}
 
-function replaceInnerHtmlBeforeTopBar(node, markdownTxt) {
-    while (node.firstChild) {
-        //console.log("-------------node.firstChild", node.firstChild)
-        if (node.firstChild.id !== "kori-top-bar") {
-            node.removeChild(node.firstChild);
-        } else {
-            break;
-        }
-    }
-
-    node.firstChild.insertAdjacentHTML('beforebegin', markdownTxt);
-}
-
 function editImage() {
     console.log("Entered the edit image function");
 }
 
 function showSidebar() {
-    document.body.style.marginRight = "317px"; 
+    document.body.style.marginRight = "317px";
+
+    var topBar = document.getElementById('kori-top-bar');
+    topBar.style.width = "calc(100% - 317px)";
 }
 
 function hideSidebar() {
-    console.log("hiding sidebar in hideSideBar funcion in JS code");
+    console.log("hide sidebar function");
     document.body.style.marginRight = "0px";
+
+    var topBar = document.getElementById('kori-top-bar');
+    topBar.style.width = "100%";
 }
 
 function cancelEdit() {
-    console.log("cancelling edit in JS");
-
     var translation = translationCache[activeMessageId];
 
     if (isTranslationAlreadySaved(translation)) {
-        console.log("entrou na condição de isTranslationAlreadySaved");
         var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
         deactivateNodeEdition(activeNodeParent, translation);
     } else {
-        console.log("entrou na condição de else");
         activeNode.textContent = translation.Translation;
         activeNode.parentElement.contentEditable = "false";
         activeNode.parentElement.classList.remove('selected');
     }
-    hideSidebar();
 }
 
 function closeSearch() {
-    console.log("closing edit in JS");
+    console.log("close search function");
 
-    // Manter o elemento selecionado e editável
-    activeNode.parentElement.contentEditable = "true";
-    activeNode.parentElement.classList.add('selected'); // Mantenha a seleção ativa no elemento
-
-    // Fechar a sidebar
-    hideSidebar();
-
-    // Deselecionar o modo na top bar e exibir o normal-icon
-    var topBar = document.getElementById('kori-top-bar');
-    if (topBar) {
-        // Remover a seleção de todos os botões da top bar
-        var selectedButton = topBar.querySelector('.top-bar-button.selected');
-        if (selectedButton) {
-            // Remover a classe 'selected'
-            selectedButton.classList.remove('selected');
-
-            // Exibir o normal-icon e ocultar o hover-icon
-            var normalIcon = selectedButton.querySelector('.normal-icon');
-            var hoverIcon = selectedButton.querySelector('.hover-icon');
-
-            if (normalIcon && hoverIcon) {
-                normalIcon.classList.remove('hidden');  // Mostrar o normal-icon
-                hoverIcon.classList.add('hidden');     // Ocultar o hover-icon
-            }
-        }
+    var searchSidebar = document.getElementById('kori-search');
+    if (searchSidebar) {
+        searchSidebar.classList.remove('show');
     }
 
-    // Avisar o KoriContent.razor para remover o modo ativo
-    DotNet.invokeMethodAsync('Kori', 'OnModeChanged', '').then(() => {
-        console.log("Modo removido com sucesso.");
-    });
-
-    console.log("sidebar closed, element kept editable, top bar deselected, mode removed");
+    hideSidebar();
 }
-
-
-
-//function getActiveNodeTextContent(translation) {
-//    var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
-
-//    var copyNode = activeNodeParent.cloneNode(true);
-//    var koriWidget = copyNode.querySelector('#kori-widget');
-
-//    return copyNode.textContent.replace(koriWidget.textContent, '');
-//}
 
 function getActiveNodeTextContent(translation) {
     var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
 
     var copyNode = activeNodeParent.cloneNode(true);
-    var koriTopBar = copyNode.querySelector('#kori-top-bar');    
+    var koriTopBar = copyNode.querySelector('#kori-top-bar');
 
     return copyNode.textContent.replace(koriTopBar.textContent, '');
 }
@@ -648,7 +486,7 @@ function save() {
         return;
 
     var translation = translationCache[activeMessageId];
-    //console.log("translation: ", translation);
+    console.log("translation: ", translation);
     var textContent = activeNode.textContent;
 
     if (isTranslationAlreadySaved(translation)) {
@@ -658,7 +496,7 @@ function save() {
     dotNet.invokeMethodAsync("BackToEditAsync").then(r => {
 
         dotNet.invokeMethodAsync("SaveAsync", activeMessageId, textContent).then(content => {
-            //console.log('Saved new content to Ibis.', content);
+            console.log('Saved new content to Ibis.', content);
 
             translationCache[activeMessageId].Translation = content.text;
             translationCache[activeMessageId].text = content.text;
@@ -666,8 +504,6 @@ function save() {
 
             activeNode.parentElement.contentEditable = "false";
             activeNode.parentElement.classList.remove('kori-ignore');
-
-            //console.log("-------------activeNode.parentElement" ,activeNode.parentElement);
 
             if (translation.id) {
 
@@ -681,8 +517,6 @@ function save() {
 
         });
     });
-
-
 }
 
 // function to check if an element is a descendant of an element with a specific class
@@ -724,40 +558,17 @@ function checkSelectedContentType() {
     return "text";
 }
 
-// show and hide translation menu
-function toggleTranslation(isOpen) {
-    console.log("opening translation menu");
-    var translation = document.getElementById("kori-translation");
-    var widgetActions = document.getElementById("kori-widget__actions");
+// show and hide language menu
+function toggleLanguage(isOpen) {
+    console.log("opening language menu");
+    var language = document.getElementById("kori-language");
 
-    if (!translation.classList.contains("show") && isOpen == true) {
-        widgetActions.classList.remove("show");
-        translation.classList.add("show");
-        widgetActions.classList.remove("show");
+    if (!language.classList.contains("show") && isOpen == true) {
+        language.classList.add("show");
     }
 
-    if (translation.classList.contains("show") && isOpen == false) {
-        translation.classList.remove("show");
-        widgetActions.classList.add("show");
-    }
-}
-
-// show and hide search/content navigation menu
-
-function toggleSearch(isOpen) {
-    //console.log("opening search menu");
-    var search = document.getElementById("kori-search");
-    var widgetActions = document.getElementById("kori-widget__actions");
-
-    if (!search.classList.contains("show") && isOpen == true) {
-        widgetActions.classList.remove("show");
-        search.classList.add("show");
-        widgetActions.classList.remove("show");
-    }
-
-    if (search.classList.contains("show") && isOpen == false) {
-        search.classList.remove("show");
-        widgetActions.classList.add("show");
+    if (language.classList.contains("show") && isOpen == false) {
+        language.classList.remove("show");
     }
 }
 
@@ -766,152 +577,29 @@ function login() {
     console.log("logging in...");
 }
 
-//function makeWidgetDraggable() {
-//    // if widget is docked, do not make it draggable
-//    if (widget.classList.contains("docked")) {
-//        console.log("Widget is docked, cannot be dragged.");
-//        return;
-//    }
+//function resetTopBar() {
+//    var topBar = document.getElementById("kori-top-bar");
 
-//    // add mouse event to start dragging
-//    widgetActions.onmousedown = function (e) {
-//        e.preventDefault();
-//        pos3 = e.clientX;
-//        pos4 = e.clientY;
-//        document.onmouseup = closeDragElement;
-//        document.onmousemove = elementDrag;
+//    // Move the top bar back to the body root
+//    document.body.appendChild(topBar);
 
-//        // add 'no-transition' class when starting drag
-//        widget.classList.add("no-transition");
-//    };
-
-//    // function to drag the element
-//    function elementDrag(e) {
-//        e.preventDefault();
-//        pos1 = pos3 - e.clientX;
-//        pos2 = pos4 - e.clientY;
-//        pos3 = e.clientX;
-//        pos4 = e.clientY;
-
-//        // get parent element bounds
-//        var parentElem = widgetActions.parentElement;
-//        var parentRect = parentElem.getBoundingClientRect();
-
-//        // calculate new positions
-//        var newLeft = widgetActions.offsetLeft - pos1;
-//        var newTop = widgetActions.offsetTop - pos2;
-
-//        // get viewport dimensions
-//        var viewportWidth = window.innerWidth;
-//        var viewportHeight = window.innerHeight;
-
-//        // get widget dimensions
-//        var widgetWidth = widgetActions.offsetWidth;
-//        var widgetHeight = widgetActions.offsetHeight;
-
-//        const topBarHeight = 110;
-
-//        // calculate max and min positions
-//        var maxLeft = viewportWidth - (parentRect.left + widgetWidth);
-//        var maxTop = viewportHeight - (parentRect.top + (widgetHeight / 2));
-//        var minLeft = -parentRect.left;
-//        var minTop = -parentRect.top + topBarHeight;
-
-//        // constrain the widget within the viewport, considering parent element bounds
-//        newLeft = Math.max(minLeft, Math.min(maxLeft, newLeft));
-//        newTop = Math.max(minTop, Math.min(maxTop, newTop));
-
-//        // set the new widget position
-//        widgetActions.style.left = newLeft + "px";
-//        widgetActions.style.top = newTop + "px";
-//    }
-
-//    // function to stop dragging
-//    function closeDragElement() {
-//        document.onmouseup = null;
-//        document.onmousemove = null;
-
-//        // remove 'no-transition' class when stopping dragging
-//        widget.classList.remove("no-transition");
-//    }
+//    // Hide the top bar
+//    topBar.style.display = 'none';
 //}
 
-//function resetWidget() {
-//    resetWidgetPosition();
-
-//    // Move the widget back to the body root
-//    document.body.appendChild(widget);
-
-//    // Hide the widget
-//    widget.style.display = 'none';
-//}
-//function resetWidgetPosition() {
-//    // do not reset position if widget is docked
-//    if (widget.classList.contains("docked")) {
-//        return;
-//    }
-
-//    widgetActions.style.left = initialPosition.left + 'px';
-//    widgetActions.style.top = '';
-//}
-
-
-//function toggleDock() {
-//    var dockButton = document.getElementById("dockButton");
-//    var dockIcon = dockButton.querySelector("img");
-
-//    if (!widget.classList.contains("docked")) {
-//        widget.classList.add("docked");
-//        widgetActions.style.left = '';
-//        widgetActions.style.right = '';
-//        widgetActions.style.top = '';
-//        dockButton.title = 'Undock';
-
-//        // Change the icon to undock
-//        dockIcon.src = '/_content/Sparc.Kori/images/undock-icon.svg';
-
-//        // remove the ability to drag
-//        widgetActions.onmousedown = null;
-
-//        // adjusts the right margin to match the sidebar width
-//        document.body.style.marginRight = '298px';
-//    } else {
-//        widget.classList.remove("docked");
-//        dockButton.title = 'Dock';
-
-//        // Change the icon to dock
-//        dockIcon.src = '/_content/Sparc.Kori/images/dock-icon.svg';
-
-//        resetWidgetPosition();
-
-//        widget.classList.add("animate-right-to-left");
-
-//        // add the ability to drag
-//        makeWidgetDraggable();
-
-//        // remove dynamic page size adjustment
-//        document.body.style.marginRight = '0';
-//    }
-//}
-
-function resetTopBar() {
-    /*resetWidgetPosition();*/
-
-    var topBar = document.getElementById("kori-top-bar");
-
-    // Move the widget back to the body root
-    document.body.appendChild(topBar);
-
-    // Hide the widget
-    //widget.style.display = 'none';
-}
-
-
-function applyMarkdown(symbol) {
+function applyMarkdown(symbol, position) {
+    console.log("Applying markdown", symbol, position);
     const selectedText = window.getSelection().toString();
     if (selectedText) {
-        const newText = symbol + selectedText + symbol;
-        document.execCommand('insertText', false, newText);
+        if (position == "wrap") {
+            const newText = symbol + selectedText + symbol;
+            document.execCommand('insertText', false, newText);
+        }
+
+        if (position == "before") {
+            const newText = symbol + selectedText;
+            document.execCommand('insertText', false, newText);
+        }
     }
 }
 
@@ -921,10 +609,64 @@ function updateImageSrc(currentSrc, newSrc) {
     if (img) {
         img.src = newSrc;
         translationCache[activeMessageId].text = newSrc;
-        //console.log("Image src updated", img);
+        console.log("Image src updated", img);
     }
 }
 
+function resetState() {
+    translationCache = {};
+    language = getBrowserLanguage();
+    koriAuthorized = false;
+    topBar = {};
+    activeNode = null;
+    activeMessageId = null;
 
+    var koriElements = document.getElementsByClassName('kori-content');
+
+    if (koriElements.length > 0)
+        var elementId = koriElements[0].id;
+
+    var app = document.getElementById(elementId);
+
+    if (observer instanceof MutationObserver) {
+        observer.disconnect();
+    }
+
+    if (app instanceof Node) {
+        observer = new MutationObserver(observeCallback);
+        observer.observe(app, { childList: true, characterData: true, subtree: true });
+    } else {
+        console.warn("'app' element not found in DOM.");
+    }
+
+    console.log('State reset');
+}
+
+function observeUrlChange() {
+    let oldHref = document.location.href;
+    const body = document.querySelector('body');
+    const observer = new MutationObserver(mutations => {
+        if (oldHref !== document.location.href) {
+            oldHref = document.location.href;
+            console.log("URL changed to:", oldHref);
+            resetState();
+        }
+    });
+    observer.observe(body, { childList: true, subtree: true });
+};
+
+window.addEventListener("load", observeUrlChange());
+
+function addTargetTextStyle() {
+    const style = document.createElement('style');
+    style.innerHTML = `
+    ::target-text {
+        background-color: rebeccapurple !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+    `;
+    document.head.appendChild(style);
+}
 
 export { init, replaceWithTranslatedText, getBrowserLanguage, playAudio, edit, cancelEdit, save, checkSelectedContentType, editImage, applyMarkdown, getActiveImageSrc, updateImageSrc, showSidebar, closeSearch };

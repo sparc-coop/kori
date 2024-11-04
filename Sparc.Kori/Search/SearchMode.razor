@@ -1,42 +1,81 @@
-﻿<div id="kori-search" class="kori-search @(Kori.Mode == "Search" ? "show" : "")">
-    <div class="kori-search__header">
-        <div class="kori-search__title">
+﻿<aside id="kori-search" class="@(Kori.Mode == "Search" ? "show" : "")">
+    <header>
+        <div>
             <h5>Navigation</h5>
-            <button class="close-icon" @onclick="Kori.CloseAsync">
-                <img src="/_content/Sparc.Kori/icons/Close.svg" alt="Close" />
+            <button onclick="@Kori.CloseAsync">
+                <CloseIcon />
             </button>
-            
         </div>
-        <div class="kori-search__searchbar">
-            <img src="/_content/Sparc.Kori/icons/Search2.svg" />
-            <input id="kori-searchbar" type="text" placeholder="Type to find..." />
-        </div>
-    </div>
-    <div class="kori-search__divider"></div>
-    <div class="kori-search__list">
-        <div class="kori__content-container">
-            <div class="kori__content-page">
-                <img src="/_content/Sparc.Kori/icons/PageIcon.svg" /> Page name
-            </div>
-            <div class="kori__content-elements">
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-            </div>
-        </div>
-        <div class="kori__content-container">
-            <div class="kori__content-page">
-                <img src="/_content/Sparc.Kori/icons/PageIcon.svg" /> Page name
-            </div>
-            <div class="kori__content-elements">
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-                <div class="kori__content-item"><img src="/_content/Sparc.Kori/icons/ContentIcon.svg" /> Content name</div>
-            </div>
-        </div>
-    </div>
-</div>
+    </header>
+
+    <BetterSearch IsLoading="@IsLoading" Placeholder="Type to find..." TItem="SearchContentResponse" OnSearch="SearchAsync">
+        <ItemTemplate>
+            @foreach (var messagesByRoom in messageResults.GroupBy(x => x.MessageRoomId))
+            {
+                var roomId = messagesByRoom.Key;
+                var roomName = messagesByRoom.First().MessageRoomName;
+                <article>
+                    <div onclick="@(() => GoRoom(roomId))">
+                        <PageIcon />
+                        <span>@roomName</span>
+                    </div>
+
+                    @foreach (var message in messagesByRoom)
+                    {
+                        <div onclick="@(() => Go(message))">
+                            <ContentIcon />
+                            <span>@(message.MessageText ?? message.MessageTag)</span>
+                        </div>
+                    }
+                </article>
+            }
+        </ItemTemplate>
+    </BetterSearch>
+</aside>
 
 @code {
+    bool IsLoading;
+    List<SearchContentResponse> messageResults = new();
+    string searchTerm = "";
 
+    async Task<IEnumerable<SearchContentResponse>> SearchAsync(string? searchTerm)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            return Array.Empty<SearchContentResponse>();
+        }
+
+        IsLoading = true;
+        var result = await Kori.SearchContentAsync(searchTerm);
+        messageResults = result;
+        IsLoading = false;
+
+        return messageResults;
+    }       
+
+    async Task Go(SearchContentResponse selectedItem)
+    {
+        string baseUrl = selectedItem.MessageRoomName.StartsWith("http")
+            ? selectedItem.MessageRoomName
+            : $"https://{selectedItem.MessageRoomName}";
+
+        string messageText = selectedItem.MessageText ?? selectedItem.MessageTag ?? "";
+
+        string encodedTextFragment = Uri.EscapeDataString(messageText);
+
+        var fullUrl = $"{baseUrl}#:~:text={encodedTextFragment}";
+
+        Nav.NavigateTo(fullUrl, forceLoad: true);
+    }
+
+    async Task GoRoom(string roomId)
+    {
+        var roomName = messageResults.FirstOrDefault(m => m.MessageRoomId == roomId)?.MessageRoomName;
+
+        var fullUrl = roomName.StartsWith("http")
+            ? roomName
+            : $"https://{roomName}";
+
+        Nav.NavigateTo(fullUrl, forceLoad: true);
+    }
 }

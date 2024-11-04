@@ -1,1 +1,51 @@
-﻿
+﻿<div id="kori-texteditor" onclick="event.stopPropagation()">
+    <div class="toolbar">
+        <button alt="Bold" @onclick="@(() => Kori.ApplyMarkdown("**", "wrap"))">
+            <Sparc.Kori.Icons.Toolbar.BoldIcon />
+        </button>
+        <button alt="Italic" @onclick="@(() => Kori.ApplyMarkdown("_", "wrap"))">
+            <Sparc.Kori.Icons.Toolbar.ItalicIcon />
+        </button>
+        <button alt="Strikethrough" @onclick="@(() => Kori.ApplyMarkdown("~~", "wrap"))">
+            <Sparc.Kori.Icons.Toolbar.StrikethroughIcon />
+        </button>
+        <button alt="X2" @onclick="@(() => Kori.ApplyMarkdown("^", "wrap"))">
+            <Sparc.Kori.Icons.Toolbar.X2Icon />
+        </button>
+        <button alt="Code" @onclick="@(() => Kori.ApplyMarkdown("`", "wrap"))">
+            <Sparc.Kori.Icons.Toolbar.CodeIcon />
+        </button>
+        <button alt="Quote" @onclick="@(() => Kori.ApplyMarkdown("> ", "before"))">
+            <Sparc.Kori.Icons.Toolbar.QuoteIcon />
+        </button>
+        <button alt="Paragraph" @onclick="@(() => Kori.ApplyMarkdown("&thinsp;", "before"))">
+            <Sparc.Kori.Icons.Toolbar.ParagraphIcon />
+        </button>
+        <button alt="List" @onclick="@(() => Kori.ApplyMarkdown("* ", "before"))">
+            <Sparc.Kori.Icons.Toolbar.ListIcon />
+        </button>
+        <button alt="Link" @onclick="@(() => Kori.ApplyMarkdown("[]", "wrap"))">
+            <Sparc.Kori.Icons.Toolbar.LinkIcon />
+        </button>
+    </div>
+</div>
+
+<style>
+    #kori-texteditor .toolbar button svg {
+        margin: auto;
+    }
+</style>
+
+@* <button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("**")'><img src="/_content/Kori/icons/Bold.svg" /></button>
+<button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("_")'><img src="/_content/Kori/icons/Italic.svg" /></button>
+<button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("~~")'><img src="/_content/Kori/icons/Strikethrough.svg" /></button>
+<button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("++")'><img src="/_content/Kori/icons/underline.svg" /></button> *@
+
+@inject Sparc.Kori.KoriEngine Kori
+
+@code {
+    public void Test()
+    {
+        Console.WriteLine("testing toolbar buttons");
+    }
+}

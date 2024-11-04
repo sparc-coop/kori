@@ -12,27 +12,47 @@
     "inputFile": "KoriContent.razor.scss"
   },
   {
-    "outputFile": "KoriTopBar.razor.css",
-    "inputFile": "KoriTopBar.razor.scss"
+    "outputFile": "Modes/EditTextMode.razor.css",
+    "inputFile": "Modes/EditTextMode.razor.scss"
   },
   {
-    "outputFile": "Modes/SearchMode.razor.css",
-    "inputFile": "Modes/SearchMode.razor.scss"
-  },
-  {
-    "outputFile": "Modes/TranslateMode.razor.css",
-    "inputFile": "Modes/TranslateMode.razor.scss"
-  },
-  {
-    "outputFile": "Modes/BlogMode.razor.css",
-    "inputFile": "Modes/BlogMode.razor.scss"
+    "outputFile": "Modes/EditImageMode.razor.css",
+    "inputFile": "Modes/EditImageMode.razor.scss"
   },
   {
     "outputFile": "Modes/ABTestingMode.razor.css",
     "inputFile": "Modes/ABTestingMode.razor.scss"
   },
   {
+    "outputFile": "Modes/BlogMode.razor.css",
+    "inputFile": "Modes/BlogMode.razor.scss"
+  },
+  {
+    "outputFile": "Modes/HistoryMode.razor.css",
+    "inputFile": "Modes/HistoryMode.razor.scss"
+  },
+  {
+    "outputFile": "Modes/LanguageMode.razor.css",
+    "inputFile": "Modes/LanguageMode.razor.scss"
+  },
+  {
+    "outputFile": "Modes/SearchMode.razor.css",
+    "inputFile": "Modes/SearchMode.razor.scss"
+  },
+  {
     "outputFile": "Modes/DefaultMode.razor.css",
     "inputFile": "Modes/DefaultMode.razor.scss"
+  },
+  {
+    "outputFile": "KoriTopBar.razor.css",
+    "inputFile": "KoriTopBar.razor.scss"
+  },
+  {
+    "outputFile": "KoriTopBarButton.razor.css",
+    "inputFile": "KoriTopBarButton.razor.scss"
+  },
+  {
+    "outputFile": "Modes/BetterSearch.razor.css",
+    "inputFile": "Modes/BetterSearch.razor.scss"
   }
 ]
