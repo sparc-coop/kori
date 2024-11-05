@@ -21,6 +21,7 @@ let koriIgnoreFilter = function (node) {
 }
 
 function init(targetElementId, selectedLanguage, dotNetObjectReference, serverTranslationCache) {
+    console.log("Initialized!!!")
     language = selectedLanguage;
     dotNet = dotNetObjectReference;
 
@@ -268,14 +269,11 @@ function mouseClickHandler(e) {
         }
     }
 
-    if (koriAuthorized) {
+
         // click kori enabled elements        
         toggleSelected(t);
         toggleTopBar(t);
-    } else {
-        console.log("please login to use kori services");
-        return;
-    }
+
 }
 
 // selecting and unselecting kori-enabled elements

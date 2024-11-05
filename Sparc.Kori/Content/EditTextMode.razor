@@ -1,9 +1,9 @@
 ﻿<div id="kori-texteditor" onclick="event.stopPropagation()">
     <div class="toolbar">
-        <button alt="Bold" @onclick="@(() => Kori.ApplyMarkdown("**", "wrap"))">
+@*         <button alt="Bold" @onclick="@(() => KoriTextContent.ApplyMarkdown("**", "wrap"))">
             <Sparc.Kori.Icons.Toolbar.BoldIcon />
         </button>
-        <button alt="Italic" @onclick="@(() => Kori.ApplyMarkdown("_", "wrap"))">
+        <button alt="Italic" @onclick="@(() => KoriTextContent.ApplyMarkdown("_", "wrap"))">
             <Sparc.Kori.Icons.Toolbar.ItalicIcon />
         </button>
         <button alt="Strikethrough" @onclick="@(() => Kori.ApplyMarkdown("~~", "wrap"))">
@@ -26,7 +26,7 @@
         </button>
         <button alt="Link" @onclick="@(() => Kori.ApplyMarkdown("[]", "wrap"))">
             <Sparc.Kori.Icons.Toolbar.LinkIcon />
-        </button>
+        </button> *@
     </div>
 </div>
 
@@ -42,6 +42,7 @@
 <button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("++")'><img src="/_content/Kori/icons/underline.svg" /></button> *@
 
 @inject Sparc.Kori.KoriEngine Kori
+@inject Sparc.Kori.KoriTextContent KoriTextContent
 
 @code {
     public void Test()

@@ -18,6 +18,7 @@ public class KoriEngine(
     KoriHttpEngine http)
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
+    public TagManager TagManager { get; } = new TagManager();
     public string Mode { get; set; } = "";
 
     public async Task InitializeAsync(string currentUrl)
@@ -439,23 +440,23 @@ public class KoriEngine(
 //    }
 //}
 
-//public class TagManager
-//{
-//    private readonly Dictionary<string, string> dict = new Dictionary<string, string>();
+public class TagManager
+{
+    private readonly Dictionary<string, string> dict = new Dictionary<string, string>();
 
-//    public string this[string key]
-//    {
-//        get
-//        {
-//            if (!dict.ContainsKey(key))
-//            {
-//                dict.Add(key, "");
-//            }
-//            return dict[key];
-//        }
-//        set
-//        {
-//            dict[key] = value;
-//        }
-//    }
-//}
+    public string this[string key]
+    {
+        get
+        {
+            if (!dict.ContainsKey(key))
+            {
+                dict.Add(key, "");
+            }
+            return dict[key];
+        }
+        set
+        {
+            dict[key] = value;
+        }
+    }
+}
