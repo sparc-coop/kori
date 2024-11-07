@@ -348,8 +348,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var languages = KoriLanguageEngine.AllLanguages;
-        Language = languages.First(x => x.Id == KoriLanguageEngine.Value.ToString());
+        await KoriLanguageEngine.InitializeAsync(null);
+        Language = KoriLanguageEngine.Current;
 
         Auth.LoginState = LoginStates.LoggedOut;
         StateHasChanged();
