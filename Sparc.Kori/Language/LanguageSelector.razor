@@ -4,9 +4,9 @@
 <div class="kori-login__language-desktop">
     <button class="kori-login__language-btn" @onclick=ToggleLanguageSettings>
         <div class="kori-login__language-btn-content kori-login__text-btn">
-            <img src="_content/Kori/icons/Language.svg" /> @SelectedLanguage?.DisplayName
+            <img src="_content/Sparc.Kori/icons/Language.svg" /> @SelectedLanguage?.DisplayName
         </div>
-        <img class="kori-login__expand-icon @(ShowLanguageSettings ? "rotate": "")" src="_content/Kori/icons/Expand.svg" />
+        <img class="kori-login__expand-icon @(ShowLanguageSettings ? "rotate": "")" src="_content/Sparc.Kori/icons/Expand.svg" />
     </button>
     <ul class="kori-login__language-list @(ShowLanguageSettings? "show" : "")">
         @if (Languages != null)

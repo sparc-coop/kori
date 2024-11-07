@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using System.Text.RegularExpressions
+@using Sparc.Kori.Language
 
 <style class="kori-ignore">
     @@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap);
@@ -21,7 +22,7 @@
                 <UserIcon LoggedIn="!context.User.IsAnonymous()" />
             </button>
             <button class="kori-login__close @(ShowMenu ? "show" : "")" @onclick=ToggleMobileMenu aria-label="Close">
-                <img src="_content/Kori/icons/Close.svg" />
+                <img src="_content/Sparc.Kori/icons/Close X.svg" />
             </button>
 
             <div class="kori-login__menu @(ShowMenu ? "show" : "")" @onclick:stopPropagation="true">
@@ -35,7 +36,7 @@
                         <div class="kori-login__menu-actions">
                             <div class="kori-desktop">
                                 <button class="kori-login__login-btn kori-login__btn kori-login__text-btn" @onclick=LoginWithPasskey>
-                                    <img src="_content/Kori/icons/Key.svg" />
+                                    <img src="_content/Sparc.Kori/icons/Passkey.svg" />
                                     <div class="kori-login__login-btn-wrapper">
                                         <figcaption class="kori-login__text-primary">Passkey Login</figcaption>
                                         <aside class="kori-login__text-secondary">Set up your passkey</aside>
@@ -53,7 +54,7 @@
                                 </div>
                                 <div class="kori-login__menu-mobile @(ShowLoginTab ? "show" : "")">
                                     <button class="kori-login__login-btn kori-login__btn kori-login__text-btn" @onclick=LoginWithPasskey>
-                                        <img src="_content/Kori/icons/Key.svg" />
+                                        <img src="_content/Sparc.Kori/icons/Passkey.svg" />
                                         <div class="kori-login__login-btn-wrapper">
                                             <figcaption class="kori-login__text-primary">Passkey Login</figcaption>
                                             <aside class="kori-login__text-secondary">Set up your passkey</aside>
@@ -84,7 +85,7 @@
                                 </form>
                                 <div class="kori-login__use-passkey">
                                     <button class="kori-login__passkey-btn kori-login__btn kori-login__text-btn" @onclick="LoginWithPasskey">
-                                        <img src="_content/Kori/icons/Key.svg" /> Use passkey
+                                        <img src="_content/Sparc.Kori/icons/Passkey.svg" /> Use passkey
                                     </button>
                                 </div>
                                 <div class="kori-login__menu-divider"></div>
@@ -109,7 +110,7 @@
                                     </form>
                                     <div class="kori-login__use-passkey">
                                         <button class="kori-login__passkey-btn kori-login__btn kori-login__text-btn" @onclick="LoginWithPasskey">
-                                            <img src="_content/Kori/icons/Key.svg" /> Use passkey
+                                            <img src="_content/Sparc.Kori/icons/Passkey.svg" /> Use passkey
                                         </button>
                                     </div>
                                 </div>
@@ -193,12 +194,12 @@
                                     <span class="kori-login__message awaiting-link kori-login__text-secondary">Magic link sent!</span>
                                     <div class="kori-login__different-email">
                                         <button class="kori-login__text-secondary resend-link">Resend</button>
-                                        <button class="kori-login__btn kori-login__text-btn different-email" @onclick=ClearInput><img src="_content/Kori/icons/Login.svg" /> Try a different email</button>
+                                        <button class="kori-login__btn kori-login__text-btn different-email" @onclick=ClearInput><img src="_content/Sparc.Kori/icons/Logout.svg" /> Try a different email</button>
                                     </div>
                                 </div>
                                 <div class="kori-login__use-passkey">
                                     <button class="kori-login__passkey-btn kori-login__btn kori-login__text-btn" @onclick="LoginWithPasskey">
-                                        <img src="_content/Kori/icons/Key.svg" /> Use passkey
+                                        <img src="_content/Sparc.Kori/icons/Passkey.svg" /> Use passkey
                                     </button>
                                 </div>
                                 <div class="kori-login__menu-divider"></div>
@@ -225,12 +226,12 @@
                                         <span class="kori-login__message awaiting-link kori-login__text-secondary">Magic link sent!</span>
                                         <div class="kori-login__different-email">
                                             <button class="kori-login__text-secondary resend-link">Resend</button>
-                                            <button class="kori-login__btn kori-login__text-btn different-email" @onclick=ClearInput><img src="_content/Kori/icons/Login.svg" /> Try different email</button>
+                                            <button class="kori-login__btn kori-login__text-btn different-email" @onclick=ClearInput><img src="_content/Sparc.Kori/icons/Logout.svg" /> Try different email</button>
                                         </div>
                                     </div>
                                     <div class="kori-login__use-passkey">
                                         <button class="kori-login__passkey-btn kori-login__btn kori-login__text-btn" @onclick="LoginWithPasskey">
-                                            <img src="_content/Kori/icons/Key.svg" /> Use passkey
+                                            <img src="_content/Sparc.Kori/icons/Passkey.svg" /> Use passkey
                                         </button>
                                     </div>
                                 </div>
@@ -242,7 +243,7 @@
                         break;
                     case LoginStates.LoggedIn:
                         <button class="kori-login__account-btn kori-login__btn" @onclick=ToggleAccountSettings>
-                            <img src="_content/Kori/icons/User-green.svg" />
+                            <img src="_content/Sparc.Kori/icons/User Profile.svg" />
                             <div class="kori-login__login-btn-content">
                                 <figcaption class="kori-login__text-primary">@Auth.User?.Username</figcaption>
                                 <aside class="kori-login__text-secondary">Set up your passkey</aside>
@@ -251,13 +252,13 @@
                         <div class="kori-login__menu-actions">
                             <div class="kori-desktop">
                                 <button class="kori-login__profile-btn kori-login__btn kori-login__text-btn">
-                                    <img src="_content/Kori/icons/user-profile-circle.svg" /> Profile
+                                    <img src="_content/Sparc.Kori/icons/User Profile Circle.svg" /> Profile
                                 </button>
                                 <button class="kori-login__setup-btn kori-login__btn kori-login__text-btn">
-                                    <img src="_content/Kori/icons/Shield.svg" /> Setup Backup Email
+                                    <img src="_content/Sparc.Kori/icons/Shield.svg" /> Setup Backup Email
                                 </button>
                                 <button class="kori-login__logout-btn kori-login__btn kori-login__text-btn" @onclick=LogoutAsync>
-                                    <img src="_content/Kori/icons/Login.svg" /> Logout
+                                    <img src="_content/Sparc.Kori/icons/Logout.svg" /> Logout
                                 </button>
                                 <div class="kori-login__menu-divider"></div>
                                 <div class="kori-login__language @(ShowLanguageTab ? "show" : "")">
@@ -270,13 +271,13 @@
                                     <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile" @onclick:preventDefault="true">Language</div>
                                 </div>
                                 <button class="kori-login__profile-btn kori-login__btn kori-login__text-btn">
-                                    <img src="_content/Kori/icons/user-profile-circle.svg" /> Profile
+                                    <img src="_content/Sparc.Kori/icons/User Profile Circle.svg" /> Profile
                                 </button>
                                 <button class="kori-login__setup-btn kori-login__btn kori-login__text-btn">
-                                    <img src="_content/Kori/icons/Shield.svg" /> Setup Backup Email
+                                    <img src="_content/Sparc.Kori/icons/Shield.svg" /> Setup Backup Email
                                 </button>
                                 <button class="kori-login__logout-btn kori-login__btn kori-login__text-btn" @onclick=LogoutAsync>
-                                    <img src="_content/Kori/icons/Login.svg" /> Logout
+                                    <img src="_content/Sparc.Kori/icons/Logout.svg" /> Logout
                                 </button>
                                 <div class="kori-login__menu-divider"></div>
                                 <div class="kori-login__language @(ShowLanguageTab ? "show" : "")">
@@ -293,7 +294,7 @@
                         </div>
                         <div class="kori-login__menu-actions">
                             <button class="kori-login__login-btn" @onclick=LoginWithPasskey>
-                                <img src="_content/Kori/icons/Key.svg" />
+                                <img src="_content/Sparc.Kori/icons/Passkey.svg" />
                                 <div class="login-btn__content">
                                     <figcaption class="kori-login__text-primary">Passkey Login</figcaption>
                                     <aside class="kori-login__text-secondary">Set up your passkey</aside>
