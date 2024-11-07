@@ -397,7 +397,7 @@
         if (UsePasskey == true)
         {
             Email = "";
-            await foreach (var state in Auth.LoginAsync(User))
+            await foreach (var state in Auth.Login(User))
                 StateHasChanged();
             Auth.LoginState = LoginStates.ReadyForLogin;
             StateHasChanged();
@@ -418,7 +418,7 @@
 
     async Task LoginAsync()
     {
-        await foreach (var state in Auth.LoginAsync(User, Email))
+        await foreach (var state in Auth.Login(User, Email))
         {
             Console.WriteLine($"Current state: {state}");
             StateHasChanged(); // Update the UI after each state change
@@ -427,7 +427,7 @@
 
     async Task LogoutAsync()
     {
-        await foreach (var state in Auth.LogoutAsync(User!))
+        await foreach (var state in Auth.Logout(User!))
             StateHasChanged();
 
         Auth.LoginState = LoginStates.LoggedOut;
