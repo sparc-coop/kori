@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Sparc.Kori.Content;
+using System.Text;
 
 namespace Sparc.Kori;
 
@@ -7,7 +8,7 @@ public record KoriTextContent(string Id, string Tag, string Language, string Tex
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
-public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
+public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js, PostContent postContent)
 {
     public Dictionary<string, KoriTextContent> Value { get; set; } = [];
     public string EditMode { get; set; } = "Edit";

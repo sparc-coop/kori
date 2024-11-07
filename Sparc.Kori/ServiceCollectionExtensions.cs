@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sparc.Kori._Plugins;
 using System.Globalization;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Sparc.Blossom.Data;
+using Sparc.Kori.Content;
 
 namespace Sparc.Kori;
 
@@ -10,6 +14,9 @@ public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder AddKori(this WebApplicationBuilder builder, Uri baseUri)
     {
+        builder.Services.AddCosmos<KoriContext>(builder.Configuration.GetConnectionString("Database")!, "kori", ServiceLifetime.Transient)
+            .AddScoped<PostContent>();
+
         builder.Services.AddLocalization();
         builder.Services.AddHttpClient<KoriHttpEngine>(client => client.BaseAddress = new Uri("https://localhost:7132"));
 
@@ -19,6 +26,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<KoriSearchEngine>()
             .AddScoped<KoriImageEngine>()
             .AddScoped<KoriJsEngine>();
+        
 
         KoriEngine.BaseUri = baseUri;
         return builder;
