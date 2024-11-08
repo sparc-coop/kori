@@ -322,20 +322,22 @@
         &.show {
             width: 100vw;
             height: 100vh;
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
+            overflow: hidden;
             z-index: 100;
         }
     }
 
     @media only screen and (max-width: 1024px) {
-        position: static;
+        position: fixed;
         padding: 0;
         z-index: 2000;
         overflow: hidden;
 
         .kori-login__menu {
+            overflow: hidden;
             header {
                 text-align: center;
             }
@@ -453,14 +455,6 @@
             padding: 16px !important;
         }
 
-        .kori-login__overlay {
-            display: none;
-
-            &.show {
-                display: none;
-            }
-        }
-
         .kori-login__text-primary,
         .kori-login__text-secondary,
         .kori-login__text-btn {
@@ -535,5 +529,15 @@
 
     ::deep button {
         font-style: normal;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    #kori-login__overlay {
+        display: none !important;
+
+        &.show {
+            display: none !important;
+        }
     }
 }

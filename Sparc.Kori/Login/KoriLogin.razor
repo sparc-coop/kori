@@ -49,8 +49,8 @@
                             </div>
                             <div class="kori-mobile">
                                 <div id="kori-login__tabs" class="tabs">
-                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile" @onclick:preventDefault="true">Login</div>
-                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile" @onclick:preventDefault="true">Language</div>
+                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile">Login</div>
+                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile">Language</div>
                                 </div>
                                 <div class="kori-login__menu-mobile @(ShowLoginTab ? "show" : "")">
                                     <button class="kori-login__login-btn kori-login__btn kori-login__text-btn" @onclick=LoginWithPasskey>
@@ -95,8 +95,8 @@
                             </div>
                             <div class="kori-mobile">
                                 <div id="kori-login__tabs" class="tabs">
-                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile" @onclick:preventDefault="true">Login</div>
-                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile" @onclick:preventDefault="true">Language</div>
+                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile">Login</div>
+                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile">Language</div>
                                 </div>
                                 <div class="kori-login__menu-mobile @(ShowLoginTab ? "show" : "")">
                                     <form class="kori-login__form" @onsubmit=LoginWithEmail>
@@ -149,8 +149,8 @@
                             </div>
                             <div class="kori-mobile">
                                 <div id="kori-login__tabs" class="tabs">
-                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile" @onclick:preventDefault="true">Login</div>
-                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile" @onclick:preventDefault="true">Language</div>
+                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile">Login</div>
+                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile">Language</div>
                                 </div>
                                 <div class="kori-login__menu-mobile @(ShowLoginTab ? "show" : "")">
                                     <form class="kori-login__form" @onsubmit=LoginWithEmail>
@@ -209,8 +209,8 @@
                             </div>
                             <div class="kori-mobile">
                                 <div id="kori-login__tabs" class="tabs">
-                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile" @onclick:preventDefault="true">Login</div>
-                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile" @onclick:preventDefault="true">Language</div>
+                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile">Login</div>
+                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile">Language</div>
                                 </div>
                                 <div class="kori-login__menu-mobile @(ShowLoginTab ? "show" : "")">
                                     <form class="kori-login__form" @onsubmit=LoginWithEmail>
@@ -267,8 +267,8 @@
                             </div>
                             <div class="kori-mobile">
                                 <div id="kori-login__tabs" class="tabs">
-                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile" @onclick:preventDefault="true">Login</div>
-                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile" @onclick:preventDefault="true">Language</div>
+                                    <div class="kori-login__tab @(ShowLoginTab ? "active" : "")" @onclick="ShowLoginMobile" @onclick:stopPropagation="true">Login</div>
+                                    <div class="kori-login__tab @(ShowLanguageTab ? "active" : "")" @onclick="ShowLanguageMobile" @onclick:stopPropagation="true">Language</div>
                                 </div>
                                 <button class="kori-login__profile-btn kori-login__btn kori-login__text-btn">
                                     <img src="_content/Sparc.Kori/icons/User Profile Circle.svg" /> Profile
@@ -314,7 +314,7 @@
         </Authorized>
     </AuthorizeView>
 </div>
-<div class="kori-login__overlay @(ShowMenu ? "show" : "")" @onclick=ToggleLoginMenu></div>
+<div id="kori-login__overlay" class="kori-login__overlay @(ShowMenu ? "show" : "")" @onclick=ToggleLoginMenu></div>
 
 @* <script>
     var input = document.getElementById('kori-login__input-email');

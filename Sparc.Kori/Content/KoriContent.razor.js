@@ -261,13 +261,13 @@ function mouseClickHandler(e) {
     var t = e.target;
 
     // click login menu
-    if (t.closest(".kori-login__btn")) {
-        koriAuthorized = true;
-        if (koriAuthorized) {
-            document.getElementById("kori-login").classList.remove("show");
-            document.body.classList.add("kori-loggedin"); // add the class to <body>            
-        }
-    }
+    //if (t.closest(".kori-login__btn")) {
+    //    koriAuthorized = true;
+    //    if (koriAuthorized) {
+    //        document.getElementById("kori-login").classList.remove("show");
+    //        document.body.classList.add("kori-loggedin"); // add the class to <body>            
+    //    }
+    //}
 
     if (t.closest(".kori-login__tab")) {
         if (tabsParent && tabs) {
@@ -286,9 +286,11 @@ function mouseClickHandler(e) {
         }
     }
 
-    // click kori enabled elements        
-    toggleSelected(t);
-    toggleTopBar(t);
+    // click kori enabled elements  
+    if (t.closest(".kori-enabled")) {
+        toggleSelected(t);
+        toggleTopBar(t);
+    }
 }
 
 // global login - mobile UI, tabs sliding active indicator

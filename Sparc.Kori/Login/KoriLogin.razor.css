@@ -254,16 +254,20 @@
 .kori-login__overlay.show {
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  overflow: hidden;
   z-index: 100;
 }
 @media only screen and (max-width: 1024px) {
   .kori-login {
-    position: static;
+    position: fixed;
     padding: 0;
     z-index: 2000;
+    overflow: hidden;
+  }
+  .kori-login .kori-login__menu {
     overflow: hidden;
   }
   .kori-login .kori-login__menu header {
@@ -364,12 +368,6 @@
     width: 100%;
     padding: 16px !important;
   }
-  .kori-login .kori-login__overlay {
-    display: none;
-  }
-  .kori-login .kori-login__overlay.show {
-    display: none;
-  }
   .kori-login .kori-login__text-primary, .kori-login .kori-login__menu header h3, .kori-login .kori-login__menu-actions .kori-login__login-btn__content figcaption, .kori-login__menu-actions .kori-login__login-btn__content .kori-login figcaption, .kori-login .kori-login__menu-actions kori-login__account-btn__content figcaption, .kori-login__menu-actions kori-login__account-btn__content .kori-login figcaption,
   .kori-login .kori-login__text-secondary,
   .kori-login .kori-login__menu header p,
@@ -434,4 +432,13 @@
 }
 .kori-login ::deep button {
   font-style: normal;
+}
+
+@media only screen and (max-width: 1024px) {
+  #kori-login__overlay {
+    display: none !important;
+  }
+  #kori-login__overlay.show {
+    display: none !important;
+  }
 }
