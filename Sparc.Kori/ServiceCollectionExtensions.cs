@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Sparc.Kori.Content;
 using System.Globalization;
 using System.Net.Http.Json;
 using System.Text.Json;

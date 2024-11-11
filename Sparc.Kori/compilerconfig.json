@@ -8,8 +8,8 @@
     "inputFile": "KoriWidget.razor.scss"
   },
   {
-    "outputFile": "KoriContent.razor.css",
-    "inputFile": "KoriContent.razor.scss"
+    "outputFile": "KoriCApp.razor.css",
+    "inputFile": "KoriApp.razor.scss"
   },
   {
     "outputFile": "Modes/EditTextMode.razor.css",
