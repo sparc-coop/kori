@@ -1,5 +1,4 @@
-﻿
-// Code from Joseph's branch
+﻿// Code from Joseph's branch
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Components.Forms;

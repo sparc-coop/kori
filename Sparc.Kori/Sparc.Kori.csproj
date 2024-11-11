@@ -19,6 +19,7 @@
 	  <ProjectReference Include="..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj" />
 	  <ProjectReference Include="..\..\blossom\Sparc.Blossom.Server.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj" />
 	  <ProjectReference Include="..\..\blossom\Sparc.Blossom.Server\Sparc.Blossom.csproj" />
+		
 	</ItemGroup>
 	
 </Project>

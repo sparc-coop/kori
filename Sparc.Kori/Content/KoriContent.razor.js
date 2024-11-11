@@ -261,19 +261,58 @@ function mouseClickHandler(e) {
     var t = e.target;
 
     // click login menu
-    if (t.closest(".kori-login__btn")) {
-        koriAuthorized = true;
-        if (koriAuthorized) {
-            document.getElementById("kori-login").classList.remove("show");
-            document.body.classList.add("kori-loggedin"); // add the class to <body>            
+    //if (t.closest(".kori-login__btn")) {
+    //    koriAuthorized = true;
+    //    if (koriAuthorized) {
+    //        document.getElementById("kori-login").classList.remove("show");
+    //        document.body.classList.add("kori-loggedin"); // add the class to <body>            
+    //    }
+    //}
+
+    if (t.closest(".kori-login__tab")) {
+        if (tabsParent && tabs) {
+            if (tabs.length > 0) {
+                tabs.forEach((tab) => {
+                    // Remove active class
+                    tabs.forEach((t, i) => {
+                        t.classList.remove("active");
+                    });
+                })
+
+                // Add active class to clicked tab
+                t.classList.add("active");
+                updateActiveIndicator(t);
+            }
         }
     }
 
-
-        // click kori enabled elements        
+    // click kori enabled elements  
+    if (t.closest(".kori-enabled")) {
         toggleSelected(t);
         toggleTopBar(t);
+    }
+}
 
+// global login - mobile UI, tabs sliding active indicator
+
+var tabsParent = document.getElementById("kori-login__tabs");
+var tabs = document.querySelectorAll(".kori-login__tab");
+
+function updateActiveIndicator(activeElement) {
+    const tabsParentLeftDistance = tabsParent.getBoundingClientRect().left;
+    console.log("tabsParentLeftDistance: " + tabsParentLeftDistance);
+
+    const {
+        width: elementSize,
+        left: elementLeftDistance,
+    } = activeElement.getBoundingClientRect();
+
+    const distanceFromParent = elementLeftDistance - tabsParentLeftDistance;
+    console.log("distancefromParent: " + distanceFromParent);
+    console.log("elementSize: " + elementSize);
+
+    tabsParent.style.setProperty("--indicator-offset", distanceFromParent + "px");
+    tabsParent.style.setProperty("--indicator-width", elementSize + "px");
 }
 
 // selecting and unselecting kori-enabled elements
