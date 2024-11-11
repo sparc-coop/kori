@@ -49,10 +49,9 @@
   border: none;
   border-radius: 0;
   cursor: pointer;
-  position: absolute;
+  position: fixed;
   top: 16px;
   left: 16px;
-  z-index: 1001;
 }
 .kori-login__btn {
   padding: 8px 0 !important;
@@ -286,7 +285,7 @@
     display: block;
   }
   .kori-login .kori-login__close {
-    z-index: 1003;
+    z-index: 2001;
   }
   .kori-login .kori-login__close.show {
     display: block;

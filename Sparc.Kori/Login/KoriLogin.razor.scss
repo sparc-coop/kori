@@ -57,10 +57,9 @@
         border: none;
         border-radius: 0;
         cursor: pointer;
-        position: absolute;
+        position: fixed;
         top: 16px;
         left: 16px;
-        z-index: 1001;
     }
 
     &__btn {
@@ -338,6 +337,7 @@
 
         .kori-login__menu {
             overflow: hidden;
+
             header {
                 text-align: center;
             }
@@ -359,7 +359,7 @@
         }
 
         .kori-login__close {
-            z-index: 1003;
+            z-index: 2001;
 
             &.show {
                 display: block;

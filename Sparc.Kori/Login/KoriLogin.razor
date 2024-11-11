@@ -336,14 +336,21 @@
             console.log("enablePageScrolling");
         }
 
-        var body = document.querySelectorAll(".kori-login__mobile-open")[0];
-        if (body) {
-            console.log(body);
-            body.style.overflow = "hidden";
-            body.style.position = "fixed";
-        }
+        // var body = document.querySelectorAll(".kori-login__mobile-open")[0];
+        // if (body) {
+        //     body.style.overflowY = "hidden";
+        //     body.style.position = "fixed";
+        // }
     }
 </script>
+
+<style>
+    body.kori-login__mobile-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100vw;
+    }
+</style>
 
 @inject IJSRuntime Js
 @inject IBlossomAuthenticator Auth
