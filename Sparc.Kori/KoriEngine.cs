@@ -1,11 +1,6 @@
 ﻿// Code from Joseph's branch
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components;
-using System.Text.Json;
-using System.Text;
-using Sparc.Kori.Content;
 
 namespace Sparc.Kori;
 
