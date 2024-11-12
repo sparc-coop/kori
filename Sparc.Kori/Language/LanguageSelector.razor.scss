@@ -1,7 +1,5 @@
-.login-component__language {
-    padding-bottom: 8px;
-
-    .login-component__language-btn {
+.kori-login__language {
+    .kori-login__language-btn {
         width: 100%;
         display: flex !important;
         justify-content: space-between !important;
@@ -17,7 +15,7 @@
         color: white !important;
         cursor: pointer;
 
-        @extend .login-component__text-btn;
+        @extend .kori-login__text-btn;
 
         &-content {
             display: flex !important;
@@ -31,7 +29,7 @@
             opacity: 0.7 !important;
         }
 
-        .login-component__expand-icon {
+        .kori-login__expand-icon {
             width: 16px;
             height: 16px;
             transition: transform 1000ms ease-in-out;
@@ -43,7 +41,7 @@
         }
     }
 
-    .login-component__language-list {
+    .kori-login__language-list {
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -72,7 +70,7 @@
             border: none !important;
             border-radius: 0 !important;
             text-align: left !important;
-            @extend .login-component__text-btn;
+            @extend .kori-login__text-btn;
 
             aside {
                 font-family: 'Encode Sans Expanded' !important;
@@ -83,28 +81,96 @@
             }
         }
     }
+
+    .kori-login__language-mobile {
+        display: none;
+
+        .kori-login__language-selected {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid var(--Gray-100, #E5E5E5);
+            border-radius: 8px;
+            color: white;
+            @extend .kori-login__text-primary;
+        }
+
+        aside {
+            @extend .kori-login__text-secondary;
+        }
+
+        .kori-login__language-list {
+            height: 100%;
+            max-height: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+
+            button {
+                width: 100%;
+                padding: 16px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                border: 1px solid var(--Gray-800, #1E1E1E) !important;
+                border-radius: 8px !important;
+                font-style: normal;
+                transition: .3s ease-in-out;
+
+                aside {
+                    font-style: normal;
+                }
+
+                &:hover {
+                    filter: brightness(105%);
+                    border: 1px solid white;
+                }
+
+                &:active {
+                    filter: brightness(100%);
+                    border: 1px solid white;
+                }
+            }
+        }
+    }
+
+    @media only screen and (max-width: 1024px) {
+        .kori-login__language-desktop {
+            display: none;
+        }
+
+        .kori-login__language-mobile {
+            display: block;
+
+            .kori-login__language-selected {
+                display: flex;
+            }
+        }
+    }
 }
 
-.login-component__text-btn {
+// buttons
+
+.kori-login__text-primary {
+    font-family: 'Encode Sans Semi Expanded' !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 160% !important;
+    color: var(--grey-50) !important;
+}
+
+.kori-login__text-secondary {
     font-family: 'Encode Sans Expanded' !important;
     font-size: 14px !important;
     font-weight: 400 !important;
     line-height: 140% !important;
-    color: white !important;
-    cursor: pointer !important;
-    transition: 300ms ease-in-out !important;
-    opacity: 0.7 !important;
-
-    &:hover {
-        opacity: 1 !important;
-    }
-
-    &:active {
-        opacity: 0.7 !important;
-    }
+    color: var(--grey-300) !important;
 }
 
-.login-component__text-btn {
+.kori-login__text-btn {
     font-family: 'Encode Sans Expanded' !important;
     font-size: 14px !important;
     font-weight: 400 !important;

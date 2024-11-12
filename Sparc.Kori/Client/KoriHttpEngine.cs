@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Sparc.Kori.Content;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace Sparc.Kori;
 
@@ -51,5 +52,11 @@ public class KoriHttpEngine(HttpClient client)
 
         var response = await client.PostAsync<KoriTextContent>("api/Images", content);
         return response!;
+    }
+
+    internal async Task<List<KoriLanguage>> GetLanguagesAsync()
+    {
+       var result = await client.GetFromJsonAsync<List<KoriLanguage>>("api/Languages");
+       return result;
     }
 }
