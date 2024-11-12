@@ -1,4 +1,4 @@
-﻿namespace Sparc.Kori;
+﻿namespace Kori;
 
 public interface ISpeaker
 {

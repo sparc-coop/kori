@@ -3,7 +3,7 @@ using NAudio.Lame;
 using NAudio.Wave;
 using File = Sparc.Blossom.Data.File;
 
-namespace Ibis._Plugins;
+namespace Kori;
 
 public record WordSpoken(string UserId, string Language, byte[] Audio, List<Word> Words) : Notification(UserId + "|" + Language);
 public class AzureSpeaker : ISpeaker
@@ -27,7 +27,7 @@ public class AzureSpeaker : ISpeaker
         Files = files;
     }
 
-    public async Task<AudioMessage?> SpeakAsync(Message message, string? voiceId = null)
+    public async Task<AudioContent?> SpeakAsync(Content message, string? voiceId = null)
     {
         if (voiceId == null && message.Audio?.Voice == null)
             return null;
@@ -44,7 +44,7 @@ public class AzureSpeaker : ISpeaker
             return null;
 
         using var stream = new MemoryStream(ConvertWavToMp3(result.AudioData), false);
-        File file = new("speak", $"{message.RoomId}/{message.Id}/{result.ResultId}.mp3", AccessTypes.Public, stream);
+        File file = new("speak", $"{message.PageId}/{message.Id}/{result.ResultId}.mp3", AccessTypes.Public, stream);
         await Files.AddAsync(file);
 
         var cost = message.Text!.Length / 1_000_000M * 16.00M; // $16 per 1M characters
@@ -54,7 +54,7 @@ public class AzureSpeaker : ISpeaker
         return new(file.Url!, (long)result.AudioDuration.TotalMilliseconds, message.Audio?.Voice, words);
     }
 
-    public async Task<AudioMessage> SpeakAsync(List<Message> messages)
+    public async Task<AudioContent> SpeakAsync(List<Content> messages)
     {
         byte[] buffer = new byte[1024];
         WaveFileWriter? waveFileWriter = null;
@@ -85,7 +85,7 @@ public class AzureSpeaker : ISpeaker
 
         waveFileWriter?.Dispose();
 
-        File file = new("speak", $"{messages.First().RoomId}/{Guid.NewGuid()}.wav", AccessTypes.Public, combinedAudio);
+        File file = new("speak", $"{messages.First().PageId}/{Guid.NewGuid()}.wav", AccessTypes.Public, combinedAudio);
         await Files.AddAsync(file);
 
         return new(file.Url, 0, messages.First().Audio!.Voice);

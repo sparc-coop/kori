@@ -2,7 +2,7 @@
 using Sparc.Blossom;
 using System.Net.Http.Json;
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public class AzureTranslator : ITranslator
 {
@@ -29,7 +29,7 @@ public class AzureTranslator : ITranslator
         foreach (var batch in batches)
         {
             object[] body = new object[] { new { message.Text } };
-            List<string> translatedTagKeys = new();
+            List<string> translatedTagKeys = [];
             foreach (var tag in message.Tags.Where(x => x.Translate))
             {
                 translatedTagKeys.Add(tag.Key);

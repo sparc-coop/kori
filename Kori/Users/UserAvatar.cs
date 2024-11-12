@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public class UserAvatar
 {
@@ -97,8 +92,8 @@ public class UserAvatar
             return Color.FromArgb(255, v, p, q);
     }
 
-    public static List<string> BackgroundColors() => new()
-    {
+    public static List<string> BackgroundColors() =>
+    [
         // generated from http://phrogz.net/css/distinct-colors.html 
         // hue 29-330, sat 100-23, value 70-20, 50 colors
 
@@ -112,23 +107,23 @@ public class UserAvatar
 
         "#F0DE38", "#47CE6D", "#5696BE", "#7361E6", "#EF5DA8", "#EA281B", "#E17723",
         "#F9EF9B", "#9DE2B1", "#A3C5DA", "#BBB1F5", "#F4A6CE", "#FFB8B4", "#FFBE71"
-    };
+    ];
 
     public static List<string> SkinTones()
     {
         // derived from https://blog.mzikmund.com/2017/01/working-with-emoji-skin-tones-in-apps/
 
-        List<string> tones = new()
-        {
+        List<string> tones =
+        [
             "1F3FB", "1F3FC", "1F3FD", "1F3FE", "1F3FF"
-        };
+        ];
         return tones
             .Select(x => char.ConvertFromUtf32(int.Parse(x, NumberStyles.HexNumber)))
             .ToList();
     }
 
-    public static List<string> Emojis() => new()
-    {
+    public static List<string> Emojis() =>
+    [
         // all current emojis
         // derived from https://raw.githubusercontent.com/muan/unicode-emoji-json/main/data-ordered-emoji.json
 
@@ -1981,5 +1976,5 @@ public class UserAvatar
   "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
   "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
   "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
-    };
+    ];
 }

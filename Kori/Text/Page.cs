@@ -1,10 +1,8 @@
-﻿using Sparc.Blossom.Data;
-using Sparc.Kori.Users;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
 
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public record SourceContent(string PageId, string ContentId);
 public record UserJoined(string PageId, UserAvatar User) : Notification(PageId);
@@ -33,14 +31,14 @@ public class Page : BlossomEntity<string>
         Name = "";
         Slug = "";
         SetName("New Page");
-        HostUser = new Users.User().Avatar;
-        Languages = new();
+        HostUser = new User().Avatar;
+        Languages = [];
         StartDate = DateTime.UtcNow;
         LastActiveDate = DateTime.UtcNow;
-        Users = new();
+        Users = [];
     }
 
-    public Page(string name, string type, Users.User hostUser) : this()
+    public Page(string name, string type, User hostUser) : this()
     {
         SetName(name);
         PageType = type;
@@ -67,7 +65,7 @@ public class Page : BlossomEntity<string>
         Languages.Add(language);
     }
 
-    public void AddActiveUser(Users.User user)
+    public void AddActiveUser(User user)
     {
         var activeUser = Users.FirstOrDefault(x => x.Id == user.Id);
         if (activeUser == null)
@@ -80,7 +78,7 @@ public class Page : BlossomEntity<string>
             AddLanguage(user.PrimaryLanguage);
     }
 
-    public void RemoveActiveUser(Users.User user)
+    public void RemoveActiveUser(User user)
     {
         var activeUser = Users.FirstOrDefault(x => x.Id == user.Id);
     }
@@ -98,7 +96,7 @@ public class Page : BlossomEntity<string>
             : Languages.Where(x => !content.HasTranslation(x.Id)).ToList();
 
         if (!languagesToTranslate.Any())
-            return new();
+            return [];
 
         try
         {

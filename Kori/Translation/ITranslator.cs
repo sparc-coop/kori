@@ -1,4 +1,4 @@
-﻿namespace Sparc.Kori;
+﻿namespace Kori;
 
 public interface ITranslator
 {
@@ -16,7 +16,7 @@ public interface ITranslator
             ?? throw new ArgumentException($"Language {toLanguage} not found");
 
         var message = new Content("", "", User.System, text, fromLanguage);
-        var result = await TranslateAsync(message, new() { language });
+        var result = await TranslateAsync(message, [language]);
         return result?.FirstOrDefault()?.Text;
     }
 

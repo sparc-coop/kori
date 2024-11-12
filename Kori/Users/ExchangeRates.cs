@@ -1,18 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sparc.Blossom.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
-namespace Sparc.Kori.Users;
+namespace Kori;
 
 public class ExchangeRates
 {
     readonly string ApiKey;
-    static Dictionary<string, decimal> Rates = new();
+    static Dictionary<string, decimal> Rates = [];
     public DateTime? LastUpdated { get; private set; }
     public DateTime? AsOfDate { get; private set; }
     public IFileRepository<Sparc.Blossom.Data.File> Files { get; }

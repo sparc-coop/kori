@@ -1,6 +1,6 @@
-﻿using Sparc.Blossom.Data;
+﻿using Stripe;
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public class UserCharge : BlossomEntity<string>
 {

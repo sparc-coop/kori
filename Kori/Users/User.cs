@@ -1,7 +1,7 @@
 ﻿using Sparc.Blossom.Authentication;
 using System.Security.Claims;
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public record UserAvatarUpdated(UserAvatar Avatar) : Notification(Avatar.Id);
 public record BalanceChanged(string HostUserId, long Ticks) : Notification(HostUserId);
@@ -16,8 +16,8 @@ public class User : BlossomUser
         UserId = Id;
         DateCreated = DateTime.UtcNow;
         DateModified = DateTime.UtcNow;
-        LanguagesSpoken = new();
-        ActivePages = new();
+        LanguagesSpoken = [];
+        ActivePages = [];
         Avatar = new(Id, "");
         BillingInfo = new();
         ABMode = false;

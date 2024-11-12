@@ -1,4 +1,4 @@
-﻿namespace Sparc.Kori;
+﻿namespace Kori;
 
 public class Translator
 {
@@ -15,7 +15,7 @@ public class Translator
     {
         if (Languages == null)
         {
-            Languages = new();
+            Languages = [];
             foreach (var translator in Translators)
             {
                 var languages = await translator.GetLanguagesAsync();
@@ -68,7 +68,7 @@ public class Translator
             ?? throw new ArgumentException($"Language {toLanguage} not found");
 
         var message = new Content("", "", User.System, text, fromLanguage);
-        var result = await TranslateAsync(message, new() { language });
+        var result = await TranslateAsync(message, [language]);
         return result?.FirstOrDefault()?.Text;
     }
 

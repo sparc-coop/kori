@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public record Notification : INotification
 {

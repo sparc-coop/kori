@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Sparc.Kori;
+namespace Kori;
 public class Dialect
 {
     public string Language { get; private set; }
@@ -15,7 +15,7 @@ public class Dialect
         Locale = string.Empty;
         DisplayName = string.Empty;
         NativeName = string.Empty;
-        Voices = new();
+        Voices = [];
     }
 
     public Dialect(string localeName)
@@ -26,7 +26,7 @@ public class Dialect
         Locale = localeName.Split('-').Last();
         DisplayName = info.DisplayName;
         NativeName = info.NativeName;
-        Voices = new();
+        Voices = [];
     }
 
     public void AddVoice(Voice voice)

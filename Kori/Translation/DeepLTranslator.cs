@@ -1,8 +1,7 @@
 ﻿using DeepL;
 using DeepL.Model;
-using Sparc.Kori.Languages.Translators;
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public class DeepLTranslator : ITranslator
 {
@@ -15,9 +14,9 @@ public class DeepLTranslator : ITranslator
         Client = new(configuration["DeepLApi"]!);
     }
 
-    public async Task<List<Message>> TranslateAsync(Message message, List<Language> toLanguages)
+    public async Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages)
     {
-        var translatedMessages = new List<Message>();
+        var translatedMessages = new List<Content>();
         TextTranslateOptions options = new()
         {
             SentenceSplittingMode = SentenceSplittingMode.Off
@@ -28,7 +27,7 @@ public class DeepLTranslator : ITranslator
         {
             var toLanguage = language.Id.ToUpper() == "EN" ? "en-US" : language.Id;
             var result = await Client.TranslateTextAsync(message.Text!, message.Language, toLanguage, options);
-            var translatedMessage = new Message(message, language, result.Text, new());
+            var translatedMessage = new Content(message, language, result.Text);
             translatedMessages.Add(translatedMessage);
             var cost = message.Text!.Length / 1_000_000M * -25.00M; // $25 per 1M characters
             message.AddCharge(0, cost, $"Translate message from {message.User.Name} from {message.Language} to {toLanguage}");

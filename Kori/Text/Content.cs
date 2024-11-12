@@ -1,6 +1,7 @@
-﻿using Sparc.Blossom.Data;
+﻿using Markdig;
+using Markdig.Renderers;
 
-namespace Sparc.Kori;
+namespace Kori;
 
 public record EditHistory(DateTime Timestamp, string Text);
 public record AudioContent(string? Url, long Duration, string Voice, List<Word>? Subtitles = null);
@@ -33,11 +34,13 @@ public class Content : BlossomEntity<string>
     {
         Id = Guid.NewGuid().ToString();
         PageId = string.Empty;
+        PageName = string.Empty;
         User = new User().Avatar;
         Language = string.Empty;
-        Translations = new();
-        EditHistory = new();
-        Tags = new();
+        Translations = [];
+        EditHistory = [];
+        Tags = [];
+        Html = string.Empty;
         ContentType = "Text";
     }
 
@@ -89,7 +92,7 @@ public class Content : BlossomEntity<string>
             return (Translations.First(x => x.LanguageId == languageId).SourceContentId, null);
 
         var language = await translator.GetLanguageAsync(languageId);
-        var translatedContent = (await translator.TranslateAsync(this, new List<Language> { language! })).FirstOrDefault();
+        var translatedContent = (await translator.TranslateAsync(this, [language!])).FirstOrDefault();
 
         if (translatedContent != null)
             AddTranslation(translatedContent);
@@ -150,6 +153,20 @@ public class Content : BlossomEntity<string>
 
     public void SetHtmlFromMarkdown()
     {
-        Html = MarkdownExtensions.ToHtml(Text ?? string.Empty);
+        var pipeline = new MarkdownPipelineBuilder()
+            .UseEmphasisExtras()
+            .Build();
+
+        var writer = new StringWriter();
+        var renderer = new HtmlRenderer(writer)
+        {
+            ImplicitParagraph = true //This is needed to render a single line of text without a paragraph tag
+        };
+        pipeline.Setup(renderer);
+
+        renderer.Render(Markdown.Parse(Text ?? string.Empty, pipeline));
+        writer.Flush();
+
+        Html = writer.ToString();
     }
 }
