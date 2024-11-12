@@ -67,7 +67,7 @@ public class Translator
         var language = await GetLanguageAsync(toLanguage)
             ?? throw new ArgumentException($"Language {toLanguage} not found");
 
-        var message = new Content("", "", User.System, text, fromLanguage);
+        var message = new Content("", "", fromLanguage, text);
         var result = await TranslateAsync(message, [language]);
         return result?.FirstOrDefault()?.Text;
     }

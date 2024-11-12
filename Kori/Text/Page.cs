@@ -1,56 +1,43 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-
 namespace Kori;
 
 public record SourceContent(string PageId, string ContentId);
-public record UserJoined(string PageId, UserAvatar User) : Notification(PageId);
-public record UserLeft(string PageId, UserAvatar User) : Notification(PageId);
 
 public class Page : BlossomEntity<string>
 {
-    public string PageId { get; private set; }
-    public string PageType { get; private set; }
+    public string Domain { get; private set; }
+    public string Path { get; private set; }
     public string Name { get; private set; }
-    public string Slug { get; private set; }
-    public UserAvatar HostUser { get; private set; }
-    public List<UserAvatar> Users { get; private set; }
     public SourceContent? SourceContent { get; private set; }
     public List<Language> Languages { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime? LastActiveDate { get; private set; }
     public DateTime? EndDate { get; private set; }
     public AudioContent? Audio { get; private set; }
+    public ICollection<Content> Contents { get; private set; } = [];
 
-    private Page()
+    private Page(string domain, string path)
     {
         Id = Guid.NewGuid().ToString();
-        PageId = Id;
-        PageType = "Chat";
-        Name = "";
-        Slug = "";
-        SetName("New Page");
-        HostUser = new User().Avatar;
+        Domain = domain;
+        Path = path;
+        Name = "New Page";
         Languages = [];
         StartDate = DateTime.UtcNow;
         LastActiveDate = DateTime.UtcNow;
-        Users = [];
     }
 
-    public Page(string name, string type, User hostUser) : this()
+    public Page(string domain, string path, string name) : this(domain, path)
     {
-        SetName(name);
-        PageType = type;
-        HostUser = hostUser.Avatar;
+        Name = name;
     }
 
-    public Page(Page page, Content content) : this()
+    public Page(Page page, Content content) : this(page.Domain, page.Path, page.Name)
     {
         // Create a subpage from a message
 
-        SetName(page.Name);
-        PageType = page.PageType;
         SourceContent = new(page.Id, content.Id);
         //Languages = page.Languages;
         //ActiveUsers = page.ActiveUsers;
@@ -63,30 +50,6 @@ public class Page : BlossomEntity<string>
             return;
 
         Languages.Add(language);
-    }
-
-    public void AddActiveUser(User user)
-    {
-        var activeUser = Users.FirstOrDefault(x => x.Id == user.Id);
-        if (activeUser == null)
-        {
-            activeUser = user.Avatar;
-            Users.Add(activeUser);
-        }
-
-        if (user.PrimaryLanguage != null)
-            AddLanguage(user.PrimaryLanguage);
-    }
-
-    public void RemoveActiveUser(User user)
-    {
-        var activeUser = Users.FirstOrDefault(x => x.Id == user.Id);
-    }
-
-    internal void InviteUser(UserAvatar user)
-    {
-        if (!Users.Any(x => x.Id == user.Id))
-            Users.Add(user);
     }
 
     internal async Task<List<Content>> TranslateAsync(Content content, Translator translator, bool forceRetranslation = false)
@@ -124,12 +87,6 @@ public class Page : BlossomEntity<string>
     internal void Close()
     {
         EndDate = DateTime.UtcNow;
-    }
-
-    internal void SetName(string title)
-    {
-        Name = title;
-        Slug = UrlFriendly(Name);
     }
 
     // Adopted from https://stackoverflow.com/a/25486

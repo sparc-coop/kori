@@ -3,16 +3,11 @@ using DeepL.Model;
 
 namespace Kori;
 
-public class DeepLTranslator : ITranslator
+public class DeepLTranslator(IConfiguration configuration) : ITranslator
 {
-    readonly DeepL.Translator Client;
+    readonly DeepL.Translator Client = new(configuration.GetConnectionString("DeepL")!);
 
     public static SourceLanguage[]? Languages;
-
-    public DeepLTranslator(IConfiguration configuration)
-    {
-        Client = new(configuration["DeepLApi"]!);
-    }
 
     public async Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages)
     {
@@ -30,7 +25,7 @@ public class DeepLTranslator : ITranslator
             var translatedMessage = new Content(message, language, result.Text);
             translatedMessages.Add(translatedMessage);
             var cost = message.Text!.Length / 1_000_000M * -25.00M; // $25 per 1M characters
-            message.AddCharge(0, cost, $"Translate message from {message.User.Name} from {message.Language} to {toLanguage}");
+            message.AddCharge(0, cost, $"Translate message from {message.Language} to {toLanguage}");
         }
 
         return translatedMessages;

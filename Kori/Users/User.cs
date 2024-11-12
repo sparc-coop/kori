@@ -3,9 +3,6 @@ using System.Security.Claims;
 
 namespace Kori;
 
-public record UserAvatarUpdated(UserAvatar Avatar) : Notification(Avatar.Id);
-public record BalanceChanged(string HostUserId, long Ticks) : Notification(HostUserId);
-public record UserLanguageChanged(string UserId, string Language) : Notification(UserId);
 public record ActivePage(string PageId, DateTime JoinDate);
 
 public class User : BlossomUser

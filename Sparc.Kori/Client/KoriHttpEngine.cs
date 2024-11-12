@@ -5,14 +5,14 @@ using System.Net.Http.Json;
 
 namespace Sparc.Kori;
 
-public record KoriContentRequest(string Domain, string Path, string Language);
+public record KoriContentRequest(string Domain, string Language, string Path);
 public class KoriHttpEngine(HttpClient client)
 {
     KoriContentRequest CurrentRequest = new("", "", "");
 
     public Task InitializeAsync(Uri baseUri, string path, string language)
     {
-        CurrentRequest = new(baseUri.Host, path, language);
+        CurrentRequest = new(baseUri.Host, language, path);
         return Task.CompletedTask;
     }
 

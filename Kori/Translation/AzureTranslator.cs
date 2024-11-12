@@ -28,13 +28,8 @@ public class AzureTranslator : ITranslator
         var batches = Batch(toLanguages, 10);
         foreach (var batch in batches)
         {
-            object[] body = new object[] { new { message.Text } };
+            object[] body = [new { message.Text }];
             List<string> translatedTagKeys = [];
-            foreach (var tag in message.Tags.Where(x => x.Translate))
-            {
-                translatedTagKeys.Add(tag.Key);
-                body = body.Append(new { Text = tag.Value }).ToArray();
-            }
 
             var languageDictionary = batch.ToDictionary(x => x.Id.Split('-').First(), x => x);
 
@@ -55,7 +50,7 @@ public class AzureTranslator : ITranslator
                     translatedMessages.Add(translatedMessage);
 
                     var cost = message.Text!.Length / 1_000_000M * -10.00M; // $10 per 1M characters
-                    message.AddCharge(0, cost, $"Translate message from {message.User.Name} from {message.Language} to {t.To}");
+                    message.AddCharge(0, cost, $"Translate message from {message.Language} to {t.To}");
                 }
             }
         }

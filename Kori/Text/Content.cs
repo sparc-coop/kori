@@ -10,8 +10,8 @@ public record ContentTranslation(string Id, string LanguageId, string? SourceCon
 
 public class Content : BlossomEntity<string>
 {
-    public string PageId { get; private set; }
-    public string PageName { get; private set; }
+    public string Domain { get; private set; }
+    public string Path { get; private set; }
     public string? SourceContentId { get; private set; }
     public string Language { get; protected set; }
     public string ContentType { get; private set; }
@@ -19,39 +19,36 @@ public class Content : BlossomEntity<string>
     public DateTime Timestamp { get; private set; }
     public DateTime? LastModified { get; private set; }
     public DateTime? DeletedDate { get; private set; }
-    public UserAvatar User { get; private set; }
+    public UserAvatar? User { get; private set; }
     public AudioContent? Audio { get; private set; }
     public string? Text { get; private set; }
     public List<ContentTranslation> Translations { get; private set; }
     public long Charge { get; private set; }
     public decimal Cost { get; private set; }
     public string? Tag { get; set; }
-    public List<ContentTag> Tags { get; set; }
     public List<EditHistory> EditHistory { get; private set; }
     public string Html { get; set; }
 
-    protected Content()
+    protected Content(string domain, string path, string language)
     {
         Id = Guid.NewGuid().ToString();
-        PageId = string.Empty;
-        PageName = string.Empty;
+        Domain = domain;
+        Path = path;
         User = new User().Avatar;
-        Language = string.Empty;
+        Language = language;
         Translations = [];
         EditHistory = [];
-        Tags = [];
         Html = string.Empty;
         ContentType = "Text";
     }
 
-    public Content(string pageId, string pageName, User user, string text, string? tag = null, string? language = null, string contentType = "Text") : this()
+    public Content(string domain, string path, string language, string text, User? user = null, string? tag = null, string contentType = "Text") 
+        : this(domain, path, language)
     {
-        PageId = pageId;
-        PageName = pageName;
-        User = user.Avatar;
-        Language = user.Avatar.Language ?? language ?? string.Empty;
-        LanguageIsRTL = user.Avatar.LanguageIsRTL;
-        Audio = user.Avatar.Voice == null ? null : new(null, 0, user.Avatar.Voice);
+        User = user?.Avatar;
+        Language = user?.Avatar.Language ?? language ?? string.Empty;
+        LanguageIsRTL = user?.Avatar.LanguageIsRTL;
+        Audio = user?.Avatar.Voice == null ? null : new(null, 0, user.Avatar.Voice);
         Timestamp = DateTime.UtcNow;
         Tag = tag;
         ContentType = contentType;
@@ -59,12 +56,10 @@ public class Content : BlossomEntity<string>
         SetHtmlFromMarkdown();
     }
 
-    public Content(Content sourceContent, Language toLanguage, string text) : this()
+    public Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.Domain, sourceContent.Path, toLanguage.Id)
     {
-        PageId = sourceContent.PageId;
-        PageName = sourceContent.PageName;
         SourceContentId = sourceContent.Id;
-        User = new(sourceContent.User);
+        User = sourceContent.User;
         Audio = sourceContent.Audio?.Voice == null ? null : new(null, 0, new(sourceContent.Audio.Voice));
         Language = toLanguage.Id;
         LanguageIsRTL = toLanguage.IsRightToLeft;
@@ -104,7 +99,7 @@ public class Content : BlossomEntity<string>
     {
         if (voiceId == null && (Audio?.Voice == null || !Audio.Voice.StartsWith(Language)))
         {
-            voiceId = await engine.GetClosestVoiceAsync(Language, User.Gender, User.Id);
+            voiceId = await engine.GetClosestVoiceAsync(Language, User?.Gender, User?.Id ?? Guid.NewGuid().ToString());
         }
 
         var audio = await engine.SpeakAsync(this, voiceId);

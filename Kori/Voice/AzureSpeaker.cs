@@ -5,7 +5,6 @@ using File = Sparc.Blossom.Data.File;
 
 namespace Kori;
 
-public record WordSpoken(string UserId, string Language, byte[] Audio, List<Word> Words) : Notification(UserId + "|" + Language);
 public class AzureSpeaker : ISpeaker
 {
     readonly HttpClient Client;
@@ -44,14 +43,14 @@ public class AzureSpeaker : ISpeaker
             return null;
 
         using var stream = new MemoryStream(ConvertWavToMp3(result.AudioData), false);
-        File file = new("speak", $"{message.PageId}/{message.Id}/{result.ResultId}.mp3", AccessTypes.Public, stream);
+        File file = new("speak", $"{message.Id}/{result.ResultId}.mp3", AccessTypes.Public, stream);
         await Files.AddAsync(file);
 
         var cost = message.Text!.Length / 1_000_000M * 16.00M; // $16 per 1M characters
         var ticks = result.AudioDuration.Ticks;
-        message.AddCharge(ticks, cost, $"Speak message from {message.User.Name} in voice {message.Audio?.Voice}");
+        message.AddCharge(ticks, cost, $"Speak message in voice {message.Audio!.Voice}");
         
-        return new(file.Url!, (long)result.AudioDuration.TotalMilliseconds, message.Audio?.Voice, words);
+        return new(file.Url!, (long)result.AudioDuration.TotalMilliseconds, message.Audio!.Voice, words);
     }
 
     public async Task<AudioContent> SpeakAsync(List<Content> messages)
@@ -85,7 +84,7 @@ public class AzureSpeaker : ISpeaker
 
         waveFileWriter?.Dispose();
 
-        File file = new("speak", $"{messages.First().PageId}/{Guid.NewGuid()}.wav", AccessTypes.Public, combinedAudio);
+        File file = new("speak", $"{Guid.NewGuid()}.wav", AccessTypes.Public, combinedAudio);
         await Files.AddAsync(file);
 
         return new(file.Url, 0, messages.First().Audio!.Voice);
