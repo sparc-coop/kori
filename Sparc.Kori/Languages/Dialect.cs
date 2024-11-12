@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Globalization;
 
-namespace Sparc.Kori.Page;
-
+namespace Sparc.Kori;
 public class Dialect
 {
     public string Language { get; private set; }

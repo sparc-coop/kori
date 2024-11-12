@@ -25,25 +25,25 @@
                     @switch (Kori.Mode)
                     {
                         case "Search":
-                            <SearchMode />
+                            <Sparc.Kori.Search.SearchMode />
                             break;
                         case "Language":
-                            <LanguageMode />
+                            <Sparc.Kori.Language.LanguageMode />
                             break;
                         case "Blog":
-                            <BlogMode />
+                            <Sparc.Kori.Content.BlogMode />
                             break;
                         case "ABTesting":
-                            <ABTestingMode />
+                            <Sparc.Kori.ABTesting.ABTestingMode />
                             break;
                         case "Edit":
-                            <EditTextMode />
+                            <Sparc.Kori.Content.EditTextMode />
                             break;
                         case "EditImage":
-                            <EditImageMode />
+                            <Sparc.Kori.Images.EditImageMode />
                             break;
                         case "History":
-                            <HistoryMode />
+                            <Sparc.Kori.History.HistoryMode />
                             break;
                         default:
                             <DefaultMode />

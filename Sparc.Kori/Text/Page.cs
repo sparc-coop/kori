@@ -1,17 +1,10 @@
-﻿using MediatR;
-using Microsoft.Azure.Cosmos;
-using Sparc.Blossom.Data;
-using Sparc.Kori.Content;
+﻿using Sparc.Blossom.Data;
 using Sparc.Kori.Users;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
-namespace Sparc.Kori.Page;
+namespace Sparc.Kori;
 
 public record SourceContent(string PageId, string ContentId);
 public record UserJoined(string PageId, UserAvatar User) : Notification(PageId);
@@ -85,15 +78,11 @@ public class Page : BlossomEntity<string>
 
         if (user.PrimaryLanguage != null)
             AddLanguage(user.PrimaryLanguage);
-
-        Broadcast(new UserJoined(Id, activeUser));
     }
 
     public void RemoveActiveUser(Users.User user)
     {
         var activeUser = Users.FirstOrDefault(x => x.Id == user.Id);
-        if (activeUser != null)
-            Broadcast(new UserLeft(Id, activeUser));
     }
 
     internal void InviteUser(UserAvatar user)

@@ -1,15 +1,11 @@
-﻿using Microsoft.Azure.Cosmos;
-using Sparc.Blossom.Data;
-using Sparc.Kori.Users;
-using Sparc.Kori.Page;
+﻿using Sparc.Blossom.Data;
 
-namespace Sparc.Kori.Content;
+namespace Sparc.Kori;
 
-public record Word(long Offset, long Duration, string Text);
 public record EditHistory(DateTime Timestamp, string Text);
 public record AudioContent(string? Url, long Duration, string Voice, List<Word>? Subtitles = null);
 public record ContentTag(string Key, string Value, bool Translate);
-public record ContentTranslation(string Id, string LanguageId, string SourceMessageId);
+public record ContentTranslation(string Id, string LanguageId, string? SourceContentId = null);
 
 public class Content : BlossomEntity<string>
 {
@@ -37,7 +33,7 @@ public class Content : BlossomEntity<string>
     {
         Id = Guid.NewGuid().ToString();
         PageId = string.Empty;
-        User = new Users.User().Avatar;
+        User = new User().Avatar;
         Language = string.Empty;
         Translations = new();
         EditHistory = new();
@@ -45,7 +41,7 @@ public class Content : BlossomEntity<string>
         ContentType = "Text";
     }
 
-    public Content(string pageId, string pageName, Users.User user, string text, string? tag = null, string? language = null, string contentType = "Text") : this()
+    public Content(string pageId, string pageName, User user, string text, string? tag = null, string? language = null, string contentType = "Text") : this()
     {
         PageId = pageId;
         PageName = pageName;
@@ -60,7 +56,7 @@ public class Content : BlossomEntity<string>
         SetHtmlFromMarkdown();
     }
 
-    public Content(Content sourceContent, Page.Language toLanguage, string text, List<ContentTag> translatedTags) : this()
+    public Content(Content sourceContent, Language toLanguage, string text) : this()
     {
         PageId = sourceContent.PageId;
         PageName = sourceContent.PageName;
@@ -72,8 +68,6 @@ public class Content : BlossomEntity<string>
         Timestamp = sourceContent.Timestamp;
         Tag = sourceContent.Tag;
         SetText(text);
-        SetTags(sourceContent.Tags);
-        SetTags(translatedTags, false);
         SetHtmlFromMarkdown();
     }
 
@@ -87,8 +81,6 @@ public class Content : BlossomEntity<string>
 
         Text = text;
         LastModified = DateTime.UtcNow;
-
-        Broadcast(new ContentTextChanged(this));
     }
 
     internal async Task<(string?, Content?)> TranslateAsync(Translator translator, string languageId)
@@ -117,7 +109,6 @@ public class Content : BlossomEntity<string>
         if (audio != null)
         {
             Audio = audio;
-            Broadcast(new ContentAudioChanged(this));
         }
 
         return audio;
@@ -144,25 +135,6 @@ public class Content : BlossomEntity<string>
         }
     }
 
-    internal void SetTags(List<ContentTag> tags, bool fullReplace = true)
-    {
-        var keys = tags.Select(x => x.Key).ToList();
-        if (fullReplace)
-            Tags.RemoveAll(x => !keys.Contains(x.Key));
-
-        foreach (var tag in tags)
-        {
-            var existing = Tags.FirstOrDefault(x => x.Key == tag.Key);
-            if (existing != null)
-                existing.Value = tag.Value;
-            else
-                Tags.Add(new(tag.Key, tag.Value, SourceContentId == null && tag.Translate));
-        }
-
-        if (tags.Any(x => x.Translate))
-            Broadcast(new ContentTextChanged(this));
-    }
-
     internal void AddCharge(long ticks, decimal cost, string description)
     {
         Charge += ticks;
@@ -174,7 +146,6 @@ public class Content : BlossomEntity<string>
     internal void Delete()
     {
         DeletedDate = DateTime.UtcNow;
-        Broadcast(new ContentDeleted(this));
     }
 
     public void SetHtmlFromMarkdown()

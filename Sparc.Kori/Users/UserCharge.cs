@@ -1,11 +1,6 @@
 ﻿using Sparc.Blossom.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Sparc.Kori.Users;
+namespace Sparc.Kori;
 
 public class UserCharge : BlossomEntity<string>
 {

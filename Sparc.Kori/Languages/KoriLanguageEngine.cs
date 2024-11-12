@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System.Configuration;
 using System.Globalization;
 using System.Net.Http.Json;
 

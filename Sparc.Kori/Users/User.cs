@@ -1,16 +1,7 @@
-﻿using MediatR;
-using Sparc.Blossom.Authentication;
-using Sparc.Kori.Content;
-using Sparc.Kori.Page;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Sparc.Blossom.Authentication;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Sparc.Kori.Users;
+namespace Sparc.Kori;
 
 public record UserAvatarUpdated(UserAvatar Avatar) : Notification(Avatar.Id);
 public record BalanceChanged(string HostUserId, long Ticks) : Notification(HostUserId);
@@ -98,11 +89,6 @@ public class User : BlossomUser
         Avatar.Voice = voice?.ShortName;
         Avatar.Dialect = voice?.Locale;
         Avatar.Gender = voice?.Gender;
-
-        Broadcast(new UserAvatarUpdated(Avatar));
-
-        if (hasLanguageChanged)
-            Broadcast(new UserLanguageChanged(Id, Avatar.Language));
     }
 
     internal Language? PrimaryLanguage => LanguagesSpoken.FirstOrDefault(x => x.Id == Avatar.Language);
@@ -112,7 +98,6 @@ public class User : BlossomUser
     internal void Refill(long ticksToAdd)
     {
         BillingInfo.TicksBalance += ticksToAdd;
-        Broadcast(new BalanceChanged(Id, BillingInfo.TicksBalance));
     }
 
     //internal void AddCharge(CostIncurred costIncurred)
@@ -135,8 +120,6 @@ public class User : BlossomUser
         Avatar.Emoji = avatar.Emoji;
         Avatar.HearOthers = avatar.HearOthers;
         Avatar.MuteMe = avatar.MuteMe;
-
-        Broadcast(new UserAvatarUpdated(Avatar));
     }
 
     internal void SetUpBilling(string customerId, string currency)
@@ -147,15 +130,11 @@ public class User : BlossomUser
     internal void GoOnline(string connectionId)
     {
         Avatar.IsOnline = true;
-        Broadcast(new UserAvatarUpdated(Avatar));
-        if (BillingInfo != null)
-            Broadcast(new BalanceChanged(Id, BillingInfo.TicksBalance));
     }
 
     internal void GoOffline()
     {
         Avatar.IsOnline = false;
-        Broadcast(new UserAvatarUpdated(Avatar));
     }
 
     internal void RegisterWithSlack(string team_id, string user_id)

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sparc.Kori.Users;
+namespace Sparc.Kori;
 
 public class UserAvatar
 {
