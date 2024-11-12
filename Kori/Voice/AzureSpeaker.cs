@@ -50,7 +50,7 @@ public class AzureSpeaker : ISpeaker
         var ticks = result.AudioDuration.Ticks;
         message.AddCharge(ticks, cost, $"Speak message in voice {message.Audio!.Voice}");
         
-        return new(file.Url!, (long)result.AudioDuration.TotalMilliseconds, message.Audio!.Voice, words);
+        return new(file.Url!, (long)result.AudioDuration.TotalMilliseconds, message.Audio!.Voice) { Words = words };
     }
 
     public async Task<AudioContent> SpeakAsync(List<Content> messages)

@@ -4,7 +4,11 @@ using Markdig.Renderers;
 namespace Kori;
 
 public record EditHistory(DateTime Timestamp, string Text);
-public record AudioContent(string? Url, long Duration, string Voice, List<Word>? Subtitles = null);
+public record AudioContent(string? Url, long Duration, string Voice)
+{
+    public List<Word> Words { get; set; } = [];
+}
+
 public record ContentTag(string Key, string Value, bool Translate);
 public record ContentTranslation(string Id, string LanguageId, string? SourceContentId = null);
 
