@@ -9,7 +9,6 @@ public class Page : BlossomEntity<string>
 {
     public string Domain { get; private set; }
     public string Path { get; private set; }
-    public string Name { get; private set; }
     public SourceContent? SourceContent { get; private set; }
     public List<Language> Languages { get; private set; }
     public DateTime StartDate { get; private set; }
@@ -23,18 +22,17 @@ public class Page : BlossomEntity<string>
         Id = Guid.NewGuid().ToString();
         Domain = domain;
         Path = path;
-        Name = "New Page";
         Languages = [];
         StartDate = DateTime.UtcNow;
         LastActiveDate = DateTime.UtcNow;
     }
 
-    public Page(string domain, string path, string name) : this(domain, path)
+    public Page(string domain, string path, string language) : this(domain, path)
     {
-        Name = name;
+
     }
 
-    public Page(Page page, Content content) : this(page.Domain, page.Path, page.Name)
+    public Page(Page page, Content content) : this(page.Domain, page.Path)
     {
         // Create a subpage from a message
 
