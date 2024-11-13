@@ -4,24 +4,24 @@ namespace Kori;
 
 public class UserCharge : BlossomEntity<string>
 {
-    public string UserId { get; set; }
-    public string? RoomId { get; set; }
-    public string? MessageId { get; set; }
-    public string Description { get; set; }
-    public DateTime Timestamp { get; set; }
+    internal string UserId { get; set; }
+    internal string? RoomId { get; set; }
+    internal string? MessageId { get; set; }
+    internal string Description { get; set; }
+    internal DateTime Timestamp { get; set; }
     public decimal Amount { get; set; }
-    public long Ticks { get; set; }
-    public string Currency { get; set; }
-    public string? PaymentIntent { get; set; }
+    internal long Ticks { get; set; }
+    internal string Currency { get; set; }
+    internal string? PaymentIntent { get; set; }
 
-    public UserCharge()
+    internal UserCharge()
     {
         UserId = "";
         Currency = "";
         Description = "";
     }
 
-    public UserCharge(string userId, PaymentIntent paymentIntent)
+    internal UserCharge(string userId, PaymentIntent paymentIntent)
     {
         Id = paymentIntent.Id;
         UserId = userId;
@@ -36,7 +36,7 @@ public class UserCharge : BlossomEntity<string>
             : 0;
     }
 
-    //public UserCharge(Room room, CostIncurred cost, User user)
+    //internal UserCharge(Room room, CostIncurred cost, User user)
     //{
     //    Id = Guid.NewGuid().ToString();
     //    UserId = user.Id;

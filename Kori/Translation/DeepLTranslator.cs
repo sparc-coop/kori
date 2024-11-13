@@ -3,11 +3,11 @@ using DeepL.Model;
 
 namespace Kori;
 
-public class DeepLTranslator(IConfiguration configuration) : ITranslator
+internal class DeepLTranslator(IConfiguration configuration) : ITranslator
 {
     readonly DeepL.Translator Client = new(configuration.GetConnectionString("DeepL")!);
 
-    public static SourceLanguage[]? Languages;
+    internal static SourceLanguage[]? Languages;
 
     public async Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages)
     {

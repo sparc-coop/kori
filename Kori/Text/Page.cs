@@ -34,7 +34,7 @@ public class Page : BlossomEntity<string>
         Name = name;
     }
 
-    public Page(Page page, Content content) : this(page.Domain, page.Path, page.Name)
+    internal Page(Page page, Content content) : this(page.Domain, page.Path, page.Name)
     {
         // Create a subpage from a message
 

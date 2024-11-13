@@ -9,7 +9,7 @@ public class Dialect
     public string NativeName { get; private set; }
     public List<Voice> Voices { get; private set; }
 
-    public Dialect()
+    internal Dialect()
     {
         Language = string.Empty;
         Locale = string.Empty;
@@ -18,7 +18,7 @@ public class Dialect
         Voices = [];
     }
 
-    public Dialect(string localeName)
+    internal Dialect(string localeName)
     {
         var info = CultureInfo.GetCultureInfo(localeName);
 
@@ -29,7 +29,7 @@ public class Dialect
         Voices = [];
     }
 
-    public void AddVoice(Voice voice)
+    internal void AddVoice(Voice voice)
     {
         var existing = Voices.FindIndex(x => x.ShortName == voice.ShortName);
 

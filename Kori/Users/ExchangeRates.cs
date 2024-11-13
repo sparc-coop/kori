@@ -8,9 +8,9 @@ public class ExchangeRates
     static Dictionary<string, decimal> Rates = [];
     public DateTime? LastUpdated { get; private set; }
     public DateTime? AsOfDate { get; private set; }
-    public IFileRepository<Sparc.Blossom.Data.File> Files { get; }
+    public IFileRepository<Sparc.Blossom.Data.BlossomFile> Files { get; }
 
-    public ExchangeRates(IConfiguration configuration, IFileRepository<Sparc.Blossom.Data.File> files)
+    public ExchangeRates(IConfiguration configuration, IFileRepository<Sparc.Blossom.Data.BlossomFile> files)
     {
         ApiKey = configuration["ExchangeRatesApi"]!;
         Files = files;
@@ -73,7 +73,7 @@ public class ExchangeRates
                 using MemoryStream stream = new();
                 await JsonSerializer.SerializeAsync(stream, response);
                 stream.Position = 0;
-                await Files.AddAsync(new Sparc.Blossom.Data.File("exchangerates", $"{today}.json", AccessTypes.Public, stream));
+                await Files.AddAsync(new Sparc.Blossom.Data.BlossomFile("exchangerates", $"{today}.json", AccessTypes.Public, stream));
             }
         }
     }

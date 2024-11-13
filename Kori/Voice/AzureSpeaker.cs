@@ -1,19 +1,18 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using NAudio.Lame;
 using NAudio.Wave;
-using File = Sparc.Blossom.Data.File;
 
 namespace Kori;
 
-public class AzureSpeaker : ISpeaker
+internal class AzureSpeaker : ISpeaker
 {
     readonly HttpClient Client;
     readonly string SubscriptionKey;
 
-    public IFileRepository<File> Files { get; }
-    public static List<Voice>? Voices;
+    internal IFileRepository<BlossomFile> Files { get; }
+    internal static List<Voice>? Voices;
 
-    public AzureSpeaker(IConfiguration configuration, IFileRepository<File> files)
+    internal AzureSpeaker(IConfiguration configuration, IFileRepository<BlossomFile> files)
     {
         SubscriptionKey = configuration.GetConnectionString("Cognitive")!;
 
@@ -43,7 +42,7 @@ public class AzureSpeaker : ISpeaker
             return null;
 
         using var stream = new MemoryStream(ConvertWavToMp3(result.AudioData), false);
-        File file = new("speak", $"{message.Id}/{result.ResultId}.mp3", AccessTypes.Public, stream);
+        BlossomFile file = new("speak", $"{message.Id}/{result.ResultId}.mp3", AccessTypes.Public, stream);
         await Files.AddAsync(file);
 
         var cost = message.Text!.Length / 1_000_000M * 16.00M; // $16 per 1M characters
@@ -84,7 +83,7 @@ public class AzureSpeaker : ISpeaker
 
         waveFileWriter?.Dispose();
 
-        File file = new("speak", $"{Guid.NewGuid()}.wav", AccessTypes.Public, combinedAudio);
+        BlossomFile file = new("speak", $"{Guid.NewGuid()}.wav", AccessTypes.Public, combinedAudio);
         await Files.AddAsync(file);
 
         return new(file.Url, 0, messages.First().Audio!.Voice);
@@ -110,7 +109,7 @@ public class AzureSpeaker : ISpeaker
         return new SpeechSynthesizer(config, null);
     }
 
-    public static byte[] ConvertWavToMp3(byte[] wavFile)
+    internal static byte[] ConvertWavToMp3(byte[] wavFile)
     {
         using var retMs = new MemoryStream();
         using var ms = new MemoryStream(wavFile);

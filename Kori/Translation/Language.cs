@@ -8,7 +8,7 @@ public class Language
     public bool? IsRightToLeft { get; private set; }
     public List<Dialect> Dialects { get; private set; }
 
-    public Language(string id, string displayName, string nativeName, bool? isRightToLeft)
+    internal Language(string id, string displayName, string nativeName, bool? isRightToLeft)
     {
         Id = id.Split("-").First();
         DisplayName = displayName;
@@ -24,7 +24,7 @@ public class Language
         }
     }
 
-    public void AddDialect(string locale, List<Voice>? voices = null)
+    internal void AddDialect(string locale, List<Voice>? voices = null)
     {
         Dialect dialect = new(locale);
         if (voices != null)

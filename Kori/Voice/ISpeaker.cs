@@ -1,6 +1,6 @@
 ﻿namespace Kori;
 
-public interface ISpeaker
+internal interface ISpeaker
 {
     Task<AudioContent?> SpeakAsync(Content message, string? voiceId = null);
     Task<List<Voice>> GetVoicesAsync(string? language = null, string? dialect = null, string? gender = null);

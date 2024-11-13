@@ -1,6 +1,6 @@
 ﻿namespace Kori;
 
-public interface ITranslator
+internal interface ITranslator
 {
     Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages);
     Task<List<Language>> GetLanguagesAsync();

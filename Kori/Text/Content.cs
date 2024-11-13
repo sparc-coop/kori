@@ -27,10 +27,10 @@ public class Content : BlossomEntity<string>
     public AudioContent? Audio { get; private set; }
     public string? Text { get; private set; }
     public List<ContentTranslation> Translations { get; private set; }
-    public long Charge { get; private set; }
-    public decimal Cost { get; private set; }
+    internal long Charge { get; private set; }
+    internal decimal Cost { get; private set; }
     public string? Tag { get; set; }
-    public List<EditHistory> EditHistory { get; private set; }
+    internal List<EditHistory> EditHistory { get; private set; }
     public string Html { get; set; }
 
     protected Content(string domain, string path, string language)
@@ -60,7 +60,7 @@ public class Content : BlossomEntity<string>
         SetHtmlFromMarkdown();
     }
 
-    public Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.Domain, sourceContent.Path, toLanguage.Id)
+    internal Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.Domain, sourceContent.Path, toLanguage.Id)
     {
         SourceContentId = sourceContent.Id;
         User = sourceContent.User;

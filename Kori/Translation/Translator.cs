@@ -1,17 +1,17 @@
 ﻿namespace Kori;
 
-public class Translator
+internal class Translator
 {
-    public static List<Language>? Languages;
+    internal static List<Language>? Languages;
 
-    public Translator(IEnumerable<ITranslator> translators)
+    internal Translator(IEnumerable<ITranslator> translators)
     {
         Translators = translators;
     }
 
-    public IEnumerable<ITranslator> Translators { get; }
+    internal IEnumerable<ITranslator> Translators { get; }
 
-    public async Task<List<Language>> GetLanguagesAsync()
+    internal async Task<List<Language>> GetLanguagesAsync()
     {
         if (Languages == null)
         {
@@ -26,13 +26,13 @@ public class Translator
         return Languages;
     }
 
-    public async Task<Language?> GetLanguageAsync(string language)
+    internal async Task<Language?> GetLanguageAsync(string language)
     {
         var languages = await GetLanguagesAsync();
         return languages.FirstOrDefault(x => x.Id == language);
     }
 
-    public async Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages)
+    internal async Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages)
     {
         var processedLanguages = new List<Language>(toLanguages);
         var messages = new List<Content>();
@@ -59,7 +59,7 @@ public class Translator
         return messages;
     }
 
-    public async Task<string?> TranslateAsync(string text, string fromLanguage, string toLanguage)
+    internal async Task<string?> TranslateAsync(string text, string fromLanguage, string toLanguage)
     {
         if (fromLanguage == toLanguage)
             return text;

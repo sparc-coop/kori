@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>ab289277-1ea0-4ea1-bf15-8f0e5ccf4d1a</UserSecretsId>
+	  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,13 +13,14 @@
     <PackageReference Include="Markdig" Version="0.38.0" />
     <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.41.1" />
     <PackageReference Include="NAudio.Lame" Version="2.0.1" />
+    <PackageReference Include="Scalar.AspNetCore" Version="1.2.36" />
     <PackageReference Include="Stripe.net" Version="47.0.0" />
   </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj" />
-		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Server.ApiGenerator\Sparc.Blossom.Api.ClosedApi.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Server\Sparc.Blossom.csproj" />
+		<ProjectReference Include="..\..\sparc\Sparc.Blossom.Api.OpenApi\Sparc.Blossom.Api.OpenApi.csproj" OutputItemType="Analyzer" />
 	</ItemGroup>
 
 </Project>

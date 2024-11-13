@@ -4,13 +4,13 @@ using System.Net.Http.Json;
 
 namespace Kori;
 
-public class AzureTranslator : ITranslator
+internal class AzureTranslator : ITranslator
 {
     readonly HttpClient Client;
 
-    public static LanguageList? Languages;
+    internal static LanguageList? Languages;
 
-    public AzureTranslator(IConfiguration configuration)
+    internal AzureTranslator(IConfiguration configuration)
     {
         Client = new HttpClient
         {
@@ -68,7 +68,7 @@ public class AzureTranslator : ITranslator
     }
 
     // from https://stackoverflow.com/a/13731854
-    public static IEnumerable<IEnumerable<T>> Batch<T>(IEnumerable<T> items,
+    internal static IEnumerable<IEnumerable<T>> Batch<T>(IEnumerable<T> items,
                                                        int maxItems)
     {
         return items.Select((item, inx) => new { item, inx })
@@ -77,11 +77,11 @@ public class AzureTranslator : ITranslator
     }
 }
 
-public record TranslationResult(DetectedLanguage DetectedLanguage, TextResult SourceText, Translation[] Translations);
-public record DetectedLanguage(string Language, float Score);
-public record TextResult(string Text, string Script);
-public record Translation(string Text, TextResult Transliteration, string To, Alignment Alignment, SentenceLength SentLen);
-public record Alignment(string Proj);
-public record SentenceLength(int[] SrcSentLen, int[] TransSentLen);
-public record LanguageList(Dictionary<string, LanguageItem> translation);//dictionary of languages //List<LanguageItem>> translation);//
-public record LanguageItem(string name, string nativeName, string dir, List<Dialect>? Dialects);
+internal record TranslationResult(DetectedLanguage DetectedLanguage, TextResult SourceText, Translation[] Translations);
+internal record DetectedLanguage(string Language, float Score);
+internal record TextResult(string Text, string Script);
+internal record Translation(string Text, TextResult Transliteration, string To, Alignment Alignment, SentenceLength SentLen);
+internal record Alignment(string Proj);
+internal record SentenceLength(int[] SrcSentLen, int[] TransSentLen);
+internal record LanguageList(Dictionary<string, LanguageItem> translation);//dictionary of languages //List<LanguageItem>> translation);//
+internal record LanguageItem(string name, string nativeName, string dir, List<Dialect>? Dialects);
