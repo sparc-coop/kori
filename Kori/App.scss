@@ -1,2 +1,8 @@
 @import '_Imports';
 @import 'Html';
+
+button, a, label {
+    &:hover {
+        cursor: url('/assets/cursor.svg'), pointer !important;
+    }
+}
