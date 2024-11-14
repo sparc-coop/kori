@@ -8,6 +8,8 @@ public class Language
     public bool? IsRightToLeft { get; private set; }
     public List<Dialect> Dialects { get; private set; }
 
+    public Language() {}
+
     internal Language(string id, string displayName, string nativeName, bool? isRightToLeft)
     {
         Id = id.Split("-").First();
