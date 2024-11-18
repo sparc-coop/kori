@@ -328,27 +328,27 @@
 
 <script>
     function disablePageScrolling(scroll) {
-        if (scroll == true) {
-            document.body.classList.add("kori-login__mobile-open");
-            console.log("disablePageScrolling");
-        } else {
-            document.body.classList.remove("kori-login__mobile-open");
-            console.log("enablePageScrolling");
-        }
+    if (scroll == true) {
+    document.body.classList.add("kori-login__mobile-open");
+    console.log("disablePageScrolling");
+    } else {
+    document.body.classList.remove("kori-login__mobile-open");
+    console.log("enablePageScrolling");
+    }
 
-        // var body = document.querySelectorAll(".kori-login__mobile-open")[0];
-        // if (body) {
-        //     body.style.overflowY = "hidden";
-        //     body.style.position = "fixed";
-        // }
+    // var body = document.querySelectorAll(".kori-login__mobile-open")[0];
+    // if (body) {
+    //     body.style.overflowY = "hidden";
+    //     body.style.position = "fixed";
+    // }
     }
 </script>
 
 <style>
     body.kori-login__mobile-open {
-        overflow: hidden;
-        position: fixed;
-        width: 100vw;
+    overflow: hidden;
+    position: fixed;
+    width: 100vw;
     }
 </style>
 
@@ -384,7 +384,12 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        //await Js.InvokeVoidAsync("initHyperScript");
+        // await Js.InvokeVoidAsync("initHyperScript");
+        if (!String.IsNullOrEmpty(Token))
+        {
+            await foreach (var state in Auth.Login(User, Token))
+                StateHasChanged();
+        }
     }
 
     async Task LoginWithPasskey()
