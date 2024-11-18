@@ -65,7 +65,7 @@
 }
 .bg-box {
     background: #F1F3FE;
-    border-radius: 32px;
+    border-radius: 0 0 32px 32px;
     width: 100%;
 }
 .bg-box .row {

@@ -48,3 +48,7 @@ button.secondary, a.button.secondary {
   color: #363E51;
   background-color: white;
 }
+
+button:hover, a:hover, label:hover {
+  cursor: url("/assets/cursor.svg"), pointer !important;
+}
