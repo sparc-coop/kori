@@ -1,8 +1,12 @@
 @import '_Imports';
 @import 'Html';
 
+html {
+    cursor: url('/assets/Arrow 24px.svg'), default !important;
+}
+
 button, a, label {
     &:hover {
-        cursor: url('/assets/cursor.svg'), pointer !important;
+        cursor: url('/assets/Link 24px.svg'), pointer !important;
     }
 }
