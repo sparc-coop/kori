@@ -2,6 +2,8 @@
 using Kori;
 using Sparc.Blossom.Data;
 
+namespace Kori.ContentQueries;
+
 public class Search : BlossomQuery<Content>
 {
     public Search(string searchTerm) => Query.Where(content =>           

@@ -7,6 +7,8 @@ public record KoriTextContent(string Id, string Tag, string Language, string Tex
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
+public record KoriSearch(string ContentId, string Tag, string Text, string Domain, string Path);
+
 public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
 {
     public Dictionary<string, KoriTextContent> Value { get; set; } = [];

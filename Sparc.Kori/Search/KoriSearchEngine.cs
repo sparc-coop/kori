@@ -1,6 +1,10 @@
-﻿namespace Sparc.Kori;
+﻿using static System.Net.WebRequestMethods;
 
-public class KoriSearchEngine(KoriJsEngine js)
+namespace Sparc.Kori;
+
+//public record KoriSearch(string ContentId, string Tag, string Text, string Domain, string Path);
+
+public class KoriSearchEngine(KoriHttpEngine http, KoriJsEngine js)
 {
     public async Task OpenAsync()
     {
@@ -13,4 +17,9 @@ public class KoriSearchEngine(KoriJsEngine js)
         await js.InvokeVoidAsync("closeSearch");
     }
 
+    public async Task<List<KoriSearch>> SearchAsync(string searchTerm)
+    {
+        await http.SearchContentAsync(searchTerm);
+        await http.SearchPageAsync(searchTerm);
+    }
 }

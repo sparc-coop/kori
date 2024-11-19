@@ -58,4 +58,16 @@ public class KoriHttpEngine(HttpClient client)
        var result = await client.GetFromJsonAsync<List<KoriLanguage>>("api/Languages");
        return result;
     }
+
+    internal async Task<List<KoriSearch>> SearchContentAsync(string searchTerm)
+    {
+        var result = await client.GetFromJsonAsync<List<KoriSearch>>($"contents/Search?searchTerm={searchTerm}");
+        return result;
+    }
+
+    internal async Task<List<KoriSearch>> SearchPageAsync(string searchTerm)
+    {
+        var result = await client.GetFromJsonAsync<List<KoriSearch>>($"pages/Search?searchTerm={searchTerm}");
+        return result;
+    }
 }

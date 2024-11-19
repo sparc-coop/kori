@@ -82,6 +82,9 @@ public class KoriEngine(
     public async Task<KoriTextContent> SaveAsync(string key, string text)
         => await content.SaveAsync(key, text);
 
+    public async Task<List<KoriSearch>> SearchAsync(string searchTerm)
+        => await search.SearchAsync(searchTerm);
+
     [JSInvokable]
     public void BackToEdit()
     {
