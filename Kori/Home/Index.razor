@@ -93,9 +93,9 @@
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="content-wrapper px-4">
-                <div class="icon-img mb-2"><img src="/assets/Elemental_1.png" alt="" class="d-block w-100"></div>
+                <div class="icon-img mb-2"><img src="/assets/Component 1.png" alt="" class="d-block w-100"></div>
                 <div class="richcontent text-left">
-                    <span>Intuitive work</span>
+                    <span style="color: #4162DC;">Intuitive work</span>
                     <h2>On-site Content Editing</h2>
                     <div class="content">
                         Hover your cursor over any editable content to see a blue outline, then click to start editing. Once you’re finished, simply click outside the box. The text will be live immediately, with no need to re-publish again.
@@ -141,9 +141,11 @@
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="content-wrapper px-4">
-                <div class="icon-img mb-2"><img src="/assets/Component 1.png" alt="" class="d-block w-100"></div>
+                <div class="icon-img mb-2">
+                    <lottie-player id="lottie-language" class="kori-animation__lottie" src="https://lottie.host/787843bd-1d5e-4a6a-93f6-5bcf5ba6d106/IcdX5dfx5j.json" background="transparent" speed="1" style="width: 300px; height: 300px"></lottie-player>
+                </div>
                 <div class="richcontent text-left">
-                    <span style="color: #4162DC;">Come as you are</span>
+                    <span style="color: #41BBE9">Come as you are</span>
                     <h2>Translate and Improve</h2>
                     <div class="content">
                         Write content in the languages you find most natural. Kori supports translations in 139 languages. If you’re concerned about how the translation turns out, don’t worry—you can review and make changes anytime! You can also change the translated language and save your own translations.
@@ -225,7 +227,9 @@
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="content-wrapper px-4">
-                <div class="icon-img mb-2"><img src="/assets/Component 255.png" alt="" class="d-block w-100"></div>
+                <div class="icon-img mb-2">
+                    <lottie-player id="lottie-AB" class="kori-animation__lottie"src="https://lottie.host/38f6240f-d7c0-4d23-a2b2-9fad13711292/CFsAXDuHJN.json" background="transparent" speed="1" style="width: 300px; height: 300px" direction="1" playMode="normal"></lottie-player>
+                </div>
                 <div class="richcontent text-left">
                     <span style="color: #5E6A85;">Analyze and adopt</span>
                     <h2>Discover your potential</h2>
@@ -264,7 +268,7 @@
 </section>
 
 @* Lottie Test Animation *@
-<section class="image-with-text py-5">
+@* <section class="image-with-text py-5">
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="content-wrapper px-4">
@@ -287,3 +291,40 @@
         </div>
     </div>
 </section>
+*@
+
+<script>
+    let lottieFiles = document.querySelectorAll(".kori-animation__lottie");
+    
+
+    lottieFiles.forEach((player) => {
+        player.addEventListener("ready", () => {
+            let idString = "#" + player.id;
+            console.log(idString);
+            LottieInteractivity.create({
+                player: idString,
+                mode:"cursor",
+                actions: [ { type: "hover", forceFlag: false } ]
+            });
+        });
+    });
+    // let player = document.getElementById("AB-lottie");
+
+    // player.addEventListener("ready", () => {
+    //     LottieInteractivity.create({
+    //         player: "#lottie-AB",
+    //         mode:"cursor",
+    //         actions: [ { type: "hover", forceFlag: false } ]
+    //     });
+
+    //     console.log(player);
+    // });
+</script>
+
+@code {
+    bool isFocused = false;
+
+    void hoverAnimation() {
+        isFocused = !isFocused;
+    }
+}

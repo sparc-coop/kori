@@ -10,3 +10,26 @@ button, a, label {
         cursor: url('/assets/Link 24px.svg'), pointer !important;
     }
 }
+
+.kori-animation {
+    &__still {
+        display: block;
+
+        &.show {
+            display: none;
+        }
+
+        img {
+            width: 300px;
+            max-width: none;
+        }
+    }
+
+    &__lottie {
+        //display: none;
+
+        &.show {
+            display: block;
+        }
+    }
+}
