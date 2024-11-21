@@ -57,15 +57,9 @@ button:hover, a:hover, label:hover {
   cursor: url("/assets/Link 24px.svg"), pointer !important;
 }
 
-.kori-animation__still {
-  display: block;
-}
-.kori-animation__still.show {
-  display: none;
-}
-.kori-animation__still img {
-  width: 300px;
-  max-width: none;
+.kori-animation__lottie {
+  width: 200px;
+  height: auto;
 }
 .kori-animation__lottie.show {
   display: block;

@@ -12,21 +12,9 @@ button, a, label {
 }
 
 .kori-animation {
-    &__still {
-        display: block;
-
-        &.show {
-            display: none;
-        }
-
-        img {
-            width: 300px;
-            max-width: none;
-        }
-    }
-
     &__lottie {
-        //display: none;
+        width: 200px;
+        height: auto;
 
         &.show {
             display: block;
