@@ -20,17 +20,7 @@ public class KoriSearchEngine(KoriHttpEngine http, KoriJsEngine js)
         var contentResults = await http.SearchContentAsync(searchTerm);
         var pageResults = await http.SearchPageAsync(searchTerm);
 
-        var mappedContentResults = contentResults
-           .Select(content =>
-               new KoriSearch(content.Id, content.Tag, content.Text, content.Domain, content.Path, "Content"))
-           .ToList();
-
-        var mappedPageResults = pageResults
-            .Select(page =>
-                new KoriSearch(page.Id, null, null, page.Domain, page.Path ?? "", "Page"))
-            .ToList();
-
-        var combinedResults = mappedContentResults.Concat(mappedPageResults).ToList();
+        var combinedResults = contentResults.Concat(pageResults).ToList();
 
         return combinedResults;
     }

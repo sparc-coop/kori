@@ -62,12 +62,12 @@ public class KoriHttpEngine(HttpClient client)
     internal async Task<List<KoriSearch>> SearchContentAsync(string searchTerm)
     {
         var result = await client.GetFromJsonAsync<List<KoriSearch>>($"contents/Search?searchTerm={searchTerm}");
-        return result;
+        return result.Select(item => item with { Source = "content" }).ToList();
     }
 
     internal async Task<List<KoriSearch>> SearchPageAsync(string searchTerm)
     {
         var result = await client.GetFromJsonAsync<List<KoriSearch>>($"pages/Search?searchTerm={searchTerm}");
-        return result;
+        return result.Select(item => item with { Source = "page" }).ToList();
     }
 }
