@@ -2,7 +2,7 @@
 
 namespace Sparc.Kori;
 
-public record KoriPage(string Name, string Slug, string Language, ICollection<KoriTextContent> Content);
+public record KoriPage(string Name, string Domain, string Path, string Language, ICollection<KoriTextContent> Content, string Id);
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudio? Audio, List<object>? Nodes, bool Submitted = true);
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
@@ -12,8 +12,17 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
     public Dictionary<string, KoriTextContent> Value { get; set; } = [];
     public string EditMode { get; set; } = "Edit";
 
-    public async Task InitializeAsync()
+    public async Task InitializeAsync(KoriContentRequest request)
     {
+        var page = await http.GetPageByDomainAndPathAsync(request.Domain, request.Path);
+
+        if(page == null)
+        {
+            page = await http.CreatePage(request.Domain, request.Path, "new page");
+        }
+
+        //TODO logic to load page content
+
         Value = await http.GetContentAsync() ?? [];
     }
 

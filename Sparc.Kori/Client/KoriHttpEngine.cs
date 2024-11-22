@@ -8,11 +8,11 @@ namespace Sparc.Kori;
 public record KoriContentRequest(string Domain, string Language, string Path);
 public class KoriHttpEngine(HttpClient client)
 {
-    KoriContentRequest CurrentRequest = new("", "", "");
+    private KoriContentRequest CurrentRequest = new("", "", "");
 
-    public Task InitializeAsync(Uri baseUri, string path, string language)
+    public Task InitializeAsync(KoriContentRequest request)
     {
-        CurrentRequest = new(baseUri.Host, language, path);
+        CurrentRequest = request;
         return Task.CompletedTask;
     }
 
@@ -69,5 +69,18 @@ public class KoriHttpEngine(HttpClient client)
     {
         var result = await client.GetFromJsonAsync<List<KoriSearch>>($"pages/Search?searchTerm={searchTerm}");
         return result.Select(item => item with { Source = "page" }).ToList();
+    }
+
+    internal async Task<KoriPage> GetPageByDomainAndPathAsync(string domain, string path)
+    {
+        var result = await client.GetFromJsonAsync<List<KoriPage>>($"pages/GetPageByDomainAndPath?domain={domain}&path={path}");
+        return result.FirstOrDefault();
+    }
+
+    internal async Task<KoriPage> CreatePage(string domain, string path, string name)
+    {
+        var request = new { domain, path, name };
+        var result = await client.PostAsync<KoriPage>($"pages", request);
+        return result;
     }
 }

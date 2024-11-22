@@ -1,17 +1,17 @@
-﻿// Code from Joseph's branch
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Http;
 
 namespace Sparc.Kori;
 
 public class KoriEngine(
     KoriLanguageEngine language,
+    KoriHttpEngine http,
     KoriContentEngine content,
     KoriSearchEngine search,
     KoriImageEngine images,
-    KoriJsEngine js,
-    KoriHttpEngine http)
+    KoriJsEngine js)
 {
+    public KoriContentRequest CurrentRequest { get; private set; } = new("", "", "");
     public static Uri BaseUri { get; set; } = new("https://localhost");
     public TagManager TagManager { get; } = new TagManager();
     public string Mode { get; set; } = "";
@@ -19,8 +19,11 @@ public class KoriEngine(
     public async Task InitializeAsync(string currentUrl)
     {
         var url = new Uri(currentUrl);
-        await http.InitializeAsync(BaseUri, url.PathAndQuery, language.Value.Id);
-        await content.InitializeAsync();
+
+        CurrentRequest = new KoriContentRequest(BaseUri.Host, language.Value.Id, url.PathAndQuery);
+
+        await http.InitializeAsync(CurrentRequest);
+        await content.InitializeAsync(CurrentRequest);
         await images.InitializeAsync();
     }
 
