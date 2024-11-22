@@ -20,10 +20,6 @@ img {
   height: auto;
 }
 
-section {
-  padding: 1.5rem;
-}
-
 button, a.button {
   display: flex;
   align-items: center;
@@ -57,10 +53,31 @@ button:hover, a:hover, label:hover {
   cursor: url("/assets/Link 24px.svg"), pointer !important;
 }
 
+button, .button {
+  transition: 0.3s ease-in-out;
+}
+button.primary:hover, .button.primary:hover {
+  background: #708DF6;
+}
+button.primary:active, .button.primary:active {
+  background: #4162DC;
+}
+button.primary:disabled, .button.primary:disabled {
+  background: #5377FC;
+  opacity: 0.5;
+}
+button.secondary:hover, .button.secondary:hover {
+  background: #EEF2FA;
+}
+button.secondary:active, .button.secondary:active {
+  background: #DDE5F5;
+}
+button.secondary:disabled, .button.secondary:disabled {
+  background: #FFF;
+  opacity: 0.5;
+}
+
 .kori-animation__lottie {
   width: 200px;
   height: auto;
-}
-.kori-animation__lottie.show {
-  display: block;
 }

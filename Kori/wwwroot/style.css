@@ -3,20 +3,20 @@
     margin-bottom: 20px;
     font-weight: 800;
 }
-.multicolumn-slide {
+.col-md-3 {
     border: 1px solid #363E51;
     border-radius: 40px;
 }
-.col-md-3:nth-child(1) .multicolumn-slide {
+.col-md-3:nth-child(1) {
     box-shadow: 8px 8px 0px 0px #7AC4DF;
 }
-.col-md-3:nth-child(2) .multicolumn-slide {
+.col-md-3:nth-child(2) {
     box-shadow: 8px 8px 0px 0px #4162DC;
 }
-.col-md-3:nth-child(3) .multicolumn-slide {
+.col-md-3:nth-child(3) {
     box-shadow: 8px 8px 0px 0px #FFC240;
 }
-.col-md-3:nth-child(4) .multicolumn-slide {
+.col-md-3:nth-child(4) {
     box-shadow: 8px 8px 0px 0px #373E51;
 }
 .icon img {
@@ -28,7 +28,7 @@
 }
 .multicolumn-slide p.paragraph {
     color: #1F232B;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 19px;
 }
 .multicolumn-slide a.button {

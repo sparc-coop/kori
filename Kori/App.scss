@@ -11,13 +11,43 @@ button, a, label {
     }
 }
 
+button, .button {
+    transition: 0.3s ease-in-out;
+
+    &.primary {
+        &:hover {
+            background: #708DF6;
+        }
+
+        &:active {
+            background: #4162DC;
+        }
+
+        &:disabled {
+            background: #5377FC;
+            opacity: 0.5;
+        }
+    }
+
+    &.secondary {
+        &:hover {
+            background: #EEF2FA;
+        }
+
+        &:active {
+            background: #DDE5F5;
+        }
+
+        &:disabled {
+            background: #FFF;
+            opacity: 0.5;
+        }
+    }
+}
+
 .kori-animation {
     &__lottie {
         width: 200px;
         height: auto;
-
-        &.show {
-            display: block;
-        }
     }
 }
