@@ -14,14 +14,12 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
 
     public async Task InitializeAsync(KoriContentRequest request)
     {
-        await GetOrCreatePage(http, request);
+        var page = await GetOrCreatePage(request);
 
-        //TODO logic to load page content
-
-        Value = await http.GetContentAsync() ?? [];
+        Value = await http.GetContentAsync(request.Domain, request.Path) ?? [];
     }
 
-    private static async Task<KoriPage> GetOrCreatePage(KoriHttpEngine http, KoriContentRequest request)
+    private async Task<KoriPage> GetOrCreatePage(KoriContentRequest request)
     {
         var page = await http.GetPageByDomainAndPathAsync(request.Domain, request.Path);
 

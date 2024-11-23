@@ -12,3 +12,10 @@ public class Search : BlossomQuery<Content>
          (content.Domain != null && content.Domain.ToLower().Contains(searchTerm) == true) ||
          (content.Path != null && content.Path.ToLower().Contains(searchTerm) == true)));
 }
+
+public class GetByDomainAndPath : BlossomQuery<Content>
+{
+    public GetByDomainAndPath(string domain, string? path = null) => Query.Where(content =>
+        (content.Domain != null && content.Domain.ToLower() == domain.ToLower()) &&
+        (path == null || (content.Path != null && content.Path.ToLower() == path!.ToLower())));
+}

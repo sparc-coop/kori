@@ -16,12 +16,6 @@ public class KoriHttpEngine(HttpClient client)
         return Task.CompletedTask;
     }
 
-    public async Task<Dictionary<string, KoriTextContent>?> GetContentAsync()
-    {
-        var content = await client.PostAsync<KoriPage>("api/Content", CurrentRequest);
-        return content?.Content.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
-    }
-
     internal async Task<ICollection<KoriTextContent>?> TranslateAsync(Dictionary<string, string> messagesDictionary)
     {
         var request = new { CurrentRequest.Path, CurrentRequest.Language, Messages = messagesDictionary, AsHtml = false };
@@ -71,9 +65,14 @@ public class KoriHttpEngine(HttpClient client)
         return result.Select(item => item with { Source = "page" }).ToList();
     }
 
-    internal async Task<KoriPage> GetPageByDomainAndPathAsync(string domain, string path)
+    internal async Task<KoriPage> GetPageByDomainAndPathAsync(string domain, string? path = null)
     {
-        var result = await client.GetFromJsonAsync<List<KoriPage>>($"pages/GetPageByDomainAndPath?domain={domain}&path={path}");
+        var requestUri = $"pages/GetByDomainAndPath?domain={domain}";
+
+        if (!string.IsNullOrEmpty(path)) requestUri = $"{requestUri}&path={path}";
+
+        var result = await client.GetFromJsonAsync<List<KoriPage>>(requestUri);
+
         return result.FirstOrDefault();
     }
 
@@ -82,5 +81,15 @@ public class KoriHttpEngine(HttpClient client)
         var request = new { domain, path, name };
         var result = await client.PostAsync<KoriPage>($"pages", request);
         return result;
+    }
+    public async Task<Dictionary<string, KoriTextContent>?> GetContentAsync(string domain, string? path = null)
+    {
+        var requestUri = $"contents/GetByDomainAndPath?domain={domain}";
+
+        if (!string.IsNullOrEmpty(path)) requestUri = $"{requestUri}&path={path}";
+
+        var result = await client.GetFromJsonAsync<ICollection<KoriTextContent>>(requestUri);
+
+        return result?.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
     }
 }
