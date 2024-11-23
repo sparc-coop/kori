@@ -31,6 +31,22 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
         return page;
     }
 
+    private async Task<KoriTextContent> UpdateOrCreateTextContent(KoriContentRequest request, string text)
+    {
+        var content = await http.GetContentByIdAsync(request.Id);
+
+        if (content == null)
+        {
+            content = await http.CreateContent(request.Domain, request.Path, request.Language, request.Tag, text, "Text");
+        }
+        else
+        {
+            content = await http.UpdateTextContentAsync(content.Id, content.Tag, text);
+        }       
+
+        return content;
+    }
+
     public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> nodes)
     {
         if (nodes.Count == 0)

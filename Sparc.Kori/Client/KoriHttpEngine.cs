@@ -5,10 +5,11 @@ using System.Net.Http.Json;
 
 namespace Sparc.Kori;
 
-public record KoriContentRequest(string Domain, string Language, string Path);
+public record KoriContentRequest(string Domain, string Language, string Path, string Id, string Tag, string Text);
+
 public class KoriHttpEngine(HttpClient client)
 {
-    private KoriContentRequest CurrentRequest = new("", "", "");
+    private KoriContentRequest CurrentRequest = new("", "", "", "", "", "");
 
     public Task InitializeAsync(KoriContentRequest request)
     {
@@ -91,5 +92,28 @@ public class KoriHttpEngine(HttpClient client)
         var result = await client.GetFromJsonAsync<ICollection<KoriTextContent>>(requestUri);
 
         return result?.ToDictionary(x => x.Tag, x => x with { Nodes = [] });
+    }    
+
+    internal async Task<KoriTextContent> GetContentByIdAsync(string id)
+    {
+        var result = await client.GetFromJsonAsync<KoriTextContent>($"contents/{id}");
+        return result;
+    }
+
+    internal async Task<KoriTextContent> CreateContent(string domain, string path, string language, string? tag, string text, string contentType)
+    {
+        tag ??= text;
+        var request = new { domain, path, language, tag, text, contentType };
+        var result = await client.PostAsync<KoriTextContent>($"contents", request);
+        return result;
+    }
+
+    internal async Task<KoriTextContent> UpdateTextContentAsync(string id, string tag, string text)
+    {
+        var request = new { id, tag, text };
+        var response = await client.PutAsJsonAsync($"contents/{id}/SetText", request);
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadFromJsonAsync<KoriTextContent>();
+        return result!;
     }
 }
