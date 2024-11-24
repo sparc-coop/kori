@@ -4,7 +4,7 @@ internal class Translator
 {
     internal static List<Language>? Languages;
 
-    internal Translator(IEnumerable<ITranslator> translators)
+    public Translator(IEnumerable<ITranslator> translators)
     {
         Translators = translators;
     }

@@ -12,7 +12,7 @@ internal class AzureSpeaker : ISpeaker
     internal IFileRepository<BlossomFile> Files { get; }
     internal static List<Voice>? Voices;
 
-    internal AzureSpeaker(IConfiguration configuration, IFileRepository<BlossomFile> files)
+    public AzureSpeaker(IConfiguration configuration, IFileRepository<BlossomFile> files)
     {
         SubscriptionKey = configuration.GetConnectionString("Cognitive")!;
 
