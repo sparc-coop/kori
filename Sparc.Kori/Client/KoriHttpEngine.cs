@@ -5,11 +5,11 @@ using System.Net.Http.Json;
 
 namespace Sparc.Kori;
 
-public record KoriContentRequest(string Domain, string Language, string Path, string Id, string Tag, string Text);
+public record KoriContentRequest(string Domain, string Language, string Path);
 
 public class KoriHttpEngine(HttpClient client)
 {
-    private KoriContentRequest CurrentRequest = new("", "", "", "", "", "");
+    private KoriContentRequest CurrentRequest = new("", "", "");
 
     public Task InitializeAsync(KoriContentRequest request)
     {
@@ -79,10 +79,22 @@ public class KoriHttpEngine(HttpClient client)
 
     internal async Task<KoriPage> CreatePage(string domain, string path, string name)
     {
-        var request = new { domain, path, name };
-        var result = await client.PostAsync<KoriPage>($"pages", request);
+        var requestUri = $"pages?domain={domain}";
+
+        requestUri = appendQueryParameter(requestUri, "path", path);
+        requestUri = appendQueryParameter(requestUri, "name", name);
+
+        var result = await client.PostAsync<KoriPage>(requestUri, new());
+
         return result;
     }
+
+    private static string appendQueryParameter(string requestUri, string name, string value)
+    {
+        if (!string.IsNullOrEmpty(value)) requestUri = $"{requestUri}&{name}={value}";
+        return requestUri;
+    }
+
     public async Task<Dictionary<string, KoriTextContent>?> GetContentAsync(string domain, string? path = null)
     {
         var requestUri = $"contents/GetByDomainAndPath?domain={domain}";

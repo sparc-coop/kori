@@ -83,7 +83,10 @@ public class KoriEngine(
 
     [JSInvokable]
     public async Task<KoriTextContent> SaveAsync(string key, string text)
-        => await content.SaveAsync(key, text);
+    {
+        //TODO get tag, key and id right and check CurrentRequest
+        return await content.SaveAsync(CurrentRequest, key, text, null, key);
+    }
 
     public async Task<List<KoriSearch>> SearchAsync(string searchTerm)
         => await search.SearchAsync(searchTerm);
