@@ -1,6 +1,6 @@
 ﻿namespace Kori;
 
-internal class Translator
+public class Translator
 {
     internal static List<Language>? Languages;
 

@@ -28,7 +28,7 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
 
         if (page == null)
         {
-            page = await http.CreatePage(request.Domain, request.Path, "new page");
+            page = await http.CreatePage(request.Domain, request.Path, request.Language);
         }
 
         return page;

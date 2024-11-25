@@ -77,12 +77,12 @@ public class KoriHttpEngine(HttpClient client)
         return result.FirstOrDefault();
     }
 
-    internal async Task<KoriPage> CreatePage(string domain, string path, string name)
+    internal async Task<KoriPage> CreatePage(string domain, string path, string language)
     {
         var requestUri = $"pages?domain={domain}";
 
         requestUri = appendQueryParameter(requestUri, "path", path);
-        requestUri = appendQueryParameter(requestUri, "name", name);
+        requestUri = appendQueryParameter(requestUri, "language", language);
 
         var result = await client.PostAsync<KoriPage>(requestUri, new());
 

@@ -1,4 +1,5 @@
 ﻿using Kori;
+using Kori.PageCommands;
 using Scalar.AspNetCore;
 
 BlossomApplication.Run<Html>(args, builder =>
@@ -8,10 +9,17 @@ BlossomApplication.Run<Html>(args, builder =>
         .AddScoped<Translator>()
         .AddScoped<ITranslator, DeepLTranslator>()
         .AddScoped<ITranslator, AzureTranslator>()
-        .AddScoped<ISpeaker, AzureSpeaker>();
+        .AddScoped<ISpeaker, AzureSpeaker>()
+        .AddScoped<AddLanguage>();
 },
 app =>
 {
     if (app.Environment.IsDevelopment())
         app.MapScalarApiReference();
+
+    app.MapPut("/pages/AddLanguage", async(string pageId, string languageId, AddLanguage command) =>
+    {
+        await command.ExecuteAsync(pageId, languageId);
+        return Results.Ok("ok");
+    });
 });

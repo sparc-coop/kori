@@ -44,13 +44,17 @@ public class Page : BlossomEntity<string>
         //Translations = page.Translations;
     }
 
-    public void AddLanguage(Language language)
-    {
-        if (Languages.Any(x => x.Id == language.Id))
-            return;
+    //public async Task AddLanguageAsync(string languageId, Translator translator)
+    //{
+    //    if (Languages.Any(x => x.Id == languageId))
+    //        return;
 
-        Languages.Add(language);
-    }
+    //    var language = await translator.GetLanguageAsync(languageId);
+    //    if (language == null)
+    //        throw new Exception("Language not found!");
+
+    //    Languages.Add(language);
+    //}
 
     internal async Task<List<Content>> TranslateAsync(Content content, Translator translator, bool forceRetranslation = false)
     {
