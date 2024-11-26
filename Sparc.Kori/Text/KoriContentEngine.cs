@@ -84,20 +84,38 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
         await js.InvokeVoidAsync("save");
     }
 
-    public async Task<KoriTextContent> SaveAsync(KoriContentRequest request, string key, string text, string tag, string id)
+    public async Task<KoriTextContent> CreateOrUpdateContentAsync(KoriContentRequest request, string id, string tag, string text)
     {
-        var content = await http.GetContentByIdAsync(id);
+        // Need to add user ABMode
 
-        if (content == null)
-        {
+        var page = await http.GetPageByDomainAndPathAsync(request.Domain, request.Path);
+        if (page == null)
+            throw new InvalidOperationException("Page not found for the given domain and path.");
+
+        KoriTextContent content;
+
+        if (string.IsNullOrEmpty(id))
+        {            
             content = await http.CreateContent(request.Domain, request.Path, request.Language, tag, text, "Text");
         }
         else
-        {
-            content = await http.UpdateTextContentAsync(content.Id, content.Tag, text);
-        }
+        {           
+            content = await http.GetContentByIdAsync(id);
+
+            if (content == null)
+            {                
+                content = await http.CreateContent(request.Domain, request.Path, request.Language, tag, text, "Text");
+            }
+            else
+            {                
+                await http.SetTextContentAsync(content.Id, text);
+                await http.SetHtmlContentAsync(content.Id);
+            }
+        }        
+
         return content;
     }
+
     public async Task CancelAsync()
     {
         await js.InvokeVoidAsync("cancelEdit");

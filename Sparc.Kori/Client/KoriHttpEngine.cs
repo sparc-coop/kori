@@ -120,12 +120,21 @@ public class KoriHttpEngine(HttpClient client)
         return result;
     }
 
-    internal async Task<KoriTextContent> UpdateTextContentAsync(string id, string tag, string text)
+    internal async Task<KoriTextContent> SetTextContentAsync(string id, string text)
     {
-        var request = new { id, tag, text };
+        var request = new { id, text };
         var response = await client.PutAsJsonAsync($"contents/{id}/SetText", request);
         response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<KoriTextContent>();
         return result!;
+    }
+
+    internal async Task<KoriTextContent> SetHtmlContentAsync(string id)
+    {
+        var request = new { id };
+        var response = await client.PutAsJsonAsync($"/contents/{id}/SetHtmlFromMarkdown", request);
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadFromJsonAsync<KoriTextContent>();
+        return result;
     }
 }
