@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -73,7 +72,7 @@ public class KoriHttpEngine(HttpClient client)
 
     internal async Task<KoriPage> GetPageByDomainAndPathAsync(string domain, string path)
     {
-        var result = await client.GetFromJsonAsync<List<KoriPage>>($"pages/GetPageByDomainAndPath?domain={domain}&path={path}");
+        var result = await client.GetFromJsonAsync<List<KoriPage>>($"pages/GetByDomainAndPath?domain={domain}&path={path}");
         return result.FirstOrDefault();
     }
 

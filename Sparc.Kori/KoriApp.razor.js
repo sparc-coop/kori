@@ -21,7 +21,7 @@ let koriIgnoreFilter = function (node) {
 }
 
 function init(targetElementId, selectedLanguage, dotNetObjectReference, serverTranslationCache) {
-    console.log("Initialized!!!")
+    
     language = selectedLanguage;
     dotNet = dotNetObjectReference;
 
@@ -51,7 +51,7 @@ function buildTranslationCache(serverTranslationCache) {
         }
     }
 
-    console.log('Kori translation cache initialized from Ibis, ', translationCache);
+    console.log('Kori translation cache initialized, ', translationCache);
 }
 
 function initKoriElement(targetElementId) {
@@ -87,7 +87,6 @@ function initElement(targetElementId) {
 function registerNodesUnder(el) {
     var n, walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, koriIgnoreFilter);
     while (n = walk.nextNode()){
-        console.log('Registering node', n.nodeName);
         registerNode(n);
     }
 }
@@ -97,10 +96,8 @@ function registerNode(node) {
         return;
 
     var content = node.nodeName == 'IMG' ? node.src.trim() : node.textContent.trim();
-    //console.log("content in registerNode: ", content);
 
     var tag = getTagContent(node) ?? (node.koriContent ?? content.trim());
-    //console.log("tag in registerNode: ", tag);
 
     if (!tag)
         return;
@@ -174,8 +171,10 @@ function translateNodes() {
         }
     }
 
+    console.log('translateAsync', contentToTranslate);
+
     dotNet.invokeMethodAsync("TranslateAsync", contentToTranslate).then(translations => {
-        console.log('Received new translations from Ibis.', translations);
+        console.log('Received new translations', translations);
 
         for (var key in translations) {
             if (translations[key] === "") {
@@ -188,7 +187,6 @@ function translateNodes() {
     });
 }
 
-//Function to check if text is a placeholder
 function isPlaceholder(text) {
     const placeholders = [
         "Type your title here",
