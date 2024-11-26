@@ -10,7 +10,7 @@ internal class AzureTranslator : ITranslator
 
     internal static LanguageList? Languages;
 
-    internal AzureTranslator(IConfiguration configuration)
+    public AzureTranslator(IConfiguration configuration)
     {
         Client = new HttpClient
         {

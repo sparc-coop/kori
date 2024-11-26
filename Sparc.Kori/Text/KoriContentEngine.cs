@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using MediatR;
+using System.Text;
 
 namespace Sparc.Kori;
 
-public record KoriPage(string Name, string Domain, string Path, string Language, ICollection<KoriTextContent> Content, string Id);
+public record KoriPage(string Name, string Domain, string Path, List<string> Languages, ICollection<KoriTextContent> Content, string Id);
 public record KoriTextContent(string Id, string Tag, string Language, string Text, string Html, string ContentType, KoriAudio? Audio, List<object>? Nodes, bool Submitted = true);
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
@@ -14,16 +15,23 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
 
     public async Task InitializeAsync(KoriContentRequest request)
     {
+        var page = await GetOrCreatePage(request);
+
+        //await AddLanguageIfNeeded(page, request.Language);
+
+        Value = await http.GetContentAsync(request.Domain, request.Path) ?? [];
+    }
+
+    private async Task<KoriPage> GetOrCreatePage(KoriContentRequest request)
+    {
         var page = await http.GetPageByDomainAndPathAsync(request.Domain, request.Path);
 
-        if(page == null)
+        if (page == null)
         {
             page = await http.CreatePage(request.Domain, request.Path, "new page");
         }
 
-        //TODO logic to load page content
-
-        Value = await http.GetContentAsync() ?? [];
+        return page;
     }
 
     public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> nodes)
@@ -76,8 +84,37 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
         await js.InvokeVoidAsync("save");
     }
 
-    public async Task<KoriTextContent> SaveAsync(string key, string text)
-        => await http.SaveContentAsync(key, text);
+    public async Task<KoriTextContent> CreateOrUpdateContentAsync(KoriContentRequest request, string id, string tag, string text)
+    {
+        // Need to add user ABMode
+
+        var page = await http.GetPageByDomainAndPathAsync(request.Domain, request.Path);
+        if (page == null)
+            throw new InvalidOperationException("Page not found for the given domain and path.");
+
+        KoriTextContent content;
+
+        if (string.IsNullOrEmpty(id))
+        {            
+            content = await http.CreateContent(request.Domain, request.Path, request.Language, tag, text, "Text");
+        }
+        else
+        {           
+            content = await http.GetContentByIdAsync(id);
+
+            if (content == null)
+            {                
+                content = await http.CreateContent(request.Domain, request.Path, request.Language, tag, text, "Text");
+            }
+            else
+            {                
+                await http.SetTextContentAsync(content.Id, text);
+                await http.SetHtmlContentAsync(content.Id);
+            }
+        }        
+
+        return content;
+    }
 
     public async Task CancelAsync()
     {
