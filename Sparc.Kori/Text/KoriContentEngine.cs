@@ -17,7 +17,7 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
     {
         var page = await GetOrCreatePage(request);
 
-        //await AddLanguageIfNeeded(page, request.Language);
+        //TODO check if lang is added
 
         Value = await http.GetContentAsync(request.Domain, request.Path) ?? [];
     }
@@ -34,14 +34,18 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
         return page;
     }
 
-    public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> nodes)
+    public async Task<Dictionary<string, string>> TranslateAsync(KoriContentRequest request, Dictionary<string, string> nodes)
     {
         if (nodes.Count == 0)
             return nodes;
-
+        
         var keysToTranslate = nodes.Where(x => !Value.ContainsKey(x.Key)).Select(x => x.Key).Distinct().ToList();
         var messagesDictionary = keysToTranslate.ToDictionary(key => key, key => nodes[key]);
-        var content = await http.TranslateAsync(messagesDictionary);
+
+        var page = await GetOrCreatePage(request);
+        
+        var content = await http.TranslateAsync(page.Id, messagesDictionary);
+        
         if (content == null)
             return nodes;
 

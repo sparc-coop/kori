@@ -79,16 +79,9 @@ public class KoriEngine(
 
     [JSInvokable]
     public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> newContent)
-        => await content.TranslateAsync(newContent);
+        => await content.TranslateAsync(CurrentRequest, newContent);
 
-    //[JSInvokable]
-    //public async Task<KoriTextContent> SaveAsync(string key, string text)
-    //{
-    //    //TODO get tag, key and id right and check CurrentRequest
-    //    return await content.SaveAsync(CurrentRequest, key, text, null, key);
-    //}
-
-
+    [JSInvokable]
     public async Task<KoriTextContent> SaveAsync(string id, string tag, string text)
         => await content.CreateOrUpdateContentAsync(CurrentRequest, id, tag, text);
 

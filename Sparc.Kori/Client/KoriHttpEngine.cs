@@ -16,10 +16,10 @@ public class KoriHttpEngine(HttpClient client)
         return Task.CompletedTask;
     }
 
-    internal async Task<ICollection<KoriTextContent>?> TranslateAsync(Dictionary<string, string> messagesDictionary)
+    internal async Task<ICollection<KoriTextContent>?> TranslateAsync(string pageId, Dictionary<string, string> messagesDictionary)
     {
-        var request = new { CurrentRequest.Path, CurrentRequest.Language, Messages = messagesDictionary, AsHtml = false };
-        var result = await client.PostAsync<KoriPage>($"api/Content", request);
+        var req = new { Messages = messagesDictionary, AsHtml = false };
+        var result = await client.PostAsync<KoriPage>($"pages/{pageId}/TranslateContentAsync", req);
         return result?.Content;
     }
 
@@ -80,15 +80,15 @@ public class KoriHttpEngine(HttpClient client)
     {
         var requestUri = $"pages?domain={domain}";
 
-        requestUri = appendQueryParameter(requestUri, "path", path);
-        requestUri = appendQueryParameter(requestUri, "name", name);
+        requestUri = AppendQueryParameter(requestUri, "path", path);
+        requestUri = AppendQueryParameter(requestUri, "name", name);
 
         var result = await client.PostAsync<KoriPage>(requestUri, new());
 
         return result;
     }
 
-    private static string appendQueryParameter(string requestUri, string name, string value)
+    private static string AppendQueryParameter(string requestUri, string name, string value)
     {
         if (!string.IsNullOrEmpty(value)) requestUri = $"{requestUri}&{name}={value}";
         return requestUri;

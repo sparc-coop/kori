@@ -52,6 +52,11 @@ public class Page : BlossomEntity<string>
         Languages.Add(language);
     }
 
+    public void TranslateContentAsync(Dictionary<string, string> messages, bool asHtml)
+    {
+        Console.WriteLine("TranslateContentAsync");
+    }
+
     internal async Task<List<Content>> TranslateAsync(Content content, Translator translator, bool forceRetranslation = false)
     {
         var languagesToTranslate = forceRetranslation
