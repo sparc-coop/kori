@@ -16,11 +16,13 @@ public class KoriHttpEngine(HttpClient client)
         return Task.CompletedTask;
     }
 
-    internal async Task<ICollection<KoriTextContent>?> TranslateAsync(string pageId, Dictionary<string, string> messagesDictionary)
+    internal async Task<ICollection<KoriTextContent>?> TranslateAsync(string pageId, Dictionary<string, string> contentDictionary)
     {
-        var req = new { Messages = messagesDictionary, AsHtml = false };
-        var result = await client.PostAsync<KoriPage>($"pages/{pageId}/TranslateContentAsync", req);
-        return result?.Content;
+        var req = new { ContentDictionary = contentDictionary, AsHtml = false };
+        var response = await client.PutAsJsonAsync($"pages/{pageId}/TranslateContentAsync", req);
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadFromJsonAsync<KoriPage>();
+        return result!.Content;
     }
 
     public async Task<KoriTextContent> SaveContentAsync(string key, string text)

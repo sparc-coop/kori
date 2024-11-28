@@ -4,6 +4,7 @@ using System.Text;
 namespace Kori;
 
 public record SourceContent(string PageId, string ContentId);
+public record TranslateContentRequest(Dictionary<string,string> ContentDictionary, bool AsHtml);
 
 public class Page : BlossomEntity<string>
 {
@@ -52,9 +53,35 @@ public class Page : BlossomEntity<string>
         Languages.Add(language);
     }
 
-    public void TranslateContentAsync(Dictionary<string, string> messages, bool asHtml)
+    public void TranslateContentAsync(TranslateContentRequest request)
     {
-        Console.WriteLine("TranslateContentAsync");
+        var newContentList = new List<Content>();
+
+        if (request.ContentDictionary == null || request.ContentDictionary.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var kvp in request.ContentDictionary) {
+            var tag = kvp.Key?.Trim();
+            var text = kvp.Value?.Trim();
+
+            if (!string.IsNullOrEmpty(tag) || !string.IsNullOrEmpty(text))
+            {
+                if (Contents.Any(c => c.Tag == tag && c.Language == "en")) {
+                    //TODO: Update existing content
+                    continue;
+                }
+
+                var newContentEntry = new Content(Domain, Path, "en", text, tag: tag);
+
+                newContentEntry.SetText(text);
+                newContentEntry.SetHtmlFromMarkdown();
+
+                Contents.Add(newContentEntry);
+            }
+        }
+
     }
 
     internal async Task<List<Content>> TranslateAsync(Content content, Translator translator, bool forceRetranslation = false)
