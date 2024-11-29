@@ -137,6 +137,30 @@ public class KoriEngine(
     {
         Mode = "ABTesting";
     }
+
+    [JSInvokable]
+    public async Task ApplyMarkdown(string symbol, string position)
+    {
+        Console.WriteLine("Apply Markdown");
+        await js.InvokeVoidAsync("applyMarkdown", symbol, position);
+    }
+
+    [JSInvokable]
+    public async Task EditAsync()
+    {
+        var contentType = await js.InvokeAsync<string>("checkSelectedContentType");
+
+        if (contentType == "image")
+        {
+            Mode = "EditImage";
+            await js.InvokeVoidAsync("editImage");
+        }
+        else
+        {
+            Mode = "Edit";
+            await js.InvokeVoidAsync("edit");
+        }
+    }
 }
 
 

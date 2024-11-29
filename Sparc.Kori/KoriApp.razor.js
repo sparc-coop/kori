@@ -400,9 +400,9 @@ function edit() {
 
     if (isTranslationAlreadySaved(translation)) {
         var activeNodeParent = getActiveNodeParentByKoriId(translation);
-        /*console.log("-----------activeNodeParent in edit: ", activeNodeParent);*/
+        console.log("-----------activeNodeParent in edit: ", activeNodeParent);
         activateNodeEdition(activeNodeParent);
-        //replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
+        replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
     }
     else {
         var parentElement = activeNode.parentElement;
@@ -449,18 +449,18 @@ function isTranslationAlreadySaved(translation) {
     return translation.id;
 }
 
-//function replaceInnerHtmlBeforeTopBar(node, markdownTxt) {
-//    while (node.firstChild) {
-//        console.log("-------------node.firstChild", node.firstChild)
-//        if (node.firstChild.id !== "kori-top-bar") {
-//            node.removeChild(node.firstChild);
-//        } else {
-//            break;
-//        }
-//    }
+function replaceInnerHtmlBeforeTopBar(node, markdownTxt) {
+    while (node.firstChild) {
+        console.log("-------------node.firstChild", node.firstChild)
+        if (node.firstChild.id !== "kori-top-bar") {
+            node.removeChild(node.firstChild);
+        } else {
+            break;
+        }
+    }
 
-//    node.firstChild.insertAdjacentHTML('beforebegin', markdownTxt);
-//}
+    node.firstChild.insertAdjacentHTML('beforebegin', markdownTxt);
+}
 
 function editImage() {
     console.log("Entered the edit image function");

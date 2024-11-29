@@ -5,6 +5,7 @@ namespace Kori;
 
 public record SourceContent(string PageId, string ContentId);
 public record TranslateContentRequest(Dictionary<string,string> ContentDictionary, bool AsHtml);
+public record TranslateContentResponse(string Domain, string Path, string Id, string Language, Dictionary<string, Content> Content);
 
 public class Page : BlossomEntity<string>
 {
@@ -53,10 +54,10 @@ public class Page : BlossomEntity<string>
         Languages.Add(language);
     }
 
-    public void TranslateContentAsync(TranslateContentRequest request)
+    public void TranslateContent(TranslateContentRequest request)
     {
         var newContentList = new List<Content>();
-
+        
         if (request.ContentDictionary == null || request.ContentDictionary.Count == 0)
         {
             return;
@@ -81,7 +82,18 @@ public class Page : BlossomEntity<string>
                 Contents.Add(newContentEntry);
             }
         }
+    }
 
+    public Dictionary<string,Content> GetAllContentAsDictionary()
+    {
+        var content = Contents.OrderBy(y => y.Timestamp);
+
+        var defaultContentDictionary = content.ToDictionary(
+            message => message.Tag!,
+            message => message
+        );
+
+        return defaultContentDictionary;
     }
 
     internal async Task<List<Content>> TranslateAsync(Content content, Translator translator, bool forceRetranslation = false)

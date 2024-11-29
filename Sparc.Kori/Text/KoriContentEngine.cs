@@ -40,18 +40,23 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
             return nodes;
         
         var keysToTranslate = nodes.Where(x => !Value.ContainsKey(x.Key)).Select(x => x.Key).Distinct().ToList();
+        
+        if (keysToTranslate.Count == 0)
+            return nodes;
+        
         var messagesDictionary = keysToTranslate.ToDictionary(key => key, key => nodes[key]);
-
         var page = await GetOrCreatePage(request);
         
         var content = await http.TranslateAsync(page.Id, messagesDictionary);
         
+        //TODO query to get the content (?)
+
         if (content == null)
             return nodes;
 
         foreach (var item in content)
         {
-            Value[item.Tag] = item with { Nodes = [] };
+            Value[item.Value.Tag] = item.Value with { Nodes = [] };
         }
 
         foreach (var key in nodes.Keys.ToList())

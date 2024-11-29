@@ -1,5 +1,5 @@
-<AuthorizeView>
-    <Authorized>
+@* <AuthorizeView>
+    <Authorized> *@
         <div id="kori-top-bar" class="kori-ignore">
             <section class="top-bar-buttons">
                 <div class="left-buttons">
@@ -52,9 +52,9 @@
                 </div>
             </section>
         </div>
-    </Authorized>
+@*     </Authorized>
 </AuthorizeView>
-
+ *@
 <style class="kori-ignore">
     @@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap);
     @@import url(https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap);
@@ -114,12 +114,12 @@
             case "ABTesting":
                 Kori.OpenABTestingMenu();
                 break;
-            // case "Edit":
-            //     await Kori.EditAsync();
-            //     break;
-            // case "EditImage":
-            //     await Kori.EditAsync();
-            //     break;
+            case "Edit":
+                await Kori.EditAsync();
+                break;
+            case "EditImage":
+                await Kori.EditAsync();
+                break;
             default:
                 break;
         }

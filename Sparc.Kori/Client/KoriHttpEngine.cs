@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 namespace Sparc.Kori;
 
 public record KoriContentRequest(string Domain, string Language, string Path);
-
+public record TranslateContentResponse(string Domain, string Path, string Id, string Language, Dictionary<string, KoriTextContent> Content);
 public class KoriHttpEngine(HttpClient client)
 {
     private KoriContentRequest CurrentRequest = new("", "", "");
@@ -16,13 +16,16 @@ public class KoriHttpEngine(HttpClient client)
         return Task.CompletedTask;
     }
 
-    internal async Task<ICollection<KoriTextContent>?> TranslateAsync(string pageId, Dictionary<string, string> contentDictionary)
+    internal async Task<Dictionary<string, KoriTextContent>> TranslateAsync(string pageId, Dictionary<string, string> contentDictionary)
     {
         var req = new { ContentDictionary = contentDictionary, AsHtml = false };
-        var response = await client.PutAsJsonAsync($"pages/{pageId}/TranslateContentAsync", req);
+        
+        var response = await client.PutAsJsonAsync($"pages/{pageId}/TranslateContent", req);
+        
         response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<KoriPage>();
-        return result!.Content;
+        var result = await response.Content.ReadAsStringAsync();
+
+        return null; //result!.Content;
     }
 
     public async Task<KoriTextContent> SaveContentAsync(string key, string text)
