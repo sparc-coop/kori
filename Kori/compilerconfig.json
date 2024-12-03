@@ -1,5 +1,9 @@
 ﻿[
   {
+    "outputFile": "wwwroot/css/App.css",
+    "inputFile": "App.scss"
+  },
+  {
     "outputFile": "_Shared/MainLayout.razor.css",
     "inputFile": "_Shared/MainLayout.razor.scss"
   },
@@ -8,8 +12,8 @@
     "inputFile": "_Shared/NavMenu.razor.scss"
   },
   {
-    "outputFile": "wwwroot/css/App.css",
-    "inputFile": "App.scss"
+    "outputFile": "_Shared/Footer.razor.css",
+    "inputFile": "_Shared/Footer.razor.scss"
   },
   {
     "outputFile": "Home/Index.razor.css",
