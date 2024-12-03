@@ -402,7 +402,7 @@ function edit() {
         var activeNodeParent = getActiveNodeParentByKoriId(translation);
         console.log("-----------activeNodeParent in edit: ", activeNodeParent);
         activateNodeEdition(activeNodeParent);
-        replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
+        //replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
     }
     else {
         var parentElement = activeNode.parentElement;
