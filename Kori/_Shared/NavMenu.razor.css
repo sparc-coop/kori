@@ -1,13 +1,25 @@
 ﻿nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin: 16px 0;
+  align-content: center;
+  padding: 8px 16px;
 }
 nav ul {
   list-style: none;
   display: flex;
   gap: 15px;
+}
+nav a {
+  transition: 0.3s all ease-in-out;
+}
+nav a:active {
+  color: var(--Gray-900, #1F232B);
+}
+nav a:visited {
+  color: var(--Gray-900, #1F232B);
+}
+nav a:hover {
+  color: var(--Blue-500, #4162DC);
 }
 
 figure img {

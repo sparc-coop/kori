@@ -1,13 +1,29 @@
 nav {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: 16px 0;
+    align-content: center;
+    padding: 8px 16px;
 
     ul {
         list-style: none;
         display: flex;
         gap: 15px;
+    }
+
+    a {
+        transition: 0.3s all ease-in-out;
+
+        &:active {
+            color: var(--Gray-900, #1F232B);
+        }
+
+        &:visited {
+            color: var(--Gray-900, #1F232B);
+        }
+
+        &:hover {
+            color: var(--Blue-500, #4162DC);
+        }
     }
 }
 
@@ -19,4 +35,3 @@ figure {
         display: none;
     }
 }
-

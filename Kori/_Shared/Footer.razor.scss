@@ -2,6 +2,7 @@ footer {
     width: 100vw;
     background: #1F232B;
     color: var(--Gray-200, #CCD5EB);
+    font-family: "articulat-cf", sans-serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -11,7 +12,7 @@ footer {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        max-width: 1728px;
+        max-width: 1240px;
         margin: 0 auto;
         padding: 60px 0;
     }
