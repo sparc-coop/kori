@@ -170,6 +170,14 @@ public class KoriEngine(
     {
         StateChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    [JSInvokable]
+    public void SetDefaultMode()
+    {
+        Mode = "Default";
+        Console.WriteLine($"Mode defined as: '{Mode}'");
+        InvokeStateHasChanged();
+    }
 }
 
 

@@ -137,8 +137,7 @@ function observeCallback(mutations) {
             return;
 
         if (mutation.type == 'characterData')
-            /*registerNode(mutation.target, NodeType.TEXT);*/     //I commented out this line because it always threw an error saying that 'NodeType is not defined' when redirecting to another page
-            registerNode(mutation.target);
+            registerNode(mutation.target, NodeType.TEXT);             
         else
             mutation.addedNodes.forEach(registerNodesUnder);
 
@@ -282,13 +281,17 @@ function mouseClickHandler(e) {
                 updateActiveIndicator(t);
             }
         }
+        return;
     }
 
     // click kori enabled elements  
     if (t.closest(".kori-enabled")) {
         toggleSelected(t);
-        toggleTopBar(t);
+        //showTopBar(t);
+        return;
     }
+
+    toggleSelected(t);
 }
 
 // global login - mobile UI, tabs sliding active indicator
@@ -315,39 +318,50 @@ function updateActiveIndicator(activeElement) {
 
 // selecting and unselecting kori-enabled elements
 function toggleSelected(t) {
-    document.getElementsByClassName("selected")[0]?.classList.remove("selected");
-    document.getElementsByClassName("show")[0]?.classList.remove("show");
-
-    var koriElem = t.closest('.kori-enabled');
-    console.log('koriElem', koriElem);
+    var koriElem = t.closest(".kori-enabled");
+    console.log("koriElem", koriElem);
 
     var topBar = document.getElementById("kori-top-bar");
-
     if (topBar && topBar.contains(t)) {
         return;
     }
 
+    var koriContent = document.querySelector(".kori-content");
+
     if (!koriElem) {
-        if (activeMessageId) {
-            cancelEdit();
-        }
-
-        activeNode = null;
-
+        document.querySelector(".selected")?.classList.remove("selected");
+        cancelEdit();
+        activeNode = null;        
         dotNet.invokeMethodAsync("SetDefaultMode");
-
+      
+        if (koriContent) {
+            koriContent.style.cursor = "default"; 
+        }
+        
         return;
+    }
+
+    var selectedElem = document.querySelector(".selected");
+
+    if (selectedElem && selectedElem !== koriElem) {
+        selectedElem.classList.remove("selected");
     }
 
     if (!koriElem.classList.contains("selected")) {
         koriElem.classList.add("selected");
-        dotNet.invokeMethodAsync("EditAsync");
-        toggleTopBar(koriElem);
+
+        dotNet.invokeMethodAsync("EditAsync");  
+
+        showTopBar(koriElem);
+
+        if (koriContent) {
+            koriContent.style.cursor = "pointer";
+        }
     }
 }
 
-// showing and hiding kori top bar
-function toggleTopBar(t) {
+// showing kori top bar
+function showTopBar(t) {
     var topBar = document.getElementById("kori-top-bar");
 
     document.body.appendChild(topBar);
