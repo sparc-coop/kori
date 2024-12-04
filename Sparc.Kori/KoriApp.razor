@@ -26,4 +26,8 @@
         Kori.Mode = mode;
         StateHasChanged();
     }
+
+    protected override void OnInitialized() => Kori.StateChanged += OnStateChanged!;
+
+    private void OnStateChanged(object sender, EventArgs e) => this.InvokeAsync(this.StateHasChanged);
 }

@@ -16,6 +16,8 @@ public class KoriEngine(
     public TagManager TagManager { get; } = new TagManager();
     public string Mode { get; set; } = "";
 
+    public event EventHandler<EventArgs> StateChanged;
+
     public async Task InitializeAsync(string currentUrl)
     {
         var url = new Uri(currentUrl);
@@ -160,6 +162,13 @@ public class KoriEngine(
             Mode = "Edit";
             await js.InvokeVoidAsync("edit");
         }
+
+        InvokeStateHasChanged();
+    }
+
+    private void InvokeStateHasChanged()
+    {
+        StateChanged?.Invoke(this, EventArgs.Empty);
     }
 }
 
