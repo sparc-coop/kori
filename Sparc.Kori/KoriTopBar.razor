@@ -132,9 +132,9 @@
     }
 
     async Task SaveChanges()
-    {        
+    {                
+        await Kori.BeginSaveAsync();     // need to fix related JS code 
         Console.WriteLine("Changes saved.");
-        // await Kori.BeginSaveAsync();     // need to fix related JS code    
     }
 }
 

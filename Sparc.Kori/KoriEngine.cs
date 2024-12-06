@@ -94,9 +94,10 @@ public class KoriEngine(
         => await search.SearchAsync(searchTerm);
 
     [JSInvokable]
-    public void BackToEdit()
+    public void BackToEditAsync()
     {
         Mode = "";
+        //Mode = "Default";
     }
 
     public async Task BeginEditAsync()
