@@ -130,6 +130,10 @@
   color: #4162DC;
   border-color: transparent;
 }
+#kori-top-bar .bottom-bar .save-btn {
+  border: 1px solid var(--Gray-800, #363E51) !important;
+  width: 64px;
+}
 
 button .icon-btn {
   width: 32px;
@@ -204,7 +208,7 @@ button .icon-btn svg {
   opacity: 0.5;
 }
 
-.kori-btn__tertiary {
+.kori-btn__tertiary, #kori-top-bar .bottom-bar .save-btn {
   display: flex;
   height: 32px;
   padding: 8px 16px;
@@ -222,15 +226,15 @@ button .icon-btn svg {
   font-style: normal;
   transition: all 0.3s ease-in-out;
 }
-.kori-btn__tertiary:hover {
+.kori-btn__tertiary:hover, #kori-top-bar .bottom-bar .save-btn:hover {
   border: 0px solid var(--Blue-100, #B7C6FF);
   background: var(--Gray-50, #EEF2FA);
 }
-.kori-btn__tertiary:active {
+.kori-btn__tertiary:active, #kori-top-bar .bottom-bar .save-btn:active {
   border: 0px solid var(--Blue-100, #B7C6FF);
   background: var(--Gray-100, #DDE5F5);
 }
-.kori-btn__tertiary:disabled, .kori-btn__tertiary[disabled] {
+.kori-btn__tertiary:disabled, #kori-top-bar .bottom-bar .save-btn:disabled, .kori-btn__tertiary[disabled], #kori-top-bar .bottom-bar [disabled].save-btn {
   border: 1px solid var(--Blue-50, #F1F3FE);
   background: var(--White, #FFF);
   opacity: 0.5;

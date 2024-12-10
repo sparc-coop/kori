@@ -1,4 +1,4 @@
-﻿<div id="kori-texteditor" onclick="event.stopPropagation()">
+﻿<div id="kori-texteditor">
     <div class="toolbar">
         <button alt="Bold" @onclick="@(() => Kori.ApplyMarkdown("**", "wrap"))">
             <Sparc.Kori.Icons.Toolbar.BoldIcon />
@@ -35,16 +35,4 @@
         margin: auto;
     }
 </style>
-
-@* <button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("**")'><img src="/_content/Kori/icons/Bold.svg" /></button>
-<button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("_")'><img src="/_content/Kori/icons/Italic.svg" /></button>
-<button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("~~")'><img src="/_content/Kori/icons/Strikethrough.svg" /></button>
-<button class="kori__btn-icon" @onclick='() => Kori.ApplyMarkdown("++")'><img src="/_content/Kori/icons/underline.svg" /></button> *@
-
-
-@code {
-    public void Test()
-    {
-        Console.WriteLine("testing toolbar buttons");
-    }
 }

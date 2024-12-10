@@ -414,9 +414,8 @@ function edit() {
 
     if (isTranslationAlreadySaved(translation)) {
         var activeNodeParent = getActiveNodeParentByKoriId(translation);
-        console.log("-----------activeNodeParent in edit: ", activeNodeParent);
         activateNodeEdition(activeNodeParent);
-        //replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
+        replaceInnerHtmlBeforeTopBar(activeNodeParent, getTranslationRawMarkdownText(translation));
     }
     else {
         var parentElement = activeNode.parentElement;
@@ -464,16 +463,17 @@ function isTranslationAlreadySaved(translation) {
 }
 
 function replaceInnerHtmlBeforeTopBar(node, markdownTxt) {
-    while (node.firstChild) {
-        console.log("-------------node.firstChild", node.firstChild)
-        if (node.firstChild.id !== "kori-top-bar") {
-            node.removeChild(node.firstChild);
-        } else {
-            break;
-        }
+    if (node.firstChild && node.firstChild.nodeType === Node.TEXT_NODE && node.firstChild.nodeValue === markdownTxt) {
+        return;
     }
 
-    node.firstChild.insertAdjacentHTML('beforebegin', markdownTxt);
+    if (node.firstChild && node.firstChild.nodeType !== Node.TEXT_NODE) {
+        node.removeChild(node.firstChild);
+    }
+
+    node.textContent = markdownTxt;
+
+    node.contentEditable = "true";
 }
 
 function editImage() {
@@ -523,9 +523,15 @@ function getActiveNodeTextContent(translation) {
     var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
 
     var copyNode = activeNodeParent.cloneNode(true);
-    var koriTopBar = copyNode.querySelector('#kori-top-bar');
+    var koriTopBar = document.querySelector('#kori-top-bar');
 
     return copyNode.textContent.replace(koriTopBar.textContent, '');
+
+    if (koriTopBar) {
+        return copyNode.textContent.replace(koriTopBar.textContent, '');
+    }
+
+    return copyNode.textContent;
 }
 
 // Here we just need to make sure that we are updating img src in the same way as
@@ -535,8 +541,8 @@ function save() {
         return;
 
     var translation = translationCache[activeMessageId];
-    console.log("translation: ", translation);
     var textContent = activeNode.textContent;
+    var tagContent = translation.tag;
 
     if (isTranslationAlreadySaved(translation)) {
         textContent = getActiveNodeTextContent(translation);
@@ -544,10 +550,11 @@ function save() {
 
     dotNet.invokeMethodAsync("BackToEditAsync").then(r => {
 
-        dotNet.invokeMethodAsync("SaveAsync", activeMessageId, textContent).then(content => {
+        dotNet.invokeMethodAsync("SaveAsync", activeMessageId, textContent, tagContent).then(content => {
             console.log('Saved new content to Ibis.', content);
 
             translationCache[activeMessageId].Translation = content.text;
+            translationCache[activeMessageId].tag = content.tag;
             translationCache[activeMessageId].text = content.text;
             translationCache[activeMessageId].html = content.html;
 
@@ -637,19 +644,35 @@ function login() {
 //}
 
 function applyMarkdown(symbol, position) {
-    console.log("Applying markdown", symbol, position);
+    
     const selectedText = window.getSelection().toString();
+    
     if (selectedText) {
+
+        var newText = selectedText;
+
         if (position == "wrap") {
-            const newText = symbol + selectedText + symbol;
-            document.execCommand('insertText', false, newText);
+            newText = symbol + newText + symbol;
+        } else if (position == "before") {
+            newText = symbol + newText;
         }
 
-        if (position == "before") {
-            const newText = symbol + selectedText;
-            document.execCommand('insertText', false, newText);
-        }
+        insertMarkdownText(newText);
     }
+}
+
+function insertMarkdownText(newText) {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(document.createTextNode(newText));
+
+    range.setStartAfter(range.endContainer);
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
 }
 
 function updateImageSrc(currentSrc, newSrc) {

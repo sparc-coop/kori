@@ -4,7 +4,7 @@ using System.Text;
 namespace Kori;
 
 public record SourceContent(string PageId, string ContentId);
-public record TranslateContentRequest(Dictionary<string,string> ContentDictionary, bool AsHtml);
+public record TranslateContentRequest(Dictionary<string,string> ContentDictionary, bool AsHtml, string LanguageId);
 public record TranslateContentResponse(string Domain, string Path, string Id, string Language, Dictionary<string, Content> Content);
 
 public class Page : BlossomEntity<string>
@@ -69,12 +69,11 @@ public class Page : BlossomEntity<string>
 
             if (!string.IsNullOrEmpty(tag) || !string.IsNullOrEmpty(text))
             {
-                if (Contents.Any(c => c.Tag == tag && c.Language == "en")) {
-                    //TODO: Update existing content
+                if (Contents.Any(c => c.Tag == tag && c.Language == request.LanguageId)) {
                     continue;
                 }
 
-                var newContentEntry = new Content(Domain, Path, "en", text, tag: tag);
+                var newContentEntry = new Content(Domain, Path, request.LanguageId, text, tag: tag);
 
                 newContentEntry.SetText(text);
                 newContentEntry.SetHtmlFromMarkdown();

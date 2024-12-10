@@ -156,6 +156,12 @@
                 }
             }
         }
+
+        .save-btn {
+            @extend .kori-btn__tertiary;
+            border: 1px solid var(--Gray-800, #363E51) !important;            
+            width: 64px;
+        }
     }
 }
 

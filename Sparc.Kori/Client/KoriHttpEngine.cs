@@ -16,9 +16,9 @@ public class KoriHttpEngine(HttpClient client)
         return Task.CompletedTask;
     }
 
-    internal async Task<Dictionary<string, KoriTextContent>> TranslateAsync(string pageId, Dictionary<string, string> contentDictionary)
+    internal async Task<Dictionary<string, KoriTextContent>> TranslateAsync(string pageId, Dictionary<string, string> contentDictionary, string languageId)
     {
-        var req = new { ContentDictionary = contentDictionary, AsHtml = false };
+        var req = new { ContentDictionary = contentDictionary, AsHtml = false, LanguageId = languageId };
         
         var response = await client.PutAsJsonAsync($"pages/{pageId}/TranslateContent", req);
         
