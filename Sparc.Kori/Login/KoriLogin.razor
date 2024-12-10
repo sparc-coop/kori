@@ -27,6 +27,7 @@
             <div class="kori-login__menu @(ShowMenu ? "show" : "")" @onclick:stopPropagation="true">
                 @switch (Auth.LoginState)
                 {
+                    case LoginStates.NotInitialized:
                     case LoginStates.LoggedOut:
                         <header>
                             <h3 class="kori-login__text-primary">Welcome!</h3>
@@ -377,13 +378,23 @@
         await KoriLanguageEngine.InitializeAsync(null);
         Language = KoriLanguageEngine.Current;
 
-        Auth.LoginState = LoginStates.LoggedOut;
         StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        //await Js.InvokeVoidAsync("initHyperScript");
+        // await Js.InvokeVoidAsync("initHyperScript");
+        // if (!String.IsNullOrEmpty(Token))
+        // {
+        //     await foreach (var state in Auth.Login(User, Token))
+        //         StateHasChanged();
+        // }
+        if (firstRender)
+        {
+            await foreach (var state in Auth.Login(User, Token))
+                StateHasChanged();
+        }
+
     }
 
     async Task LoginWithPasskey()
