@@ -3,7 +3,7 @@
 </section>
 
 <Sparc.Kori.Login.KoriLogin />
-<KoriTopBar OnModeChanged="HandleModeChanged" />
+<KoriTopBar OnModeChanged="HandleModeChanged" @rendermode="RenderMode.InteractiveServer" />
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }

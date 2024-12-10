@@ -143,13 +143,8 @@ public class KoriEngine(
         Mode = "ABTesting";
     }
 
-    [JSInvokable]
-    public async Task ApplyMarkdown(string symbol, string position)
-    {
-        Console.WriteLine("Apply Markdown");
-        await js.InvokeVoidAsync("applyMarkdown", symbol, position);
-    }
-
+    public async Task ApplyMarkdown(string symbol, string position) => await js.InvokeVoidAsync("applyMarkdown", symbol, position);
+    
     [JSInvokable]
     public async Task EditAsync()
     {

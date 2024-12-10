@@ -47,9 +47,7 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
         var messagesDictionary = keysToTranslate.ToDictionary(key => key, key => nodes[key]);
         var page = await GetOrCreatePage(request);
         
-        var content = await http.TranslateAsync(page.Id, messagesDictionary);
-        
-        //TODO query to get the content (?)
+        var content = await http.TranslateAsync(page.Id, messagesDictionary, request.Language);
 
         if (content == null)
             return nodes;

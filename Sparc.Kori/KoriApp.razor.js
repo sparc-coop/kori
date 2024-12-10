@@ -644,19 +644,35 @@ function login() {
 //}
 
 function applyMarkdown(symbol, position) {
-    console.log("Applying markdown", symbol, position);
+    
     const selectedText = window.getSelection().toString();
+    
     if (selectedText) {
+
+        var newText = selectedText;
+
         if (position == "wrap") {
-            const newText = symbol + selectedText + symbol;
-            document.execCommand('insertText', false, newText);
+            newText = symbol + newText + symbol;
+        } else if (position == "before") {
+            newText = symbol + newText;
         }
 
-        if (position == "before") {
-            const newText = symbol + selectedText;
-            document.execCommand('insertText', false, newText);
-        }
+        insertMarkdownText(newText);
     }
+}
+
+function insertMarkdownText(newText) {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(document.createTextNode(newText));
+
+    range.setStartAfter(range.endContainer);
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
 }
 
 function updateImageSrc(currentSrc, newSrc) {
