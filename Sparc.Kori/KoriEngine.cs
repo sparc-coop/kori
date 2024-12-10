@@ -93,34 +93,11 @@ public class KoriEngine(
     public async Task<List<KoriSearch>> SearchAsync(string searchTerm)
         => await search.SearchAsync(searchTerm);
 
-    [JSInvokable]
-    public void BackToEditAsync()
-    {
-        Mode = "";
-        //Mode = "Default";
-    }
-
-    public async Task BeginEditAsync()
-    {
-        var contentType = await js.InvokeAsync<string>("checkSelectedContentType");
-        if (contentType == "image")
-        {
-            Mode = "EditImage";
-            await images.BeginEditAsync();
-        }
-        else
-        {
-            Mode = "Edit";
-            await content.BeginEditAsync();
-        }
-    }
-
     public async Task CloseAsync()
     {
         Mode = "Default";
         await search.CloseAsync();
     }
-
 
     public void OpenTranslationMenu()
     {

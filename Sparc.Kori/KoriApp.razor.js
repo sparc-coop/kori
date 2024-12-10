@@ -449,8 +449,6 @@ function deactivateNodeEdition(node, translation) {
     node.classList.remove('kori-ignore');
     node.classList.remove('selected');
 
-    //resetTopBar();
-
     node.innerHTML = translation.html;
 }
 
@@ -519,23 +517,6 @@ function closeSearch() {
     hideSidebar();
 }
 
-function getActiveNodeTextContent(translation) {
-    var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
-
-    var copyNode = activeNodeParent.cloneNode(true);
-    var koriTopBar = document.querySelector('#kori-top-bar');
-
-    return copyNode.textContent.replace(koriTopBar.textContent, '');
-
-    if (koriTopBar) {
-        return copyNode.textContent.replace(koriTopBar.textContent, '');
-    }
-
-    return copyNode.textContent;
-}
-
-// Here we just need to make sure that we are updating img src in the same way as
-// we are updating text content
 function save() {
     if (!activeNode)
         return;
@@ -544,38 +525,35 @@ function save() {
     var textContent = activeNode.textContent;
     var tagContent = translation.tag;
 
-    if (isTranslationAlreadySaved(translation)) {
-        textContent = getActiveNodeTextContent(translation);
-    }
+    console.log('Saving translation...', activeNode, activeMessageId, textContent, tagContent, translation);
 
-    dotNet.invokeMethodAsync("BackToEditAsync").then(r => {
+    //dotNet.invokeMethodAsync("SaveAsync", activeMessageId, textContent, tagContent).then(content => {
+    //    console.log('Saved new content.', content);
 
-        dotNet.invokeMethodAsync("SaveAsync", activeMessageId, textContent, tagContent).then(content => {
-            console.log('Saved new content to Ibis.', content);
+    //    translationCache[activeMessageId].Translation = content.text;
+    //    translationCache[activeMessageId].tag = content.tag;
+    //    translationCache[activeMessageId].text = content.text;
+    //    translationCache[activeMessageId].html = content.html;
 
-            translationCache[activeMessageId].Translation = content.text;
-            translationCache[activeMessageId].tag = content.tag;
-            translationCache[activeMessageId].text = content.text;
-            translationCache[activeMessageId].html = content.html;
+    //    activeNode.parentElement.contentEditable = "false";
+    //    activeNode.parentElement.classList.remove('kori-ignore');
 
-            activeNode.parentElement.contentEditable = "false";
-            activeNode.parentElement.classList.remove('kori-ignore');
+    //    if (translation.id) {
 
-            if (translation.id) {
+    //        var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
+    //        deactivateNodeEdition(activeNodeParent, translation);
 
-                var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
-                deactivateNodeEdition(activeNodeParent, translation);
+    //    } else {
+    //        translationCache[activeMessageId].id = content.id;
+    //        activeNode.parentElement?.setAttribute('kori-id', content.id);
+    //    }
+    //    sim
+    //    dotNet.invokeMethodAsync("SetDefaultMode");
 
-            } else {
-                translationCache[activeMessageId].id = content.id;
-                activeNode.parentElement?.setAttribute('kori-id', content.id);
-            }
-
-        });
-    });
+    //});
+    
 }
 
-// function to check if an element is a descendant of an element with a specific class
 function isDescendantOfClass(element, className) {
     while (element) {
         if (element.classList && element.classList.contains(className)) {
@@ -632,16 +610,6 @@ function toggleLanguage(isOpen) {
 function login() {
     console.log("logging in...");
 }
-
-//function resetTopBar() {
-//    var topBar = document.getElementById("kori-top-bar");
-
-//    // Move the top bar back to the body root
-//    document.body.appendChild(topBar);
-
-//    // Hide the top bar
-//    topBar.style.display = 'none';
-//}
 
 function applyMarkdown(symbol, position) {
     
