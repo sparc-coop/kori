@@ -90,7 +90,8 @@ button, .button {
   transition: 0.3s ease-in-out;
 }
 button img, .button img {
-  max-width: 24px;
+  width: 24px;
+  height: 24px;
   display: inline;
 }
 button.primary:hover, .button.primary:hover {
@@ -117,8 +118,14 @@ button.secondary:disabled, .button.secondary:disabled {
   background: var(--White, #FFF);
   opacity: 0.5;
 }
+button.btn-icon span, .button.btn-icon span {
+  margin-top: 2px;
+}
+button.btn-text, .button.btn-text {
+  padding-top: 9px;
+}
 
-.kori-animation__lottie {
+.kori-character {
   width: 200px;
   height: auto;
 }

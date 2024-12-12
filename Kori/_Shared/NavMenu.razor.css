@@ -9,6 +9,10 @@ nav ul {
   display: flex;
   gap: 15px;
 }
+nav li {
+  display: flex;
+  align-items: center;
+}
 nav a {
   transition: 0.3s all ease-in-out;
 }
@@ -22,6 +26,9 @@ nav a:hover {
   color: var(--Blue-500, #4162DC);
 }
 
+figure {
+  margin: 0;
+}
 figure img {
   max-width: 60px;
 }

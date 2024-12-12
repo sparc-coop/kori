@@ -12,4 +12,22 @@ main {
     .main-container {
         grid-column: 2 / span 12;
     }
+
+    @media screen and (max-width: 1367px) { //590-1240px, 1368px
+        grid-template-columns: 1fr repeat(6, 85px) 1fr;
+        grid-column-gap: 20px;
+
+        .main-container {
+            grid-column: 2 / span 6;
+        }
+    }
+
+    @media screen and (max-width: 717px) { //364-590px, 718px
+        grid-template-columns: 1fr repeat(4, 85px) 1fr;
+        grid-column-gap: 8px;
+
+        .main-container {
+            grid-column: 2 / span 4;
+        }
+    }
 }

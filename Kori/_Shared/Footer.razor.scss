@@ -41,4 +41,20 @@ footer {
         flex-direction: row;
         justify-content: space-between;
     }
+
+    @media only screen and (max-width: 1367px) {
+        .footer-container {
+            max-width: none;
+            width: calc(100% - 128px);
+            margin: 0;
+            padding: 60px 64px;
+        }
+    }
+
+    @media only screen and (max-width: 717px) {
+        .footer-container {
+            width: calc(100% - 32px);
+            padding: 32px 16px;
+        }
+    }
 }

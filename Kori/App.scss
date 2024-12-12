@@ -55,7 +55,8 @@ button, .button {
     transition: 0.3s ease-in-out;
 
     img {
-        max-width: 24px;
+        width: 24px;
+        height: 24px;
         display: inline;
     }
 
@@ -91,11 +92,19 @@ button, .button {
             opacity: 0.5;
         }
     }
+
+    &.btn-icon {
+        span {
+            margin-top: 2px;
+        }
+    }
+
+    &.btn-text {
+        padding-top: 9px;
+    }
 }
 
-.kori-animation {
-    &__lottie {
-        width: 200px;
-        height: auto;
-    }
+.kori-character {
+    width: 200px;
+    height: auto;
 }

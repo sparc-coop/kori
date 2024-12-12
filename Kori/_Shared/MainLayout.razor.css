@@ -12,3 +12,21 @@ main {
 main .main-container {
   grid-column: 2/span 12;
 }
+@media screen and (max-width: 1367px) {
+  main {
+    grid-template-columns: 1fr repeat(6, 85px) 1fr;
+    grid-column-gap: 20px;
+  }
+  main .main-container {
+    grid-column: 2/span 6;
+  }
+}
+@media screen and (max-width: 717px) {
+  main {
+    grid-template-columns: 1fr repeat(4, 85px) 1fr;
+    grid-column-gap: 8px;
+  }
+  main .main-container {
+    grid-column: 2/span 4;
+  }
+}
