@@ -92,8 +92,9 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
             }
             else
             {
-                await http.SetTextContentAsync(content.Id, text);
-                await http.SetHtmlContentAsync(content.Id);
+                await http.SetTextAndHtmlContentAsync(content.Id, text);
+                content = await http.GetContentByIdAsync(id);
+                //TODO check if it's possible to return value from first http call
             }
         }
 

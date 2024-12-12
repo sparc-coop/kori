@@ -9,7 +9,7 @@
         <button alt="Strikethrough" @onclick="@(() => Kori.ApplyMarkdown("~~", "wrap"))">
             <Sparc.Kori.Icons.Toolbar.StrikethroughIcon />
         </button>
-        <button alt="X2" @onclick="@(() => Kori.ApplyMarkdown("^", "wrap"))">
+        @* <button alt="X2" @onclick="@(() => Kori.ApplyMarkdown("^", "wrap"))">
             <Sparc.Kori.Icons.Toolbar.X2Icon />
         </button>
         <button alt="Code" @onclick="@(() => Kori.ApplyMarkdown("`", "wrap"))">
@@ -26,7 +26,7 @@
         </button>
         <button alt="Link" @onclick="@(() => Kori.ApplyMarkdown("[]", "wrap"))">
             <Sparc.Kori.Icons.Toolbar.LinkIcon />
-        </button>
+        </button> *@
     </div>
 </div>
 
@@ -35,4 +35,3 @@
         margin: auto;
     }
 </style>
-}

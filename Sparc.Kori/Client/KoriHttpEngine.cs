@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -124,21 +125,14 @@ public class KoriHttpEngine(HttpClient client)
         return result;
     }
 
-    internal async Task<KoriTextContent> SetTextContentAsync(string id, string text)
+    internal async Task<string> SetTextAndHtmlContentAsync(string id, string text)
     {
-        var request = new { id, text };
-        var response = await client.PutAsJsonAsync($"contents/{id}/SetText", request);
+        var request = new { Text = text };
+        var response = await client.PutAsJsonAsync($"contents/{id}/SetTextAndHtml", request);
         response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<KoriTextContent>();
-        return result!;
-    }
-
-    internal async Task<KoriTextContent> SetHtmlContentAsync(string id)
-    {
-        var request = new { id };
-        var response = await client.PutAsJsonAsync($"/contents/{id}/SetHtmlFromMarkdown", request);
-        response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<KoriTextContent>();
+        var result = await response.Content.ReadAsStringAsync();
         return result;
     }
+
+
 }

@@ -11,6 +11,7 @@ public record AudioContent(string? Url, long Duration, string Voice)
 
 public record ContentTag(string Key, string Value, bool Translate);
 public record ContentTranslation(string Id, string LanguageId, string? SourceContentId = null);
+public record SetTextAndHtmlRequest(string Text);
 
 public class Content : BlossomEntity<string>
 {
@@ -56,8 +57,7 @@ public class Content : BlossomEntity<string>
         Timestamp = DateTime.UtcNow;
         Tag = tag;
         ContentType = contentType;
-        SetText(text);
-        SetHtmlFromMarkdown();
+        SetTextAndHtml(new SetTextAndHtmlRequest(text));
     }
 
     internal Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.Domain, sourceContent.Path, toLanguage.Id)
@@ -69,20 +69,7 @@ public class Content : BlossomEntity<string>
         LanguageIsRTL = toLanguage.IsRightToLeft;
         Timestamp = sourceContent.Timestamp;
         Tag = sourceContent.Tag;
-        SetText(text);
-        SetHtmlFromMarkdown();
-    }
-
-    public void SetText(string text)
-    {
-        if (Text == text)
-            return;
-
-        if (Text != null)
-            EditHistory.Add(new(LastModified ?? Timestamp, Text));
-
-        Text = text;
-        LastModified = DateTime.UtcNow;
+        SetTextAndHtml(new SetTextAndHtmlRequest(text));
     }
 
     internal async Task<(string?, Content?)> TranslateAsync(Translator translator, string languageId)
@@ -168,4 +155,22 @@ public class Content : BlossomEntity<string>
 
         Html = writer.ToString();
     }
+
+    public string SetTextAndHtml(SetTextAndHtmlRequest request)
+    {
+        if (Text == request.Text)
+            return "";
+
+        if (Text != null)
+            EditHistory.Add(new(LastModified ?? Timestamp, Text));
+
+        Text = request.Text;
+        LastModified = DateTime.UtcNow;
+
+        SetHtmlFromMarkdown();
+
+        return Html;
+    }
+
+
 }

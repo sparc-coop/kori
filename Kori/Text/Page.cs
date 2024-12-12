@@ -75,8 +75,7 @@ public class Page : BlossomEntity<string>
 
                 var newContentEntry = new Content(Domain, Path, request.LanguageId, text, tag: tag);
 
-                newContentEntry.SetText(text);
-                newContentEntry.SetHtmlFromMarkdown();
+                newContentEntry.SetTextAndHtml(new SetTextAndHtmlRequest(text));
 
                 Contents.Add(newContentEntry);
             }

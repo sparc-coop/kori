@@ -524,33 +524,31 @@ function save() {
     var translation = translationCache[activeMessageId];
     var textContent = activeNode.textContent;
     var tagContent = translation.tag;
+    
+    dotNet.invokeMethodAsync("SaveAsync", translation.id, tagContent, textContent).then(content => {
+        console.log('Saved new content.', content);
 
-    console.log('Saving translation...', activeNode, activeMessageId, textContent, tagContent, translation);
+        translationCache[activeMessageId].Translation = content.text;
+        translationCache[activeMessageId].tag = content.tag;
+        translationCache[activeMessageId].text = content.text;
+        translationCache[activeMessageId].html = content.html;
 
-    //dotNet.invokeMethodAsync("SaveAsync", activeMessageId, textContent, tagContent).then(content => {
-    //    console.log('Saved new content.', content);
+        activeNode.parentElement.contentEditable = "false";
+        activeNode.parentElement.classList.remove('kori-ignore');
 
-    //    translationCache[activeMessageId].Translation = content.text;
-    //    translationCache[activeMessageId].tag = content.tag;
-    //    translationCache[activeMessageId].text = content.text;
-    //    translationCache[activeMessageId].html = content.html;
+        if (translation.id) {
 
-    //    activeNode.parentElement.contentEditable = "false";
-    //    activeNode.parentElement.classList.remove('kori-ignore');
+            var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
+            deactivateNodeEdition(activeNodeParent, translation);
 
-    //    if (translation.id) {
+        } else {
+            translationCache[activeMessageId].id = content.id;
+            activeNode.parentElement?.setAttribute('kori-id', content.id);
+        }
+        
+        dotNet.invokeMethodAsync("SetDefaultMode");
 
-    //        var activeNodeParent = document.querySelector(`[kori-id="${translation.id}"]`);
-    //        deactivateNodeEdition(activeNodeParent, translation);
-
-    //    } else {
-    //        translationCache[activeMessageId].id = content.id;
-    //        activeNode.parentElement?.setAttribute('kori-id', content.id);
-    //    }
-    //    sim
-    //    dotNet.invokeMethodAsync("SetDefaultMode");
-
-    //});
+    });
     
 }
 
