@@ -130,17 +130,23 @@ function getTagContent(node) {
 }
 
 function observeCallback(mutations) {
-    console.log("Observe callback");
+    console.log("Observe callback", mutations);
 
     mutations.forEach(function (mutation) {
         if (mutation.target.classList?.contains('kori-ignore') || mutation.target.parentElement?.classList.contains('kori-ignore'))
             return;
 
-        if (mutation.type == 'characterData')
-            registerNode(mutation.target, NodeType.TEXT);             
-        else
+        if (mutation.type == 'characterData') {
+            console.log('Character data mutation', mutation.target);
+            registerNode(mutation.target, NodeType.TEXT);
+        }
+        else if (mutation.type == 'childList'){
+            console.log('Mutaton childList');
+        }
+        else {
             mutation.addedNodes.forEach(registerNodesUnder);
-
+        }
+        
         translateNodes();
     });
 }

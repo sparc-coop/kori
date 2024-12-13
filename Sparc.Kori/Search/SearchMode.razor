@@ -17,7 +17,7 @@
                 var displayPath = string.IsNullOrWhiteSpace(path) ? "" : path;
 
                 <article>
-                    <div onclick="@(() => GoDomain(domain, null))">
+                    <div onclick="@(() => GoToPage(domain, null))">
                         <PageIcon />
                         <span>@($"{domain}{displayPath}")</span>
                     </div>
@@ -26,7 +26,7 @@
                     {
                         if (!string.IsNullOrWhiteSpace(content.Text) || !string.IsNullOrWhiteSpace(content.Tag))
                         {
-                            <div onclick="@(() => Go(content))">
+                            <div onclick="@(() => GoToContent(content))">
                                 <ContentIcon />
                                 <span>@(content.Text ?? content.Tag)</span>
                             </div>
@@ -58,11 +58,19 @@
         return contentResults;
     }   
 
-    async Task Go(KoriSearch selectedContent)
+    void GoToContent(KoriSearch selectedContent)
     {
         string baseUrl = selectedContent.Domain.StartsWith("http")
             ? selectedContent.Domain
             : $"https://{selectedContent.Domain}";
+
+#if DEBUG
+        baseUrl = Nav.BaseUri; 
+        if (baseUrl.EndsWith("/"))
+        {
+            baseUrl = baseUrl.TrimEnd('/');
+        }
+#endif
 
         string fullUrl = $"{baseUrl}{(string.IsNullOrWhiteSpace(selectedContent.Path) ? "" : selectedContent.Path)}";
 
@@ -73,7 +81,7 @@
         Nav.NavigateTo(fullUrl, forceLoad: true);
     }
 
-    async Task GoDomain(string domain, string? path)
+    void GoToPage(string domain, string? path)
     {
         string baseUrl = domain.StartsWith("http")
             ? domain
