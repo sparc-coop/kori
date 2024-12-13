@@ -71,11 +71,16 @@ a {
   text-decoration: none;
 }
 
+section h1, section h2, section h3, section h4, section h5, section h6, section p {
+  margin: 0;
+}
+
 button, .button {
   display: flex;
   align-items: center;
   gap: 15px;
   margin-right: 0;
+  width: fit-content;
   padding: 8px 16px;
   border-radius: 8px;
   border: 1px solid #4162DC;

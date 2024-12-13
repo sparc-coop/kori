@@ -1,0 +1,150 @@
+﻿@page "/pricing"
+
+<PageTitle>Kori | Pricing</PageTitle>
+
+<div class="pricing">
+    <header>
+        <h2>Pricing</h2>
+        <p>
+            Kori is a widget that creates a human-centered feedback loop, ensuring that your contents and services are developed, and refined based on real user needs and preferences. This approach enhances user satisfaction and quality of your contents.
+        </p>
+        <div id="pricing-toggle" class="pricing-toggle" @onclick:stopPropagation="true">
+            <button class="btn-toggle @(isYearly ? "" : "active")" @onclick=ShowMonthly>Monthly</button>
+            <button class="btn-toggle @(isYearly ? "active" : "")" @onclick=ShowYearly>Yearly</button>
+        </div>
+    </header>
+    <section class="pricing-options">
+        <div class="pricing-monthly @(isYearly ? "" : "show")">
+            <div class="pricing-card">
+                <h3>Basic Plan</h3>
+                <h4>$1<sup>99</sup><span> /per usage</span></h4>
+                <p>Install Kori to your website and pay only for what you use.</p>
+                <button class="primary btn-text">Get Started</button>
+                <div class="pricing-target">
+                    <h5>Best for [Target]</h5>
+                    <ul>
+                        <li><img src="/assets/Check icon.svg" /> Set up Kori to your website</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pricing-card">
+                <h3>Basic Plan</h3>
+                <h4>$23<sup>99</sup><span> /per month</span></h4>
+                <p>Subscribe Kori with unlimited usage monthly plan.</p>
+                <button class="primary btn-text">Get Started</button>
+                <div class="pricing-target">
+                    <h5>Best for [Target]</h5>
+                    <ul>
+                        <li><img src="/assets/Check icon.svg" /> Set up Kori to your website</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pricing-card bg-black">
+                <h3>Kori Retainer</h3>
+                <h4>$456<sup>99</sup><span> /cycle</span></h4>
+                <p>Hire our team to set up Kori and create your website.</p>
+                <button class="primary btn-text">Contact Us</button>
+                <div class="pricing-target">
+                    <h5>Best for [Target]</h5>
+                    <ul>
+                        <li><img src="/assets/Check icon.svg" /> Kori infused custom website</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="pricing-yearly @(isYearly ? "show" : "")">
+            <div class="pricing-card">
+                <h3>Basic Plan</h3>
+                <h4>$1<sup>99</sup><span> /per usage</span></h4>
+                <p>Install Kori to your website and pay only for what you use.</p>
+                <button class="primary btn-text">Get Started</button>
+                <div class="pricing-target">
+                    <h5>Best for [Target]</h5>
+                    <ul>
+                        <li><img src="/assets/Check icon.svg" /> Set up Kori to your website</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pricing-card">
+                <h3>Basic Plan</h3>
+                <h4>$23<sup>99</sup><span> /per year</span></h4>
+                <p>Subscribe Kori with unlimited usagemonthly plan.</p>
+                <button class="primary btn-text">Get Started</button>
+                <div class="pricing-target">
+                    <h5>Best for [Target]</h5>
+                    <ul>
+                        <li><img src="/assets/Check icon.svg" /> Set up Kori to your website</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pricing-card">
+                <h3>Kori Retainer</h3>
+                <h4>$456<sup>99</sup><span> /cycle</span></h4>
+                <p>Hire our team to set up Kori and create your website.</p>
+                <button class="primary btn-text">Contact Us</button>
+                <div class="pricing-target">
+                    <h5>Best for [Target]</h5>
+                    <ul>
+                        <li><img src="/assets/Check icon.svg" /> Kori infused custom website</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                        <li><img src="/assets/Check icon.svg" /> Type something</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="marketing-image">
+        <div></div>
+    </section>
+</div>
+
+<script>
+    // pricing options toggle
+    var toggleParent = document.getElementById("pricing-toggle");
+    var buttons = document.querySelectorAll("btn-toggle");
+
+    toggleParent.addEventListener("click", e => {
+        e.stopImmediatePropagation();
+        if(e.target.classList.contains("btn-toggle")) {
+            updateActiveIndicator(e.target);
+        }
+    });
+
+    function updateActiveIndicator(activeElement) {
+        const toggleParentLeftDistance = toggleParent.getBoundingClientRect().left;
+
+        const {
+            width: elementSize,
+            left: elementLeftDistance,
+        } = activeElement.getBoundingClientRect();
+
+        const distanceFromParent = elementLeftDistance - toggleParentLeftDistance;
+
+        toggleParent.style.setProperty("--indicator-offset", distanceFromParent + "px");
+        toggleParent.style.setProperty("--indicator-width", elementSize + "px");
+    }
+</script>
+
+@code {
+    bool isYearly = false;
+
+    void ShowMonthly()
+    {
+        isYearly = false;
+    }
+
+    void ShowYearly()
+    {
+        isYearly = true;
+    }
+}

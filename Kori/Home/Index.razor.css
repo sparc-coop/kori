@@ -1,9 +1,6 @@
 ﻿.landing {
   margin-top: 40px;
 }
-.landing section h1, .landing section h2, .landing section h3, .landing section h4, .landing section h5, .landing section h6, .landing section p {
-  margin: 0;
-}
 .landing .hero {
   margin-bottom: 140px;
 }

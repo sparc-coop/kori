@@ -8,6 +8,10 @@ main {
   display: grid;
   grid-template-columns: 1fr repeat(12, 85px) 1fr;
   grid-column-gap: 20px;
+  position: relative;
+}
+main .bg-image {
+  display: none;
 }
 main .main-container {
   grid-column: 2/span 12;

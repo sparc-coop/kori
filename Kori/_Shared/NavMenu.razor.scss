@@ -16,6 +16,7 @@ nav {
     }
 
     a {
+        color: var(--Gray-900, #1F232B);
         transition: 0.3s all ease-in-out;
 
         &:active {
