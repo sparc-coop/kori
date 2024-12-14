@@ -187,4 +187,32 @@
             border-radius: 30px;
         }
     }
+
+
+    @media screen and (max-width: 1367px) {
+        header {
+            width: 100%;
+        }
+
+        .pricing-options {
+            > * {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 25px;
+            }
+
+            .pricing-card {
+                width: calc(100% - 80px);
+            }
+        }
+    }
+
+    @media screen and (max-width: 717px) {
+        background-image: none;
+
+        header {
+            margin-bottom: 60px;
+        }
+    }
 }

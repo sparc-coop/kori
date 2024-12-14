@@ -161,3 +161,25 @@
   background: var(--Grey-900, #1F232B);
   border-radius: 30px;
 }
+@media screen and (max-width: 1367px) {
+  .pricing header {
+    width: 100%;
+  }
+  .pricing .pricing-options > * {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+  }
+  .pricing .pricing-options .pricing-card {
+    width: calc(100% - 80px);
+  }
+}
+@media screen and (max-width: 717px) {
+  .pricing {
+    background-image: none;
+  }
+  .pricing header {
+    margin-bottom: 60px;
+  }
+}

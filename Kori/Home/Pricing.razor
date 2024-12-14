@@ -1,5 +1,6 @@
 ﻿@page "/pricing"
-@rendermode InteractiveServer
+@* @rendermode InteractiveServer *@
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 <PageTitle>Kori | Pricing</PageTitle>
 
@@ -10,8 +11,8 @@
             Kori is a widget that creates a human-centered feedback loop, ensuring that your contents and services are developed, and refined based on real user needs and preferences. This approach enhances user satisfaction and quality of your contents.
         </p>
         <div id="pricing-toggle" class="pricing-toggle" @onclick:stopPropagation="true">
-            <button class="btn-toggle @(isYearly ? "" : "active")" @onclick=ShowMonthly>Monthly</button>
-            <button class="btn-toggle @(isYearly ? "active" : "")" @onclick=ShowYearly>Yearly</button>
+            <button class="btn-toggle @(isYearly ? "" : "active")">Monthly</button>
+            <button class="btn-toggle @(isYearly ? "active" : "")">Yearly</button>
         </div>
     </header>
     <section class="pricing-options">
@@ -110,14 +111,23 @@
 </div>
 
 <script>
-    // pricing options toggle
+    // pricing options toggleS
     var toggleParent = document.getElementById("pricing-toggle");
-    var buttons = document.querySelectorAll("btn-toggle");
+    var buttons = document.querySelectorAll(".btn-toggle");
 
     toggleParent.addEventListener("click", e => {
         e.stopImmediatePropagation();
-        if(e.target.classList.contains("btn-toggle")) {
-            updateActiveIndicator(e.target);
+        var t = e.target;
+
+        if (t.classList.contains("btn-toggle")) {
+            // Remove active class
+            buttons.forEach((btn) => {
+                btn.classList.remove("active");
+            })
+
+            // Add active class to clicked tab
+            t.classList.add("active");
+            updateActiveIndicator(t);
         }
     });
 
@@ -139,13 +149,35 @@
 @code {
     bool isYearly = false;
 
-    void ShowMonthly()
-    {
-        isYearly = false;
-    }
+    // void ShowMonthly()
+    // {
+    //     isYearly = false;
+    // }
 
-    void ShowYearly()
-    {
-        isYearly = true;
-    }
+    // void ShowYearly()
+    // {
+    //     isYearly = true;
+    // }
+
+    // string indicatorOffset = "0px";
+    // string indicatorWidth = "0px";
+
+    // private async Task ShowMonthly(MouseEventArgs e)
+    // {
+    //     isYearly = false;
+    //     UpdateActiveIndicator(e);
+    // }
+
+    // private async Task ShowYearly(MouseEventArgs e)
+    // {
+    //     isYearly = true;
+    //     UpdateActiveIndicator(e);
+    // }
+
+    // private void UpdateActiveIndicator(MouseEventArgs e)
+    // {
+    //     // Calculate the offset and width based on the button's position
+    //     var target = e.Target as ElementReference;
+    //     var toggleParent = await JSRuntime.InvokeAsync<DOMRect>("document.getElementById".queryElisht.toggleParents,parameter async () d)");
+    // }
 }
