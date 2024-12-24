@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom", "..\..\blos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kori", "..\Kori\Kori.csproj", "{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Kori", "..\Sparc.Kori\Sparc.Kori.csproj", "{2DB44527-251C-4C35-8D23-493CDA30EB54}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DB44527-251C-4C35-8D23-493CDA30EB54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DB44527-251C-4C35-8D23-493CDA30EB54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DB44527-251C-4C35-8D23-493CDA30EB54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DB44527-251C-4C35-8D23-493CDA30EB54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
