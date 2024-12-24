@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sparc.Blossom;
-using System.Net.Http.Json;
-
-namespace Kori;
+﻿namespace Kori;
 
 internal class AzureTranslator : ITranslator
 {

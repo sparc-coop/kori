@@ -20,7 +20,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Server\Sparc.Blossom.csproj" />
-		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Api.OpenApi\Sparc.Blossom.Api.OpenApi.csproj" OutputItemType="Analyzer" />
 	</ItemGroup>
 
 </Project>

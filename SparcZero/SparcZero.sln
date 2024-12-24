@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom", "..\..\blos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kori", "..\Kori\Kori.csproj", "{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.ApiGenerator", "..\..\blossom\Sparc.Blossom.Server.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj", "{A36BA999-9EF9-4C0F-A7F0-A756BE221D11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Blossom", "_Blossom", "{658455CD-E79C-4FA7-8C8B-6889FAE1B273}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +37,16 @@ Global
 		{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1F5A43A-9D57-4C58-AF96-7485B4F125E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A36BA999-9EF9-4C0F-A7F0-A756BE221D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A36BA999-9EF9-4C0F-A7F0-A756BE221D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A36BA999-9EF9-4C0F-A7F0-A756BE221D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A36BA999-9EF9-4C0F-A7F0-A756BE221D11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3810429D-FBDF-4F2A-A412-1DBD2830DF31} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
+		{A36BA999-9EF9-4C0F-A7F0-A756BE221D11} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
 	EndGlobalSection
 EndGlobal

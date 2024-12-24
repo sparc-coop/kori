@@ -1,17 +1,14 @@
-﻿using Ardalis.Specification;
+﻿using Sparc.Blossom.Api;
 
-namespace Kori.PageQueries;
+namespace Kori;
 
-public class Search : BlossomQuery<Page>
+public class Pages(BlossomAggregateOptions<Page> options) : BlossomAggregate<Page>(options)
 {
-    public Search(string searchTerm) => Query.Where(page =>
+    public BlossomQuery<Page> Search(string searchTerm) => Query().Where(page =>
          ((page.Domain != null && page.Domain.ToLower().Contains(searchTerm) == true) ||
          (page.Path != null && page.Path.ToLower().Contains(searchTerm) == true)));
-}
 
-public class GetByDomainAndPath : BlossomQuery<Page>
-{
-    public GetByDomainAndPath(string domain, string? path = null) => Query.Where(page =>
+   public BlossomQuery<Page> GetByDomainAndPath(string domain, string? path = null) => Query().Where(page =>
         (page.Domain != null && page.Domain.ToLower() == domain.ToLower()) &&
         (path == null || (page.Path != null && page.Path.ToLower() == path!.ToLower())));
 }
