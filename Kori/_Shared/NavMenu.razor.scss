@@ -1,0 +1,45 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding: 8px 16px;
+
+    ul {
+        list-style: none;
+        display: flex;
+        gap: 15px;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+    }
+
+    a {
+        color: var(--Gray-900, #1F232B);
+        transition: 0.3s all ease-in-out;
+
+        &:active {
+            color: var(--Gray-900, #1F232B);
+        }
+
+        &:visited {
+            color: var(--Gray-900, #1F232B);
+        }
+
+        &:hover {
+            color: var(--Blue-500, #4162DC);
+        }
+    }
+}
+
+figure {
+    margin: 0;
+
+    img {
+        max-width: 60px;
+    }
+    figcaption {
+        display: none;
+    }
+}

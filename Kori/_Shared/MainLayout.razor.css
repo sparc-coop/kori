@@ -1,29 +1,36 @@
-﻿header {
-  padding-top: 65px;
-}
-
-hr {
-  border-top: 1px solid var(--grey-300);
-  margin-top: 25px;
+﻿html, body {
+  margin: 0 !important;
+  overflow-x: hidden;
 }
 
 main {
+  width: 100vw;
   display: grid;
-  grid-template-columns: auto;
-  gap: 20px;
-  min-height: 0;
-  margin-right: -6vw;
+  grid-template-columns: 1fr repeat(12, 85px) 1fr;
+  grid-column-gap: 20px;
+  position: relative;
 }
-main.no-sidebar {
-  grid-template-columns: auto;
+main .bg-image {
+  display: none;
 }
-main div {
-  max-height: 100%;
-  overflow-y: auto;
-  padding: 100px 6vw 50px 0;
+main .main-container {
+  grid-column: 2/span 12;
 }
-@media screen and (min-width: 100vh) {
+@media screen and (max-width: 1367px) {
   main {
-    grid-template-columns: 223px auto;
+    grid-template-columns: 1fr repeat(6, 85px) 1fr;
+    grid-column-gap: 20px;
+  }
+  main .main-container {
+    grid-column: 2/span 6;
+  }
+}
+@media screen and (max-width: 717px) {
+  main {
+    grid-template-columns: 1fr repeat(4, 85px) 1fr;
+    grid-column-gap: 8px;
+  }
+  main .main-container {
+    grid-column: 2/span 4;
   }
 }

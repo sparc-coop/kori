@@ -1,0 +1,87 @@
+.content h2 {
+    font-size: 47px;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+.col-md-3 {
+    border: 1px solid #363E51;
+    border-radius: 40px;
+}
+.col-md-3:nth-child(1) {
+    box-shadow: 8px 8px 0px 0px #7AC4DF;
+}
+.col-md-3:nth-child(2) {
+    box-shadow: 8px 8px 0px 0px #4162DC;
+}
+.col-md-3:nth-child(3) {
+    box-shadow: 8px 8px 0px 0px #FFC240;
+}
+.col-md-3:nth-child(4) {
+    box-shadow: 8px 8px 0px 0px #373E51;
+}
+.icon img {
+    max-width: 32px;
+}
+.multicolumn-slide h4 {
+    font-size: 19px;
+    font-weight: 700;
+}
+.multicolumn-slide p.paragraph {
+    color: #1F232B;
+    font-size: 16px;
+    line-height: 19px;
+}
+.multicolumn-slide a.button {
+    border: 1px solid #363E51;
+    font-size: 14px;
+    color: #363E51;
+    padding: 6px 16px;
+    border-radius: 8px;
+    line-height: 1;
+}
+.buttons.button-box a {
+    width: fit-content !important;
+}
+.richcontent {
+    max-width: 700px;
+    margin: auto;
+}
+.richcontent  h2 {
+    font-size: 35px;
+    font-weight: 700;
+}
+.richcontent  span {
+    font-weight: 700;
+    font-size: 16px;
+}
+.icon-img img {
+    max-width: 130px;
+}
+.image-with-text-image {
+    border: 1px solid #363E51;
+    border-radius: 32px;
+    overflow: hidden;
+}
+.bg-box {
+    background: #F1F3FE;
+    border-radius: 0 0 32px 32px;
+    width: 100%;
+}
+.bg-box .row {
+    max-width: 1050px;
+    margin: auto;
+}
+.img-txt-bg button.button {
+    margin: auto;
+    background: #F1F3FE;
+    border: 0;
+    border-radius: 16px 16px 0 0;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #4162DC;
+}
+.img-txt-bg .richcontent span {
+    color: #000;
+    font-weight: 500;
+    font-size: 15px;
+}

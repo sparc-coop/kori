@@ -1,0 +1,118 @@
+@import '_Imports';
+@import 'Html';
+
+html {
+    cursor: url('/assets/Arrow 24px.svg'), default !important;
+}
+
+button, a, label {
+    &:hover {
+        cursor: url('/assets/Link 24px.svg'), pointer !important;
+    }
+}
+
+body {
+    margin: 0 !important;
+    font-family: "articulat-cf", sans-serif !important;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "brother-1816", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.subheader {
+    font-family: "brother-1816";
+    font-size: 19.2px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 23.04px */
+}
+
+a {
+    text-decoration: none;
+}
+
+section {
+    h1, h2, h3, h4, h5, h6, p {
+        margin: 0;
+    }
+}
+
+button, .button {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: 0;
+    width: fit-content;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #4162DC;
+    background-color: #5377FC;
+    color: var(--White, #FFF);
+    text-align: center;
+    font-family: "articulat-cf", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    transition: 0.3s ease-in-out;
+
+    img {
+        width: 24px;
+        height: 24px;
+        display: inline;
+    }
+
+    &.primary {
+        &:hover {
+            background: var(--Blue-300, #708DF6);
+        }
+
+        &:active {
+            background: var(--Blue-500, #4162DC);
+        }
+
+        &:disabled {
+            background: var(--Blue-400, #5377FC);
+            opacity: 0.5;
+        }
+    }
+
+    &.secondary {
+        color: #363E51;
+        background-color: var(--White, #FFF);
+
+        &:hover {
+            background: var(--Gray-50, #EEF2FA);
+        }
+
+        &:active {
+            background: var(--Gray-100, #DDE5F5);
+        }
+
+        &:disabled {
+            background: var(--White, #FFF);
+            opacity: 0.5;
+        }
+    }
+
+    &.btn-icon {
+        span {
+            margin-top: 2px;
+        }
+    }
+
+    &.btn-text {
+        padding-top: 9px;
+    }
+}
+
+.kori-character {
+    width: 200px;
+    height: auto;
+}
