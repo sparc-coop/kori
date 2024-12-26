@@ -1,5 +1,6 @@
 ﻿using Kori;
 using Scalar.AspNetCore;
+using Sparc.Blossom.Kori;
 
 BlossomApplication.Run<Html>(args, builder =>
 {
@@ -9,6 +10,8 @@ BlossomApplication.Run<Html>(args, builder =>
         .AddScoped<ITranslator, DeepLTranslator>()
         .AddScoped<ITranslator, AzureTranslator>()
         .AddScoped<ISpeaker, AzureSpeaker>();
+
+    builder.AddKori(new Uri("https://kori.app"));
 },
 app =>
 {

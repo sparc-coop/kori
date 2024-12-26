@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Blossom", "_Blossom", "{65
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Core", "..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj", "{C366EE2D-9720-4345-BCFA-F15D79BBF35C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.Cosmos", "..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj", "{0623189A-FA9B-413C-A418-E468337D0FA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.AzureStorage", "..\..\blossom\Sparc.Blossom.Data.AzureStorage\Sparc.Blossom.Data.AzureStorage.csproj", "{98B3D756-4083-43AD-B6A7-2A60DC7029B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{C366EE2D-9720-4345-BCFA-F15D79BBF35C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C366EE2D-9720-4345-BCFA-F15D79BBF35C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C366EE2D-9720-4345-BCFA-F15D79BBF35C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0623189A-FA9B-413C-A418-E468337D0FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0623189A-FA9B-413C-A418-E468337D0FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0623189A-FA9B-413C-A418-E468337D0FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0623189A-FA9B-413C-A418-E468337D0FA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98B3D756-4083-43AD-B6A7-2A60DC7029B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98B3D756-4083-43AD-B6A7-2A60DC7029B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98B3D756-4083-43AD-B6A7-2A60DC7029B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98B3D756-4083-43AD-B6A7-2A60DC7029B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +67,7 @@ Global
 		{3810429D-FBDF-4F2A-A412-1DBD2830DF31} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
 		{A36BA999-9EF9-4C0F-A7F0-A756BE221D11} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
 		{C366EE2D-9720-4345-BCFA-F15D79BBF35C} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
+		{0623189A-FA9B-413C-A418-E468337D0FA2} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
+		{98B3D756-4083-43AD-B6A7-2A60DC7029B8} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
 	EndGlobalSection
 EndGlobal
