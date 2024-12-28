@@ -1,6 +1,6 @@
 ﻿using Kori;
 using Scalar.AspNetCore;
-using Sparc.Blossom.Kori;
+using Sparc.Kori;
 
 BlossomApplication.Run<Html>(args, builder =>
 {

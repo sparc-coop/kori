@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc", "Sparc\Sparc\Sparc.csproj", "{8E769DC4-A7FB-45BF-B5AD-A5FE80FDF1A5}"
 EndProject
@@ -20,6 +20,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.Cosmos", "..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj", "{0623189A-FA9B-413C-A418-E468337D0FA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.AzureStorage", "..\..\blossom\Sparc.Blossom.Data.AzureStorage\Sparc.Blossom.Data.AzureStorage.csproj", "{98B3D756-4083-43AD-B6A7-2A60DC7029B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Kori", "Sparc.Kori\Sparc.Kori.csproj", "{49C4F61C-3B06-4A15-82C3-8C2FF46AF2FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Sparc", "_Sparc", "{34C32414-E447-44B1-B198-18EF89AEED56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,11 +63,17 @@ Global
 		{98B3D756-4083-43AD-B6A7-2A60DC7029B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98B3D756-4083-43AD-B6A7-2A60DC7029B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98B3D756-4083-43AD-B6A7-2A60DC7029B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49C4F61C-3B06-4A15-82C3-8C2FF46AF2FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49C4F61C-3B06-4A15-82C3-8C2FF46AF2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49C4F61C-3B06-4A15-82C3-8C2FF46AF2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49C4F61C-3B06-4A15-82C3-8C2FF46AF2FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{8E769DC4-A7FB-45BF-B5AD-A5FE80FDF1A5} = {34C32414-E447-44B1-B198-18EF89AEED56}
+		{5BFBEC63-761E-4CC3-9AB3-D9454BA60034} = {34C32414-E447-44B1-B198-18EF89AEED56}
 		{3810429D-FBDF-4F2A-A412-1DBD2830DF31} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
 		{A36BA999-9EF9-4C0F-A7F0-A756BE221D11} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
 		{C366EE2D-9720-4345-BCFA-F15D79BBF35C} = {658455CD-E79C-4FA7-8C8B-6889FAE1B273}
