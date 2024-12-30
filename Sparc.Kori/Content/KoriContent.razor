@@ -1,6 +1,6 @@
 ﻿@_content?.Text
 
-@inject DexieRepository<KoriTextContent> Translations
+@inject IRepository<KoriTextContent> Translations
 @code {
     [Parameter] public string? Text { get; set; }
     private KoriTextContent? _content;

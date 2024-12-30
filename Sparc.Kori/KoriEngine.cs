@@ -16,7 +16,7 @@ public class KoriEngine(
     public TagManager TagManager { get; } = new TagManager();
     public string Mode { get; set; } = "";
 
-    public event EventHandler<EventArgs> StateChanged;
+    public event EventHandler<EventArgs>? StateChanged;
 
     public async Task InitializeAsync(string currentUrl)
     {

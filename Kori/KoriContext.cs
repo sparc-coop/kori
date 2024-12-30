@@ -2,7 +2,7 @@
 
 namespace Kori;
 
-public class KoriContext(BlossomContextOptions options) : BlossomContext(options)
+public class KoriContext(DbContextOptions options) : DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
     {

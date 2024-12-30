@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="_Imports.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
@@ -31,6 +27,10 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
   </ItemGroup>
 
 </Project>
