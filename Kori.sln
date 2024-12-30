@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Blossom", "_Blossom", "{B9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Core", "..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj", "{FDE34175-2661-42B4-896C-87F0D38D7397}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom", "..\blossom\Sparc.Blossom.Server\Sparc.Blossom.csproj", "{582A5429-6E3F-4BCE-B146-DCDE4E7706A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom", "..\blossom\Sparc.Blossom\Sparc.Blossom.csproj", "{582A5429-6E3F-4BCE-B146-DCDE4E7706A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.Cosmos", "..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj", "{B3D9AB2C-765A-4BF3-8B06-C75515583E3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.ApiGenerator", "..\blossom\Sparc.Blossom.Server.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj", "{0231AC11-3CF7-4883-9711-A51B70C809CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.ApiGenerator", "..\blossom\Sparc.Blossom.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj", "{0231AC11-3CF7-4883-9711-A51B70C809CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
