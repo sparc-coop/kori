@@ -20,13 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="_Imports.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
+    <ProjectReference Include="..\..\blossom\Sparc.Blossom.Client\Sparc.Blossom.Client.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
-  </ItemGroup>
-
 </Project>
