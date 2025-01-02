@@ -1,10 +1,10 @@
 ﻿namespace Kori;
 
-internal class Translator
+internal class KoriTranslator
 {
     internal static List<Language>? Languages;
 
-    public Translator(IEnumerable<ITranslator> translators)
+    public KoriTranslator(IEnumerable<ITranslator> translators)
     {
         Translators = translators;
     }
@@ -67,7 +67,7 @@ internal class Translator
         var language = await GetLanguageAsync(toLanguage)
             ?? throw new ArgumentException($"Language {toLanguage} not found");
 
-        var message = new Content("", "", fromLanguage, text);
+        var message = new Content("", fromLanguage, text);
         var result = await TranslateAsync(message, [language]);
         return result?.FirstOrDefault()?.Text;
     }

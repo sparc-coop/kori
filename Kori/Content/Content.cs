@@ -33,12 +33,14 @@ public class Content : BlossomEntity<string>
     public string? Tag { get; set; }
     internal List<EditHistory> EditHistory { get; private set; }
     public string Html { get; set; }
+    public string PageId { get; internal set; }
 
-    protected Content(string domain, string path, string language)
+    protected Content(string pageId, string language)
     {
         Id = Guid.NewGuid().ToString();
-        Domain = domain;
-        Path = path;
+        PageId = pageId;
+        Domain = new Uri(pageId).Host;
+        Path = new Uri(pageId).AbsolutePath;
         User = new User().Avatar;
         Language = language;
         Translations = [];
@@ -47,8 +49,8 @@ public class Content : BlossomEntity<string>
         ContentType = "Text";
     }
 
-    public Content(string domain, string path, string language, string text, User? user = null, string? tag = null, string contentType = "Text") 
-        : this(domain, path, language)
+    public Content(string pageId, string language, string text, User? user = null, string? tag = null, string contentType = "Text") 
+        : this(pageId, language)
     {
         User = user?.Avatar;
         Language = user?.Avatar.Language ?? language ?? string.Empty;
@@ -72,7 +74,7 @@ public class Content : BlossomEntity<string>
         SetTextAndHtml(new SetTextAndHtmlRequest(text));
     }
 
-    internal async Task<(string?, Content?)> TranslateAsync(Translator translator, string languageId)
+    internal async Task<(string?, Content?)> TranslateAsync(KoriTranslator translator, string languageId)
     {
         if (HasTranslation(languageId))
             return (Translations.First(x => x.LanguageId == languageId).SourceContentId, null);
@@ -115,7 +117,7 @@ public class Content : BlossomEntity<string>
         {
             // Set the newly translated content's ID to the existing translation so that it is updated in the repository
             var translation = Translations.FirstOrDefault(x => x.LanguageId == translatedContent.Language);
-            if (translation != null)
+            if (translation?.SourceContentId != null)
                 translatedContent.Id = translation.SourceContentId;
         }
         else

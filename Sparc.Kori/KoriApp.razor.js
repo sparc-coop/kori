@@ -4,6 +4,7 @@ let app = {};
 let observer = {};
 var koriAuthorized = false;
 let topBar = {};
+let dotNet = {};
 
 let koriIgnoreFilter = function (node) {
     var approvedNodes = ['#text', 'IMG'];
@@ -18,7 +19,7 @@ let koriIgnoreFilter = function (node) {
     return NodeFilter.FILTER_ACCEPT;
 }
 
-export async function init(appId) {
+export async function init(appId, dotNetReference) {
     if (/complete|interactive|loaded/.test(document.readyState)) {
         initApp(appId);
     } else {
@@ -31,7 +32,13 @@ export async function init(appId) {
     //});
 
     topBar = document.getElementById("kori-top-bar");
+    dotNet = dotNetReference;
+
     return getBrowserLanguage();
+}
+
+export function getPageTitle() {
+    return document.title;
 }
 
 async function initApp(appId) {
@@ -49,14 +56,13 @@ async function initApp(appId) {
 async function registerNodesUnder(el) {
     var nodes = [];
     var content;
-    var n, walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, koriIgnoreFilter);
-    while (n = walk.nextNode()) {
-        if (content = isValidNode(n))
-            nodes.push({ n, content });
+    var node, walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, koriIgnoreFilter);
+    while (node = walk.nextNode()) {
+        if (content = isValidNode(node))
+            nodes.push({ node, content });
     }
 
-    nodes.forEach(async n => await registerNode(n));
-    //nodes.forEach(n => replaceNode(n.n, n.content));
+    await dotNet.invokeMethodAsync("RegisterNodes", nodes);
 }
 
 function isValidNode(node) {
@@ -69,10 +75,6 @@ function isValidNode(node) {
         return;
 
     return content;
-}
-
-async function registerNode(node) {
-    Dexie.
 }
 
 function replaceNode(node, content) {

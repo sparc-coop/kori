@@ -15,7 +15,7 @@ internal interface ITranslator
         var language = await GetLanguageAsync(toLanguage)
             ?? throw new ArgumentException($"Language {toLanguage} not found");
 
-        var message = new Content("", "", text, fromLanguage);
+        var message = new Content("", text, fromLanguage);
         var result = await TranslateAsync(message, [language]);
         return result?.FirstOrDefault()?.Text;
     }

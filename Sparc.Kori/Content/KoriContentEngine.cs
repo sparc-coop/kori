@@ -1,62 +1,64 @@
-﻿using System.Text;
+﻿using Microsoft.JSInterop;
+using System.Text;
 
 namespace Sparc.Kori;
-public record KoriTextContent(string Id, string? Language = null, string? Text = null, string? Html = null, string? ContentType = null, KoriAudio? Audio = null);
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
-public class KoriContentEngine(IKoriPages pages, KoriJsEngine js)
+public class KoriContentEngine(IKoriPages pages, IKoriContents content, IRepository<KoriTextContent> translations, KoriJsEngine js)
 {
-    public Dictionary<string, KoriTextContent> Content { get; set; } = [];
+    KoriPage? CurrentPage { get; set; }
+    IRepository<KoriTextContent> Translations { get; } = translations;
 
-    public async Task InitializeAsync(Uri uri, string pageTitle)
+    public async Task InitializeAsync(Uri uri, string elementId)
     {
-        var page = await pages.Register(uri.GetLeftPart(UriPartial.Path), pageTitle);
-        Content = await http.GetContentAsync(request.Domain, request.Path) ?? [];
+        await js.Init(elementId);
+
+        var pageId = uri.GetLeftPart(UriPartial.Path);
+        CurrentPage = await pages.Register(pageId, await js.GetPageTitle());
+        Content = await content.ExecuteQuery("GetAll", CurrentPage.Id) ?? [];
     }
 
-    public async Task<Dictionary<string, string>> TranslateAsync(KoriContentRequest request, Dictionary<string, string> nodes)
+    [JSInvokable]
+    public async Task<Dictionary<string, string>> RegisterAsync(Dictionary<string, string> contentNodes)
     {
-        if (nodes.Count == 0)
-            return nodes;
-        
-        var keysToTranslate = nodes.Where(x => !Content.ContainsKey(x.Key)).Select(x => x.Key).Distinct().ToList();
-        
+        if (contentNodes.Count == 0)
+            return [];
+
+        var keysToTranslate = contentNodes
+            .Where(x => !Content.ContainsKey(x.Key))
+            .Select(x => x.Key)
+            .Distinct()
+            .ToList();
+
         if (keysToTranslate.Count == 0)
-            return nodes;
-        
-        var messagesDictionary = keysToTranslate.ToDictionary(key => key, key => nodes[key]);
-        var page = await GetOrCreatePage(request);
-        
-        var content = await http.TranslateAsync(page.Id, messagesDictionary, request.Language);
+            return contentNodes;
 
-        if (content == null)
-            return nodes;
+        var messagesDictionary = keysToTranslate.ToDictionary(key => key, key => contentNodes[key]);
+        var translatedContent = await pages.ExecuteQuery("Translate", CurrentPage.Id, messagesDictionary, request.Language);
 
-        foreach (var item in content)
+        if (translatedContent == null)
+            return contentNodes;
+
+        foreach (var item in translatedContent)
         {
             Content[item.Value.Id] = item.Value;
         }
 
-        foreach (var key in nodes.Keys.ToList())
+        foreach (var key in contentNodes.Keys.ToList())
         {
             if (Content.TryGetValue(key, out KoriTextContent? value))
             {
-                nodes[key] = value.Text;
+                contentNodes[key] = value.Text;
             }
         }
 
-        return nodes;
+        return contentNodes;
     }
 
-    public async Task<KoriTextContent> CreateOrUpdateContentAsync(KoriContentRequest request, string id, string tag, string text)
+    [JSInvokable]
+    public async Task<KoriTextContent> UpdateAsync(string id, string tag, string text)
     {
-        // Need to add user ABMode
-
-        var page = await http.GetPageByDomainAndPathAsync(request.Domain, request.Path);
-        if (page == null)
-            throw new InvalidOperationException("Page not found for the given domain and path.");
-
         KoriTextContent content;
 
         if (string.IsNullOrEmpty(id))
@@ -82,6 +84,8 @@ public class KoriContentEngine(IKoriPages pages, KoriJsEngine js)
         return content;
     }
 
+    public async Task ApplyMarkdown(string symbol, string position) => await js.ApplyMarkdown(symbol, position);
+
     public async Task PlayAsync(KoriTextContent content)
     {
         if (content?.Audio?.Url == null)
@@ -100,10 +104,7 @@ public class KoriContentEngine(IKoriPages pages, KoriJsEngine js)
         await js.InvokeVoidAsync("applyMarkdown", symbol);
     }
 
-    public async Task BeginSaveAsync()
-    {
-        await js.InvokeVoidAsync("save");
-    }    
+    public async Task Save() => await js.Save();
 
     public async Task CancelAsync()
     {

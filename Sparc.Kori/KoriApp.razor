@@ -17,8 +17,8 @@
     {
         if (firstRender)
         {
-            await Kori.InitializeAsync(Nav.Uri, _id);
-            Nav.LocationChanged += async (sender, args) => await Kori.InitializeAsync(args.Location, _id);
+            await Kori.Content.InitializeAsync(Nav.Uri, _id);
+            Nav.LocationChanged += async (sender, args) => await Kori.Content.InitializeAsync(args.Location, _id);
             StateHasChanged();
         }
     }

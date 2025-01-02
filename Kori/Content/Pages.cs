@@ -13,6 +13,9 @@ public class Pages(BlossomAggregateOptions<Page> options) : BlossomAggregate<Pag
         var page = await Get(uri.AbsoluteUri) 
             ?? await Create(uri.Host, uri.AbsolutePath, title);
 
+        if (page.Name != title)
+            await Execute(page.Id, x => x.UpdateName(title));
+
         return page;
     }
 }

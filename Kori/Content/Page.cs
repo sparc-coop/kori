@@ -77,7 +77,7 @@ public class Page : BlossomEntity<string>
                     continue;
                 }
 
-                var newContentEntry = new Content(Domain, Path, request.LanguageId, text, tag: tag);
+                var newContentEntry = new Content(Id, request.LanguageId, text, tag: tag);
 
                 newContentEntry.SetTextAndHtml(new SetTextAndHtmlRequest(text));
 
@@ -98,7 +98,7 @@ public class Page : BlossomEntity<string>
         return defaultContentDictionary;
     }
 
-    internal async Task<List<Content>> TranslateAsync(Content content, Translator translator, bool forceRetranslation = false)
+    internal async Task<List<Content>> TranslateAsync(Content content, KoriTranslator translator, bool forceRetranslation = false)
     {
         var languagesToTranslate = forceRetranslation
             ? Languages.Where(x => x.Id != content.Language).ToList()
@@ -110,7 +110,6 @@ public class Page : BlossomEntity<string>
         try
         {
             var translatedContents = await translator.TranslateAsync(content, languagesToTranslate);
-
 
             // Add reference to all the new translated contents
             foreach (var translatedContent in translatedContents)
@@ -264,5 +263,7 @@ public class Page : BlossomEntity<string>
             return "";
         }
     }
+
+    internal void UpdateName(string name) => Name = name;
 }
 

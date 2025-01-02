@@ -14,7 +14,7 @@ public class KoriImageEngine(KoriHttpEngine http, KoriJsEngine js)
 
     public async Task BeginEditAsync()
     {
-        await js.InvokeVoidAsync("editImage");
+        await js.EditImage();
     }
 
     public void OnImageSelected(InputFileChangeEventArgs e)
@@ -27,13 +27,13 @@ public class KoriImageEngine(KoriHttpEngine http, KoriJsEngine js)
         if (SelectedImage == null)
             return;
 
-        var originalImageSrc = await js.InvokeAsync<string>("getActiveImageSrc");
+        var originalImageSrc = await js.GetActiveImageSrc();
         if (originalImageSrc != null)
         {
             var result = await http.SaveContentAsync(originalImageSrc, SelectedImage);
-            if (result != null)
+            if (result?.Text != null)
             {
-                await js.InvokeVoidAsync("updateImageSrc", originalImageSrc, result.Text);
+                await js.UpdateImageSrc(originalImageSrc, result.Text);
                 Console.WriteLine("Image sent successfully!");
             }
             else

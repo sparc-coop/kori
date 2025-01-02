@@ -1,42 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 
 namespace Sparc.Kori;
 
 public class KoriEngine(
     KoriLanguageEngine language,
-    KoriHttpEngine http,
     KoriContentEngine content,
     KoriSearchEngine search,
     KoriImageEngine images,
     KoriJsEngine js)
 {
-    public KoriContentRequest CurrentRequest { get; private set; } = new("", "", "");
     public static Uri BaseUri { get; set; } = new("https://localhost");
-    public TagManager TagManager { get; } = new TagManager();
     public string Mode { get; set; } = "";
+    public KoriContentEngine Content { get; set; } = content;
+    public KoriSearchEngine Search { get; set; } = search;
 
     public event EventHandler<EventArgs>? StateChanged;
-
-    public async Task InitializeAsync(Uri uri)
-    {
-        await content.InitializeAsync(uri);
-    }
-
-    public async Task InitializeAsync(string currentUrl)
-        => await InitializeAsync(new Uri(currentUrl));
-
-    public async Task InitializeAsync(HttpContext context)
-    {
-        var url = $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}";
-        await InitializeAsync(url);
-    }
-
-    public async Task InitializeAsync(string currentUrl, string elementId)
-    {
-        await InitializeAsync(currentUrl);
-        await js.InvokeVoidAsync("init", elementId);
-    }
 
     public async Task ChangeMode(string mode)
     {
@@ -63,7 +41,7 @@ public class KoriEngine(
                 OpenABTestingMenu();
                 break;
             case "Edit":
-                await content.BeginEditAsync();
+                await Content.BeginEditAsync();
                 break;
             case "EditImage":
                 await images.BeginEditAsync();
@@ -73,24 +51,10 @@ public class KoriEngine(
         }
     }
 
-    [JSInvokable]
-    public async Task<Dictionary<string, string>> TranslateAsync(Dictionary<string, string> newContent)
-        => await content.TranslateAsync(CurrentRequest, newContent);
-
-    [JSInvokable]
-    public async Task<KoriTextContent> SaveAsync(string id, string tag, string text)
-        => await content.CreateOrUpdateContentAsync(CurrentRequest, id, tag, text);
-
-    public async Task BeginSaveAsync()
-        => await content.BeginSaveAsync();
-
-    public async Task<List<KoriSearch>> SearchAsync(string searchTerm)
-        => await search.SearchAsync(searchTerm);
-
     public async Task CloseAsync()
     {
         Mode = "Default";
-        await search.CloseAsync();
+        await Search.CloseAsync();
     }
 
     public void OpenTranslationMenu()
@@ -114,22 +78,20 @@ public class KoriEngine(
         Mode = "ABTesting";
     }
 
-    public async Task ApplyMarkdown(string symbol, string position) => await js.InvokeVoidAsync("applyMarkdown", symbol, position);
-    
     [JSInvokable]
     public async Task EditAsync()
     {
-        var contentType = await js.InvokeAsync<string>("checkSelectedContentType");
+        var contentType = await js.CheckSelectedContentType();
 
         if (contentType == "image")
         {
             Mode = "EditImage";
-            await js.InvokeVoidAsync("editImage");
+            await js.EditImage();
         }
         else
         {
             Mode = "Edit";
-            await js.InvokeVoidAsync("edit");
+            await js.Edit();
         }
 
         InvokeStateHasChanged();
@@ -145,27 +107,5 @@ public class KoriEngine(
     {
         Mode = "Default";
         InvokeStateHasChanged();
-    }
-}
-
-
-public class TagManager
-{
-    private readonly Dictionary<string, string> dict = new Dictionary<string, string>();
-
-    public string this[string key]
-    {
-        get
-        {
-            if (!dict.ContainsKey(key))
-            {
-                dict.Add(key, "");
-            }
-            return dict[key];
-        }
-        set
-        {
-            dict[key] = value;
-        }
     }
 }
