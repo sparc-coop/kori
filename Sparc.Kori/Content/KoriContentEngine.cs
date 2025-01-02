@@ -1,30 +1,18 @@
 ﻿using System.Text;
 
 namespace Sparc.Kori;
-
-public record KoriPage(string Name, string Domain, string Path, List<string> Languages, ICollection<KoriTextContent> Content, string Id);
 public record KoriTextContent(string Id, string? Language = null, string? Text = null, string? Html = null, string? ContentType = null, KoriAudio? Audio = null);
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
-public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
+public class KoriContentEngine(IKoriPages pages, KoriJsEngine js)
 {
-    public Dictionary<string, KoriTextContent> Value { get; set; } = [];
+    public Dictionary<string, KoriTextContent> Content { get; set; } = [];
 
-    public async Task InitializeAsync(KoriContentRequest request)
+    public async Task InitializeAsync(Uri uri, string pageTitle)
     {
-        var page = await GetOrCreatePage(request);
-
-        //TODO check if lang is added
-
-        Value = await http.GetContentAsync(request.Domain, request.Path) ?? [];
-    }
-
-    private async Task<KoriPage> GetOrCreatePage(KoriContentRequest request)
-    {
-        var page = await http.GetPageByDomainAndPathAsync(request.Domain, request.Path)
-            ?? await http.CreatePage(request.Domain, request.Path, "new page");
-        return page;
+        var page = await pages.Register(uri.GetLeftPart(UriPartial.Path), pageTitle);
+        Content = await http.GetContentAsync(request.Domain, request.Path) ?? [];
     }
 
     public async Task<Dictionary<string, string>> TranslateAsync(KoriContentRequest request, Dictionary<string, string> nodes)
@@ -32,7 +20,7 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
         if (nodes.Count == 0)
             return nodes;
         
-        var keysToTranslate = nodes.Where(x => !Value.ContainsKey(x.Key)).Select(x => x.Key).Distinct().ToList();
+        var keysToTranslate = nodes.Where(x => !Content.ContainsKey(x.Key)).Select(x => x.Key).Distinct().ToList();
         
         if (keysToTranslate.Count == 0)
             return nodes;
@@ -47,12 +35,12 @@ public class KoriContentEngine(KoriHttpEngine http, KoriJsEngine js)
 
         foreach (var item in content)
         {
-            Value[item.Value.Id] = item.Value;
+            Content[item.Value.Id] = item.Value;
         }
 
         foreach (var key in nodes.Keys.ToList())
         {
-            if (Value.TryGetValue(key, out KoriTextContent? value))
+            if (Content.TryGetValue(key, out KoriTextContent? value))
             {
                 nodes[key] = value.Text;
             }

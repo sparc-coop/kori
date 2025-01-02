@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
         koriApiUri ??= new Uri("https://kori.page");
         services.AddBlossomApi<KoriTextContent>(koriApiUri, "Contents");
         services.AddBlossomApi<KoriLanguage>(koriApiUri, "Languages");
-        services.AddBlossomApi<KoriPage>(koriApiUri, "Pages");
+        services.AddBlossomApi<KoriPage, IKoriPages>(koriApiUri, "Pages");
 
 
         services.AddScoped<KoriEngine>()

@@ -22,7 +22,7 @@ public class Page : BlossomEntity<string>
 
     private Page(string domain, string path)
     {
-        Id = Guid.NewGuid().ToString();
+        Id = new Uri(new Uri(domain), path).ToString();
         Domain = domain;
         Path = path;
         Name = "New Page";
@@ -34,6 +34,10 @@ public class Page : BlossomEntity<string>
     public Page(string domain, string path, string name) : this(domain, path)
     {
         Name = name;
+    }
+
+    public Page(Uri uri, string name) : this(uri.Host, uri.AbsolutePath, name)
+    {
     }
 
     internal Page(Page page, Content content) : this(page.Domain, page.Path, page.Name)

@@ -6,7 +6,13 @@ public class Pages(BlossomAggregateOptions<Page> options) : BlossomAggregate<Pag
          ((page.Domain != null && page.Domain.ToLower().Contains(searchTerm) == true) ||
          (page.Path != null && page.Path.ToLower().Contains(searchTerm) == true)));
 
-   public BlossomQuery<Page> GetByDomainAndPath(string domain, string? path = null) => Query().Where(page =>
-        (page.Domain != null && page.Domain.ToLower() == domain.ToLower()) &&
-        (path == null || (page.Path != null && page.Path.ToLower() == path!.ToLower())));
+   public async Task<Page> Register(string url, string title)
+    {
+        var uri = new Uri(url.ToLower());
+
+        var page = await Get(uri.AbsoluteUri) 
+            ?? await Create(uri.Host, uri.AbsolutePath, title);
+
+        return page;
+    }
 }

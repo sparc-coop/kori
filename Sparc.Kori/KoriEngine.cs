@@ -18,20 +18,18 @@ public class KoriEngine(
 
     public event EventHandler<EventArgs>? StateChanged;
 
-    public async Task InitializeAsync(string currentUrl)
+    public async Task InitializeAsync(Uri uri)
     {
-        var url = new Uri(currentUrl);
-
-        // CurrentRequest = new KoriContentRequest(BaseUri.Host, language.Value.Id, url.PathAndQuery);
-
-        // await http.InitializeAsync(CurrentRequest);
-        //await content.InitializeAsync(CurrentRequest);
-        //await images.InitializeAsync();
+        await content.InitializeAsync(uri);
     }
+
+    public async Task InitializeAsync(string currentUrl)
+        => await InitializeAsync(new Uri(currentUrl));
 
     public async Task InitializeAsync(HttpContext context)
     {
-        await InitializeAsync(context.Request.Path);
+        var url = $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}";
+        await InitializeAsync(url);
     }
 
     public async Task InitializeAsync(string currentUrl, string elementId)
