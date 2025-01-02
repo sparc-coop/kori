@@ -1,5 +1,4 @@
 ﻿using Kori;
-using Scalar.AspNetCore;
 
 var builder = BlossomApplication.CreateBuilder(args);
 
