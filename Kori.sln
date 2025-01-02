@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.Cosmos",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.ApiGenerator", "..\blossom\Sparc.Blossom.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj", "{0231AC11-3CF7-4883-9711-A51B70C809CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Client", "..\blossom\Sparc.Blossom.Client\Sparc.Blossom.Client.csproj", "{DBEA59FC-3202-4747-8B9A-99FC4DD4C4B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.OpenApi", "..\blossom\Sparc.Blossom.OpenApi\Sparc.Blossom.OpenApi.csproj", "{A7E6936A-EF7D-485E-A811-B46A503D4C77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{0231AC11-3CF7-4883-9711-A51B70C809CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0231AC11-3CF7-4883-9711-A51B70C809CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0231AC11-3CF7-4883-9711-A51B70C809CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBEA59FC-3202-4747-8B9A-99FC4DD4C4B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBEA59FC-3202-4747-8B9A-99FC4DD4C4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBEA59FC-3202-4747-8B9A-99FC4DD4C4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBEA59FC-3202-4747-8B9A-99FC4DD4C4B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E6936A-EF7D-485E-A811-B46A503D4C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E6936A-EF7D-485E-A811-B46A503D4C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E6936A-EF7D-485E-A811-B46A503D4C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E6936A-EF7D-485E-A811-B46A503D4C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +68,8 @@ Global
 		{582A5429-6E3F-4BCE-B146-DCDE4E7706A4} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 		{B3D9AB2C-765A-4BF3-8B06-C75515583E3E} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 		{0231AC11-3CF7-4883-9711-A51B70C809CA} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
+		{DBEA59FC-3202-4747-8B9A-99FC4DD4C4B9} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
+		{A7E6936A-EF7D-485E-A811-B46A503D4C77} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA22A9DA-4301-45E8-993F-2CE7EAAF73A2}
