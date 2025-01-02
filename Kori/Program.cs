@@ -1,4 +1,5 @@
 ﻿using Kori;
+using Sparc.Kori;
 
 var builder = BlossomApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddCosmos<KoriContext>(builder.Configuration.GetConnectionStrin
         .AddScoped<ITranslator, AzureTranslator>()
         .AddScoped<ISpeaker, AzureSpeaker>();
 
-var app = builder.Build();
+builder.Services.AddKori("https://kori.page");
 
+var app = builder.Build();
 await app.RunAsync<Html>();

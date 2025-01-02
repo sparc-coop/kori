@@ -16,24 +16,13 @@ public static class ServiceCollectionExtensions
             .AddScoped<KoriContentEngine>()
             .AddScoped<KoriSearchEngine>()
             .AddScoped<KoriImageEngine>()
+            .AddScoped<KoriHttpEngine>()
             .AddScoped<KoriJsEngine>();
 
         KoriEngine.BaseUri = baseUri;
         return services;
     }
 
-    static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
-    public static async Task<TResponse?> PostAsync<TResponse>(this HttpClient client, string url, object request)
-    {
-        try
-        {
-            var response = await client.PostAsJsonAsync(url, request);
-            var result = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<TResponse>(result, JsonOptions);
-        }
-        catch (Exception)
-        {
-            return default;
-        }
-    }
+    public static IServiceCollection AddKori(this IServiceCollection services, string baseUri)
+     => services.AddKori(new Uri(baseUri));
 }

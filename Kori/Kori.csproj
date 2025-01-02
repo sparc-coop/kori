@@ -20,6 +20,7 @@
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom\Sparc.Blossom.csproj" />
+		<ProjectReference Include="..\Sparc.Kori\Sparc.Kori.csproj" />
 	</ItemGroup>
 
 </Project>

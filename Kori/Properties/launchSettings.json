@@ -7,7 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:53579;http://localhost:53580",
-      "launchUrl": "scalar/v1"
+      //"launchUrl": "scalar/v1"
     }
   }
 }
