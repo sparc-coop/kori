@@ -5,7 +5,7 @@ var builder = BlossomApplication.CreateBuilder(args);
 
 builder.Services.AddCosmos<KoriContext>(builder.Configuration.GetConnectionString("CosmosDb")!, "kori", ServiceLifetime.Scoped)
         .AddAzureStorage(builder.Configuration.GetConnectionString("Storage")!)
-        .AddScoped<KoriTranslator>()
+        .AddScoped<KoriTranslatorProvider>()
         .AddScoped<ITranslator, DeepLTranslator>()
         .AddScoped<ITranslator, AzureTranslator>()
         .AddScoped<ISpeaker, AzureSpeaker>();

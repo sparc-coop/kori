@@ -8,7 +8,6 @@ public class KoriContext(DbContextOptions options) : DbContext(options)
     {
         builder.Entity<Page>().HasKey(x => new { x.Domain, x.Path });
         builder.Entity<Page>().HasPartitionKey(x => new { x.Domain, x.Path }).ToContainer("content");
-        builder.Entity<Page>().HasMany(x => x.Contents).WithOne().HasForeignKey(x => new { x.Domain, x.Path });
         builder.Entity<Content>().HasPartitionKey(x => new { x.Domain, x.Path }).ToContainer("content");
     }
 }

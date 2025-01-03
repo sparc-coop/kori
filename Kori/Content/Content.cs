@@ -9,9 +9,7 @@ public record AudioContent(string? Url, long Duration, string Voice)
     public List<Word> Words { get; set; } = [];
 }
 
-public record ContentTag(string Key, string Value, bool Translate);
 public record ContentTranslation(string Id, string LanguageId, string? SourceContentId = null);
-public record SetTextAndHtmlRequest(string Text);
 
 public class Content : BlossomEntity<string>
 {
@@ -30,7 +28,7 @@ public class Content : BlossomEntity<string>
     public List<ContentTranslation> Translations { get; private set; }
     internal long Charge { get; private set; }
     internal decimal Cost { get; private set; }
-    public string? Tag { get; set; }
+    public string OriginalText { get; set; }
     internal List<EditHistory> EditHistory { get; private set; }
     public string Html { get; set; }
     public string PageId { get; internal set; }
@@ -46,10 +44,11 @@ public class Content : BlossomEntity<string>
         Translations = [];
         EditHistory = [];
         Html = string.Empty;
+        OriginalText = string.Empty;
         ContentType = "Text";
     }
 
-    public Content(string pageId, string language, string text, User? user = null, string? tag = null, string contentType = "Text") 
+    public Content(string pageId, string language, string text, User? user = null, string? originalText = null, string contentType = "Text") 
         : this(pageId, language)
     {
         User = user?.Avatar;
@@ -57,12 +56,12 @@ public class Content : BlossomEntity<string>
         LanguageIsRTL = user?.Avatar.LanguageIsRTL;
         Audio = user?.Avatar.Voice == null ? null : new(null, 0, user.Avatar.Voice);
         Timestamp = DateTime.UtcNow;
-        Tag = tag;
+        OriginalText = originalText ?? "";
         ContentType = contentType;
-        SetTextAndHtml(new SetTextAndHtmlRequest(text));
+        SetTextAndHtml(text);
     }
 
-    internal Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.Domain, sourceContent.Path, toLanguage.Id)
+    internal Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.PageId, toLanguage.Id)
     {
         SourceContentId = sourceContent.Id;
         User = sourceContent.User;
@@ -70,22 +69,30 @@ public class Content : BlossomEntity<string>
         Language = toLanguage.Id;
         LanguageIsRTL = toLanguage.IsRightToLeft;
         Timestamp = sourceContent.Timestamp;
-        Tag = sourceContent.Tag;
-        SetTextAndHtml(new SetTextAndHtmlRequest(text));
+        OriginalText = sourceContent.OriginalText;
+        SetTextAndHtml(text);
     }
 
-    internal async Task<(string?, Content?)> TranslateAsync(KoriTranslator translator, string languageId)
+    internal async Task<Content?> TranslateAsync(string languageId, IRepository<Content> contents, KoriTranslatorProvider provider)
     {
-        if (HasTranslation(languageId))
-            return (Translations.First(x => x.LanguageId == languageId).SourceContentId, null);
+        if (Language == languageId)
+            return this;
 
-        var language = await translator.GetLanguageAsync(languageId);
-        var translatedContent = (await translator.TranslateAsync(this, [language!])).FirstOrDefault();
+        var translation = Translations.FirstOrDefault(x => x.LanguageId == languageId);
+
+        if (translation != null)
+            return await contents.FindAsync(translation.Id);
+
+        var translator = await provider.For(this, languageId);
+        if (translator == null)
+            return null;
+
+        var translatedContent = await translator.TranslateAsync(this, languageId);
 
         if (translatedContent != null)
             AddTranslation(translatedContent);
 
-        return (translatedContent?.Id, translatedContent);
+        return translatedContent;
     }
 
     internal async Task<AudioContent?> SpeakAsync(ISpeaker engine, string? voiceId = null)
@@ -158,20 +165,23 @@ public class Content : BlossomEntity<string>
         Html = writer.ToString();
     }
 
-    public string SetTextAndHtml(SetTextAndHtmlRequest request)
+    public Content SetTextAndHtml(string text)
     {
-        if (Text == request.Text)
-            return "";
+        if (Text == text)
+            return this;
 
-        if (Text != null)
+        if (!string.IsNullOrWhiteSpace(Text))
             EditHistory.Add(new(LastModified ?? Timestamp, Text));
 
-        Text = request.Text;
+        if (string.IsNullOrWhiteSpace(OriginalText))
+            OriginalText = text;
+
+        Text = text;
         LastModified = DateTime.UtcNow;
 
         SetHtmlFromMarkdown();
 
-        return Html;
+        return this;
     }
 
 

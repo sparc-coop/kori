@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddLocalization();
         koriApiUri ??= new Uri("https://kori.page");
-        services.AddBlossomApi<KoriTextContent>(koriApiUri, "Contents");
+        services.AddBlossomApi<KoriTextContent, IKoriContents>(koriApiUri, "Contents");
         services.AddBlossomApi<KoriLanguage>(koriApiUri, "Languages");
         services.AddBlossomApi<KoriPage, IKoriPages>(koriApiUri, "Pages");
 

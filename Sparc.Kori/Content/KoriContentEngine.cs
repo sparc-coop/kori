@@ -5,18 +5,25 @@ namespace Sparc.Kori;
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
-public class KoriContentEngine(IKoriPages pages, IKoriContents content, IRepository<KoriTextContent> translations, KoriJsEngine js)
+public class KoriContentEngine(IKoriPages pages, IKoriContents content, KoriStringLocalizer localizer, KoriJsEngine js)
 {
+    Uri CurrentUri { get; set; }
+    string CurrentPageId => CurrentUri.GetLeftPart(UriPartial.Path);
     KoriPage? CurrentPage { get; set; }
-    IRepository<KoriTextContent> Translations { get; } = translations;
+    public KoriStringLocalizer Localizer { get; } = localizer;
 
-    public async Task InitializeAsync(Uri uri, string elementId)
+    public async Task InitializeAsync(Uri uri)
+    {
+        await localizer.InitializeAsync(uri);
+        CurrentUri = uri;
+    }
+
+    public async Task InitializeAsync(string url) => await InitializeAsync(new Uri(url));
+
+    public async Task ParseAsync(string elementId)
     {
         await js.Init(elementId);
-
-        var pageId = uri.GetLeftPart(UriPartial.Path);
-        CurrentPage = await pages.Register(pageId, await js.GetPageTitle());
-        Content = await content.ExecuteQuery("GetAll", CurrentPage.Id) ?? [];
+        CurrentPage = await pages.Register(CurrentPageId, await js.GetPageTitle());
     }
 
     [JSInvokable]

@@ -54,7 +54,7 @@
 
         IsLoading = true;
 
-        contentResults = await Kori.SearchAsync(searchTerm);
+        contentResults = await Kori.Search.SearchAsync(searchTerm);
         IsLoading = false;
 
         return contentResults;

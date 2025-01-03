@@ -9,33 +9,37 @@ internal class DeepLTranslator(IConfiguration configuration) : ITranslator
 
     internal static SourceLanguage[]? Languages;
 
-    public async Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages)
+    public async Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, IEnumerable<Language> toLanguages)
     {
-        var translatedMessages = new List<Content>();
-        TextTranslateOptions options = new()
+        var options = new TextTranslateOptions
         {
             SentenceSplittingMode = SentenceSplittingMode.Off
         };
 
-        // Split the translations into 10 max per call
-        foreach (var language in toLanguages)
+        var fromLanguages = messages.GroupBy(x => x.Language);
+        var translatedMessages = new List<Content>();
+        foreach (var sourceLanguage in fromLanguages)
         {
-            var toLanguage = language.Id.ToUpper() == "EN" ? "en-US" : language.Id;
-            var result = await Client.TranslateTextAsync(message.Text!, message.Language, toLanguage, options);
-            var translatedMessage = new Content(message, language, result.Text);
-            translatedMessages.Add(translatedMessage);
-            var cost = message.Text!.Length / 1_000_000M * -25.00M; // $25 per 1M characters
-            message.AddCharge(0, cost, $"Translate message from {message.Language} to {toLanguage}");
+            foreach (var targetLanguage in toLanguages)
+            {
+                var texts = messages.Select(x => x.Text);
+                var result = await Client.TranslateTextAsync(texts, sourceLanguage.Key, targetLanguage.Id, options);
+                var newContent = messages.Zip(result, (message, translation) => new Content(message, targetLanguage, translation.Text));
+                translatedMessages.AddRange(newContent);
+            }
         }
 
         return translatedMessages;
     }
 
+    public async Task<Content?> TranslateAsync(Content message, Language toLanguage)
+        => (await TranslateAsync([message], [toLanguage])).FirstOrDefault();
+   
     public async Task<List<Language>> GetLanguagesAsync()
     {
         Languages ??= await Client.GetSourceLanguagesAsync();
         return Languages
-            .Select(x => new Language(x.Code, x.Name, x.Name, false))
+            .Select(x => new Language(x.Code, x.Name, x.Name, x.CultureInfo.TextInfo.IsRightToLeft))
             .ToList();
     }
 }

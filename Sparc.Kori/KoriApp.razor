@@ -13,12 +13,17 @@
     string ModeClass => !string.IsNullOrEmpty(Kori.Mode) ? $"mode-{Kori.Mode.ToLower()}" : "";
     string _id = $"kori-{Guid.NewGuid()}";
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Kori.Content.InitializeAsync(Nav.Uri);
+        Nav.LocationChanged += async (sender, args) => await Kori.Content.InitializeAsync(args.Location);
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await Kori.Content.InitializeAsync(Nav.Uri, _id);
-            Nav.LocationChanged += async (sender, args) => await Kori.Content.InitializeAsync(args.Location, _id);
+            await Kori.Content.ParseAsync(_id);
             StateHasChanged();
         }
     }

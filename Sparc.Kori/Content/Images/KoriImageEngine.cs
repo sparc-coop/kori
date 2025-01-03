@@ -2,7 +2,7 @@
 
 namespace Sparc.Kori;
 
-public class KoriImageEngine(KoriHttpEngine http, KoriJsEngine js)
+public class KoriImageEngine(KoriJsEngine js)
 {
     IBrowserFile? SelectedImage;
 
@@ -24,22 +24,22 @@ public class KoriImageEngine(KoriHttpEngine http, KoriJsEngine js)
 
     public async Task BeginSaveAsync()
     {
-        if (SelectedImage == null)
-            return;
+        //if (SelectedImage == null)
+        //    return;
 
-        var originalImageSrc = await js.GetActiveImageSrc();
-        if (originalImageSrc != null)
-        {
-            var result = await http.SaveContentAsync(originalImageSrc, SelectedImage);
-            if (result?.Text != null)
-            {
-                await js.UpdateImageSrc(originalImageSrc, result.Text);
-                Console.WriteLine("Image sent successfully!");
-            }
-            else
-            {
-                Console.WriteLine("Error sending image");
-            }
-        }
+        //var originalImageSrc = await js.GetActiveImageSrc();
+        //if (originalImageSrc != null)
+        //{
+        //    var result = await http.SaveContentAsync(originalImageSrc, SelectedImage);
+        //    if (result?.Text != null)
+        //    {
+        //        await js.UpdateImageSrc(originalImageSrc, result.Text);
+        //        Console.WriteLine("Image sent successfully!");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Error sending image");
+        //    }
+        //}
     }
 }

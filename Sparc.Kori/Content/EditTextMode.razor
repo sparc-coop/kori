@@ -2,13 +2,13 @@
 
 <div id="kori-texteditor">
     <div class="toolbar">
-        <button alt="Bold" @onclick="@(() => Kori.ApplyMarkdown("**", "wrap"))">
+        <button alt="Bold" @onclick="@(() => Kori.Content.ApplyMarkdown("**", "wrap"))">
             <BoldIcon />
         </button>
-        <button alt="Italic" @onclick="@(() => Kori.ApplyMarkdown("_", "wrap"))">
+        <button alt="Italic" @onclick="@(() => Kori.Content.ApplyMarkdown("_", "wrap"))">
             <ItalicIcon />
         </button>
-        <button alt="Strikethrough" @onclick="@(() => Kori.ApplyMarkdown("~~", "wrap"))">
+        <button alt="Strikethrough" @onclick="@(() => Kori.Content.ApplyMarkdown("~~", "wrap"))">
             <StrikethroughIcon />
         </button>
         @* <button alt="X2" @onclick="@(() => Kori.ApplyMarkdown("^", "wrap"))">

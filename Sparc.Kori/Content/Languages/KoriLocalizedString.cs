@@ -4,7 +4,12 @@ namespace Sparc.Kori;
 
 public class KoriLocalizedString : LocalizedString
 {
-    public KoriLocalizedString(string name, string value) : base(name, value)
+    public KoriLocalizedString(KoriTextContent content) : base(content.OriginalText, content.Text ?? content.OriginalText, content.Text == null)
     {
+        Language = content.Language;
     }
+
+    public KoriLocalizedString(string name) : base(name, name, true) { }
+
+    public string? Language { get; }
 }

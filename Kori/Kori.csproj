@@ -9,11 +9,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DeepL.net" Version="1.10.0" />
-		<PackageReference Include="Markdig" Version="0.38.0" />
-		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.41.1" />
+		<PackageReference Include="Azure.AI.Translation.Text" Version="1.0.0" />
+		<PackageReference Include="DeepL.net" Version="1.11.0" />
+		<PackageReference Include="Markdig" Version="0.39.1" />
+		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.42.0" />
 		<PackageReference Include="NAudio.Lame" Version="2.0.1" />
-		<PackageReference Include="Stripe.net" Version="47.0.0" />
+		<PackageReference Include="Stripe.net" Version="47.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>

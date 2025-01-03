@@ -2,14 +2,22 @@
 
 namespace Sparc.Kori;
 
-public class KoriStringLocalizer : IStringLocalizer
+public class KoriStringLocalizer(IKoriContents content) : IStringLocalizer
 {
-    public LocalizedString this[string name] => throw new NotImplementedException();
+    public IKoriContents Contents { get; } = content;
+    Dictionary<string, KoriLocalizedString> Translations { get; set; } = [];
 
-    public LocalizedString this[string name, params object[] arguments] => throw new NotImplementedException();
-
-    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+    public async Task InitializeAsync(Uri uri)
     {
-        throw new NotImplementedException();
+        var pageId = uri.GetLeftPart(UriPartial.Path);
+        var translations = await Contents.ExecuteQuery("GetAll", pageId);
+        if (translations != null)
+            Translations = translations.ToDictionary(t => t.Id, t => new KoriLocalizedString(t));
     }
+
+    public LocalizedString this[string name] => Translations.TryGetValue(name, out var value) ? value : new KoriLocalizedString(name);
+
+    public LocalizedString this[string name, params object[] arguments] => Translations.TryGetValue(name, out var value) ? value : new KoriLocalizedString(name);
+
+    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => Translations.Values;
 }

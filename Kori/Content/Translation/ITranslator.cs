@@ -1,13 +1,29 @@
 ﻿namespace Kori;
 
-internal interface ITranslator
+public interface ITranslator
 {
-    Task<List<Content>> TranslateAsync(Content message, List<Language> toLanguages);
+    Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, IEnumerable<Language> toLanguages);
     Task<List<Language>> GetLanguagesAsync();
     async Task<Language?> GetLanguageAsync(string language)
     {
         var languages = await GetLanguagesAsync();
         return languages.FirstOrDefault(x => x.Id == language);
+    }
+
+    Task<Content?> TranslateAsync(Content message, Language toLanguage);
+
+    async Task<Content?> TranslateAsync(Content message, string toLanguage)
+    {
+        var language = await GetLanguageAsync(toLanguage)
+            ?? throw new ArgumentException($"Language {toLanguage} not found");
+        return await TranslateAsync(message, language);
+    }
+
+    async Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, string toLanguage)
+    {
+        var language = await GetLanguageAsync(toLanguage)
+            ?? throw new ArgumentException($"Language {toLanguage} not found");
+        return await TranslateAsync(messages, [language]);
     }
 
     async Task<string?> TranslateAsync(string text, string fromLanguage, string toLanguage)
@@ -16,7 +32,7 @@ internal interface ITranslator
             ?? throw new ArgumentException($"Language {toLanguage} not found");
 
         var message = new Content("", text, fromLanguage);
-        var result = await TranslateAsync(message, [language]);
+        var result = await TranslateAsync([message], [language]);
         return result?.FirstOrDefault()?.Text;
     }
 
