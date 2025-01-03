@@ -5,12 +5,12 @@ namespace Sparc.Kori;
 public record KoriAudio(string Url, long Duration, string Voice, ICollection<KoriWord> Subtitles);
 public record KoriWord(string Text, long Duration, long Offset);
 
-public class KoriContentEngine(IKoriPages pages, IKoriContents content, KoriStringLocalizer localizer, KoriJsEngine js)
+public class KoriContentEngine(IKoriPages pages, IKoriContents content, KoriLocalizer localizer, KoriJsEngine js)
 {
     Uri CurrentUri { get; set; }
     string CurrentPageId => CurrentUri.GetLeftPart(UriPartial.Path);
     KoriPage? CurrentPage { get; set; }
-    public KoriStringLocalizer Localizer { get; } = localizer;
+    public KoriLocalizer Localizer { get; } = localizer;
 
     public async Task InitializeAsync(Uri uri)
     {

@@ -2,7 +2,7 @@
 
 namespace Sparc.Kori;
 
-public class KoriStringLocalizer(IKoriContents content) : IStringLocalizer
+public class KoriLocalizer(IKoriContents content) : IStringLocalizer
 {
     public IKoriContents Contents { get; } = content;
     Dictionary<string, KoriLocalizedString> Translations { get; set; } = [];
