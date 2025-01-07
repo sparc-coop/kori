@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Sparc.Blossom" Version="9.0.0" />
 		<PackageReference Include="Azure.AI.Translation.Text" Version="1.0.0" />
 		<PackageReference Include="DeepL.net" Version="1.11.0" />
 		<PackageReference Include="Markdig" Version="0.39.1" />
@@ -18,9 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj" />
-		<ProjectReference Include="..\..\blossom\Sparc.Blossom\Sparc.Blossom.csproj" />
 		<ProjectReference Include="..\Sparc.Kori\Sparc.Kori.csproj" />
 	</ItemGroup>
 

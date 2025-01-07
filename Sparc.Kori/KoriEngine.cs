@@ -4,15 +4,13 @@ namespace Sparc.Kori;
 
 public class KoriEngine(
     KoriLanguageEngine language,
-    KoriContentEngine content,
-    KoriSearchEngine search,
+    KoriEditor content,
     KoriImageEngine images,
     KoriJsEngine js)
 {
     public static Uri BaseUri { get; set; } = new("https://localhost");
     public string Mode { get; set; } = "";
-    public KoriContentEngine Content { get; set; } = content;
-    public KoriSearchEngine Search { get; set; } = search;
+    public KoriEditor Content { get; set; } = content;
 
     public event EventHandler<EventArgs>? StateChanged;
 
@@ -54,7 +52,7 @@ public class KoriEngine(
     public async Task CloseAsync()
     {
         Mode = "Default";
-        await Search.CloseAsync();
+        // await Search.CloseAsync();
     }
 
     public void OpenTranslationMenu()
@@ -65,7 +63,7 @@ public class KoriEngine(
     public async Task OpenSearchMenuAsync()
     {
         Mode = "Search";
-        await search.OpenAsync();
+        // await search.OpenAsync();
     }
 
     public void OpenBlogMenu()

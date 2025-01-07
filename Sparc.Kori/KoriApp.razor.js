@@ -1,10 +1,6 @@
-import * as Dexie from '../js/DexieRepository.js';
-
-let app = {};
+let element = {};
 let observer = {};
-var koriAuthorized = false;
-let topBar = {};
-let dotNet = {};
+let translations = {};
 
 let koriIgnoreFilter = function (node) {
     var approvedNodes = ['#text', 'IMG'];
@@ -19,62 +15,54 @@ let koriIgnoreFilter = function (node) {
     return NodeFilter.FILTER_ACCEPT;
 }
 
-export async function init(appId, dotNetReference) {
-    if (/complete|interactive|loaded/.test(document.readyState)) {
-        initApp(appId);
-    } else {
-        window.addEventListener('DOMContentLoaded', () => initApp(appId));
-    }
+export async function init(elementSelector, translations, dotNetReference) {
+    console.log("Initializing element", elementSelector);
 
-    //window.addEventListener("click", e => {
-    //    e.stopImmediatePropagation();
-    //    mouseClickHandler(e);
-    //});
-
-    topBar = document.getElementById("kori-top-bar");
+    element = document.querySelector(elementSelector);
+    translations = translations;
     dotNet = dotNetReference;
 
-    return getBrowserLanguage();
+    var missingTranslations = await registerNodesUnder(element);
+
+    observer = new MutationObserver(observeCallback);
+    observer.observe(element, { childList: true, characterData: true, subtree: true });
+
+    return missingTranslations;
 }
 
 export function getPageTitle() {
     return document.title;
 }
 
-async function initApp(appId) {
-    console.log("Initializing element", appId);
-
-    app = document.getElementById(appId);
-    await registerNodesUnder(app);
-
-    observer = new MutationObserver(observeCallback);
-    observer.observe(app, { childList: true, characterData: true, subtree: true });
-
-    console.log('Observer registered for ' + appId + '.');
-}
-
 async function registerNodesUnder(el) {
-    var nodes = [];
-    var content;
+    var missingTranslations = [];
+    var missingTranslation;
     var node, walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, koriIgnoreFilter);
     while (node = walk.nextNode()) {
-        if (content = isValidNode(node))
-            nodes.push({ node, content });
+        if (missingTranslation = translateContent(node))
+            missingTranslations.push(missingTranslation);
     }
 
-    await dotNet.invokeMethodAsync("RegisterNodes", nodes);
+    return missingTranslations;
 }
 
-function isValidNode(node) {
-    console.log('registering', node);
+function translateContent(node) {
     if (node.nodeName == 'IMG')
         return;
 
+    console.log('registering', node);
     var content = node.nodeName == 'IMG' ? node.src.trim() : node.textContent.trim();
     if (!content)
         return;
 
-    return content;
+    var translation = translations[content];
+    if (!translation) {
+        console.log('Missing translation for', content);
+        return content;
+
+    console.log('Translating', content, 'to', translation);
+    node.textContent = translation;
+    return;
 }
 
 function replaceNode(node, content) {
@@ -84,8 +72,8 @@ function replaceNode(node, content) {
 }
 
 function observeCallback(mutations) {
-    var content;
     console.log("Observe callback", mutations);
+    var missingTranslations = [];
 
     mutations.forEach(function (mutation) {
         if (mutation.target.tagName == "KORI-CONTENT"
@@ -94,10 +82,11 @@ function observeCallback(mutations) {
             || mutation.target.parentElement?.classList.contains('kori-ignore'))
             return;
 
+        var missingTranslation;
         if (mutation.type == 'characterData') {
             console.log('Character data mutation', mutation.target);
-            if (content = isValidNode(mutation.target))
-                replaceNode(mutation.target, content);
+            if (missingTranslation = translateContent(mutation.target))
+                missingTranslations.push({ n: mutation.target, missingTranslation });
         }
         else if (mutation.type == 'childList'){
             console.log('Mutaton childList', mutation.target);
@@ -106,6 +95,11 @@ function observeCallback(mutations) {
             mutation.addedNodes.forEach(registerNodesUnder);
         }
     });
+
+    translations = await dotNet.invokeVoidAsync("AddMissingTranslationsAsync", missingTranslations.map(x => x.missingTranslation));
+    for (var i = 0; i < missingTranslations.length; i++) {
+        translateContent(missingTranslations[i].n);
+    }
 }
 
 function getBrowserLanguage() {

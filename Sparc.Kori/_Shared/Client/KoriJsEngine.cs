@@ -5,7 +5,8 @@ namespace Sparc.Kori;
 public class KoriJsEngine(IJSRuntime js) 
     : BlossomJsRunner(js, "./_content/Sparc.Blossom/Kori/KoriApp.razor.js")
 {
-    public async Task Init(string elementId) => await InvokeVoidAsync("init", elementId);
+    public async Task<IEnumerable<string>> Init(string elementSelector, IDictionary<string, KoriLocalizedString?> translations, KoriLocalizer localizer) => 
+        await InvokeAsync<IEnumerable<string>>("init", elementSelector, translations, DotNetObjectReference.Create(localizer));
 
     public async Task<string> CheckSelectedContentType() 
         => await InvokeAsync<string>("checkSelectedContentType");

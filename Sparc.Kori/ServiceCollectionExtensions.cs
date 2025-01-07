@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<KoriEngine>()
             .AddScoped<KoriLanguageEngine>()
-            .AddScoped<KoriContentEngine>()
+            .AddScoped<KoriEditor>()
             .AddScoped<KoriSearchEngine>()
             .AddScoped<KoriImageEngine>()
             .AddScoped<KoriJsEngine>();
