@@ -57,7 +57,7 @@ public class Page : BlossomEntity<string>
         Languages.Add(language);
     }
 
-    internal async Task<ICollection<Content>> TranslateAsync(string toLanguage, KoriTranslatorProvider provider)
+    internal async Task<ICollection<Content>> TranslateAsync(Language toLanguage, KoriTranslatorProvider provider)
     {
         var needsTranslation = Contents.Where(x => !x.HasTranslation(toLanguage)).ToList();
         if (needsTranslation.Count == 0)
@@ -99,7 +99,7 @@ public class Page : BlossomEntity<string>
         return Task.FromResult(Contents);
     }
 
-    internal async Task<IEnumerable<Content>> LoadContentAsync(string language, IRepository<Content> repository, KoriTranslatorProvider translator)
+    internal async Task<IEnumerable<Content>> LoadContentAsync(Language language, IRepository<Content> repository, KoriTranslatorProvider translator)
     {
         await LoadOriginalContentAsync(repository);
         var translatedContent = await TranslateAsync(language, translator);

@@ -8,12 +8,16 @@ public class Contents(BlossomAggregateOptions<Content> options, IRepository<Page
          (content.Domain != null && content.Domain.ToLower().Contains(searchTerm) == true) ||
          (content.Path != null && content.Path.ToLower().Contains(searchTerm) == true)));
 
-    public async Task<IEnumerable<Content>> GetAll(string pageId, string language)
+    public async Task<IEnumerable<Content>> GetAll(string pageId, string? fallbackLanguageId = null)
     {
+        var language = User.Language(fallbackLanguageId);
         var page = await pages.FindAsync(pageId);
-        var content = await page.LoadContentAsync(language, options.Repository, translator);
+        var content = await page.LoadContentAsync(language, Repository, translator);
         return content;
     }
 
     public BlossomQuery<Content> All(string pageId) => Query().Where(content => content.PageId == pageId && content.SourceContentId == null);
+
+    public async Task<IEnumerable<Language>> Languages()
+        => await translator.GetLanguagesAsync();
 }

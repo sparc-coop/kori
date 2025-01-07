@@ -89,12 +89,12 @@ internal class AzureSpeaker : ISpeaker
         return new(file.Url, 0, messages.First().Audio!.Voice);
     }
 
-    public async Task<List<Voice>> GetVoicesAsync(string? language = null, string? dialect = null, string? gender = null)
+    public async Task<List<Voice>> GetVoicesAsync(Language? language = null, string? dialect = null, string? gender = null)
     {
         Voices ??= await Client.GetFromJsonAsync<List<Voice>>("/cognitiveservices/voices/list");
 
         return Voices!
-            .Where(x => language == null || x.Locale.StartsWith(language))
+            .Where(x => language == null || x.Locale.StartsWith(language.Id))
             .Where(x => dialect == null || x.Locale.Split("-").Last() == dialect)
             .Where(x => gender == null || x.Gender == gender)
             .ToList();
@@ -120,7 +120,7 @@ internal class AzureSpeaker : ISpeaker
         return retMs.ToArray();
     }
 
-    public async Task<string?> GetClosestVoiceAsync(string language, string? gender, string deterministicId)
+    public async Task<string?> GetClosestVoiceAsync(Language language, string? gender, string deterministicId)
     {
         var voices = await GetVoicesAsync(language, null, gender);
         var hash = deterministicId.ToCharArray().Aggregate(0, (acc, c) => acc + c);

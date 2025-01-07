@@ -3,6 +3,8 @@ using Sparc.Kori;
 
 var builder = BlossomApplication.CreateBuilder(args);
 
+builder.AddAuthentication<Kori.KoriUser>();
+
 builder.Services.AddCosmos<KoriContext>(builder.Configuration.GetConnectionString("CosmosDb")!, "kori", ServiceLifetime.Scoped)
         .AddAzureStorage(builder.Configuration.GetConnectionString("Storage")!)
         .AddScoped<KoriTranslatorProvider>()

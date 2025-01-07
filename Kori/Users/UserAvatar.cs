@@ -11,15 +11,12 @@ public class UserAvatar
     public bool IsOnline { get; set; }
     public string BackgroundColor { get; set; }
     public string ForegroundColor => CalculateForegroundColor(BackgroundColor);
-    public string? Language { get; set; }
-    public bool? LanguageIsRTL { get; set; }
+    public Language? Language { get; set; }
     public string? Emoji { get; set; }
     public string? SkinTone { get; set; }
     public string? Pronouns { get; set; }
     public string? Description { get; set; }
-    public string? Voice { get; set; }
     public string? Gender { get; set; }
-    public string? Dialect { get; set; }
     public bool? HearOthers { get; set; }
     public bool? MuteMe { get; set; }
 
@@ -34,13 +31,10 @@ public class UserAvatar
         IsOnline = sourceAvatar.IsOnline;
         BackgroundColor = sourceAvatar.BackgroundColor;
         Language = sourceAvatar.Language;
-        LanguageIsRTL = sourceAvatar.LanguageIsRTL;
         Emoji = sourceAvatar.Emoji;
         SkinTone = sourceAvatar.SkinTone;
         Pronouns = sourceAvatar.Pronouns;
         Description = sourceAvatar.Description;
-        Voice = sourceAvatar.Voice;
-        Dialect = sourceAvatar.Dialect;
         Gender = sourceAvatar.Gender;
     }
 
@@ -48,8 +42,6 @@ public class UserAvatar
     {
         Id = id;
         Name = name;
-        Language = "en";
-        LanguageIsRTL = false;
         BackgroundColor = BackgroundColors().OrderBy(x => Guid.NewGuid()).First();
     }
 

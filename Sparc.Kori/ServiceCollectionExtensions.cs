@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Sparc.Kori;
 
@@ -19,6 +20,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<KoriSearchEngine>()
             .AddScoped<KoriImageEngine>()
             .AddScoped<KoriJsEngine>();
+
+        services.AddTransient<IClaimsTransformation, KoriClaimsTransformation>();
 
         KoriEngine.BaseUri = baseUri;
         return services;

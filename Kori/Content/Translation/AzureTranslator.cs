@@ -3,18 +3,15 @@ using Azure.AI.Translation.Text;
 
 namespace Kori;
 
-internal class AzureTranslator : ITranslator
+internal class AzureTranslator(IConfiguration configuration) : ITranslator
 {
-    readonly TextTranslationClient Client;
+    readonly TextTranslationClient Client = new(new AzureKeyCredential(configuration.GetConnectionString("Cognitive")!),
+            new Uri("https://api.cognitive.microsofttranslator.com"),
+            "southcentralus");
 
     internal static List<Language>? Languages;
 
-    public AzureTranslator(IConfiguration configuration)
-    {
-        Client = new(new AzureKeyCredential(configuration.GetConnectionString("Cognitive")!),
-            new Uri("https://api.cognitive.microsofttranslator.com"),
-            "southcentralus");
-    }
+    public int Priority => 2;
 
     public async Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, IEnumerable<Language> toLanguages)
     {

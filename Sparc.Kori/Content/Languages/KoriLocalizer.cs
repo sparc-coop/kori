@@ -9,22 +9,28 @@ public class KoriLocalizer(IKoriContents content, NavigationManager nav, KoriJsE
 {
     public IKoriContents Contents { get; } = content;
     public NavigationManager Nav { get; } = nav;
-    public string CurrentPageId { get; private set; }
+    public string? CurrentPageId { get; private set; }
 
     ConcurrentDictionary<string, KoriLocalizedString?> Translations { get; set; } = [];
 
     public async Task InitializeAsync()
     {
-        await GetPageContentAsync();
-        Nav.LocationChanged += async (s, e) => await GetPageContentAsync();
+        Translations = [];
+        CurrentPageId = new Uri(Nav.Uri).GetLeftPart(UriPartial.Path);
+
+        await UpdateTranslationsAsync();
+        Nav.LocationChanged += async (s, e) => await UpdateTranslationsAsync();
     }
 
-    public async Task OnAfterRenderAsync(string elementSelector)
+    public async Task OnAfterRenderAsync(string elementSelector, bool firstRender = true)
     {
-        var missingTranslations = await js.Init(elementSelector, Translations, this);
-        await AddMissingTranslationsAsync(missingTranslations);
-    }
+        var missingTranslations = firstRender
+            ? await js.Init(elementSelector, Translations, this)
+            : [];
 
+        await UpdateTranslationsAsync(missingTranslations);
+    }
+    
     public LocalizedString this[string name]
     {
         get
@@ -38,27 +44,45 @@ public class KoriLocalizer(IKoriContents content, NavigationManager nav, KoriJsE
     }
 
     public LocalizedString this[string name, params object[] arguments] => this[name];
-    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => Translations.Values.Where(x => x != null);
-
-    private async Task GetPageContentAsync()
-    {
-        CurrentPageId = new Uri(Nav.Uri).GetLeftPart(UriPartial.Path);
-        var translations = await Contents.ExecuteQuery("GetAll", CurrentPageId);
-        if (translations != null)
-            Translations = new(translations.ToDictionary(t => t.Id, t => new KoriLocalizedString(t)));
-    }
+    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => Translations.Values.Where(x => x != null)!;
 
     [JSInvokable]
-    async Task<IDictionary<string, KoriLocalizedString?>> AddMissingTranslationsAsync(IEnumerable<string> keys)
+    public async Task<IDictionary<string, KoriLocalizedString?>> UpdateTranslationsAsync(IEnumerable<string>? missingTranslations = null)
     {
-        var missingKeys = keys.Where(k => !Translations.ContainsKey(k)).ToList();
-        if (missingKeys.Count == 0)
-            return Translations;
+        if (CurrentPageId == null)
+            throw new InvalidOperationException("You must initialize Kori via Kori.InitializeAsync() before using the translator.");
 
-        var missingTranslations = await Contents.ExecuteQuery("GetAll", CurrentPageId, missingKeys);
-        foreach (var translation in missingTranslations)
-            Translations[translation.Id] = new KoriLocalizedString(translation);
+        if (missingTranslations != null)
+            Register(missingTranslations);
+
+        missingTranslations = Translations.Keys.Where(x => Translations[x] == null);
+
+        var translations = await Contents.ExecuteQuery("GetAll", CurrentPageId!, missingTranslations);
+        if (translations != null)
+            Update(translations);
 
         return Translations;
+    }
+
+    private void Register(IEnumerable<string> names)
+    {
+        foreach (var name in names)
+            Register(name);
+    }
+
+    private void Register(string name)
+    {
+        Translations.TryAdd(name, null);
+    }
+
+    private void Update(KoriTextContent translation)
+    {
+        Translations.AddOrUpdate(translation.Id, x => new KoriLocalizedString(translation), (x, v) => new KoriLocalizedString(translation));
+    }
+
+    private void Update(IEnumerable<KoriTextContent> translations)
+    {
+        foreach (var translation in translations)
+            Update(translation);
     }
 }

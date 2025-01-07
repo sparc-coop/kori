@@ -1,12 +1,13 @@
 ﻿@page "/"
 
 
-<article>
+<article id="kori-example">
     <h1>@K["Hi. Welcome to Kori."]</h1>
     <h2>@K["Wait, what?!??"]</h2>
 </article>
 
 @inject Sparc.Kori.KoriLocalizer K
 @code {
-
+    protected override async Task OnInitializedAsync() => await K.InitializeAsync();
+    protected override async Task OnAfterRenderAsync(bool firstRender) => await K.OnAfterRenderAsync("#kori-example", firstRender);
 }

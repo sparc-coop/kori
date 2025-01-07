@@ -1,8 +1,12 @@
-﻿namespace Kori;
+﻿using System.Security.Claims;
 
-public class Language
+namespace Kori;
+
+public record Language
 {
     public string Id { get; private set; }
+    public string? DialectId { get; set; }
+    public string? VoiceId { get; set; }
     public string DisplayName { get; private set; }
     public string NativeName { get; private set; }
     public bool? IsRightToLeft { get; private set; }
@@ -10,12 +14,14 @@ public class Language
 
     public Language() {}
 
-    internal Language(string id, string displayName, string nativeName, bool? isRightToLeft)
+    internal Language(string id)
     {
         Id = id.Split("-").First();
-        DisplayName = displayName;
-        NativeName = nativeName;
-        IsRightToLeft = isRightToLeft;
+        if (id.Contains('-'))
+            DialectId = id.Split("-").Last();
+
+        DisplayName = "";
+        NativeName = "";
         Dialects = [];
 
         if (id.Contains('-'))
@@ -24,6 +30,13 @@ public class Language
             DisplayName = DisplayName.Split('(').First().Trim();
             NativeName = NativeName.Split('(').First().Trim();
         }
+    }
+
+    internal Language(string id, string displayName, string nativeName, bool? isRightToLeft) : this(id)
+    {
+        DisplayName = displayName;
+        NativeName = nativeName;
+        IsRightToLeft = isRightToLeft;
     }
 
     internal void AddDialect(string locale, List<Voice>? voices = null)
@@ -39,5 +52,18 @@ public class Language
             Dialects.Add(dialect);
         else
             Dialects[existing] = dialect;
+    }
+
+    public override string ToString()
+    {
+        return Id + (DialectId != null ? "-" + DialectId : "");
+    }
+}
+
+public static class LanguageExtensions
+{
+    public static Language? Language(this ClaimsPrincipal user, string? fallbackLanguageId = null)
+    {
+        return KoriTranslatorProvider.GetLanguage(user, fallbackLanguageId);
     }
 }

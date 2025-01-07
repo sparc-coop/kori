@@ -1,29 +1,23 @@
-﻿using DeepL;
+﻿using System.Security.Claims;
 
 namespace Kori;
 
-public class KoriTranslatorProvider
+public class KoriTranslatorProvider(IEnumerable<ITranslator> translators, IRepository<Content> content)
 {
     internal static List<Language>? Languages;
 
-    public KoriTranslatorProvider(IEnumerable<ITranslator> translators, IRepository<Content> content)
-    {
-        Translators = translators;
-        Content = content;
-    }
-
-    internal IEnumerable<ITranslator> Translators { get; }
-    public IRepository<Content> Content { get; }
+    internal IEnumerable<ITranslator> Translators { get; } = translators;
+    public IRepository<Content> Content { get; } = content;
 
     internal async Task<List<Language>> GetLanguagesAsync()
     {
         if (Languages == null)
         {
             Languages = [];
-            foreach (var translator in Translators)
+            foreach (var translator in Translators.OrderBy(x => x.Priority))
             {
                 var languages = await translator.GetLanguagesAsync();
-                Languages.AddRange(languages.Where(x => !Languages.Any(y => y.Id.ToUpper() == x.Id.ToUpper())));
+                Languages.AddRange(languages.Where(x => !Languages.Any(y => y.Id.Equals(x.Id, StringComparison.CurrentCultureIgnoreCase))));
             }
         }
 
@@ -77,7 +71,7 @@ public class KoriTranslatorProvider
     //    return result?.FirstOrDefault()?.Text;
     //}
 
-    public async Task<ITranslator?> For(string fromLanguage, string toLanguage)
+    public async Task<ITranslator?> For(Language fromLanguage, Language toLanguage)
     {
         foreach (var translator in Translators)
         {
@@ -88,6 +82,26 @@ public class KoriTranslatorProvider
         return null;
     }
 
-    public async Task<ITranslator?> For(Content originalContent, string toLanguage)
+    public async Task<ITranslator?> For(Content originalContent, Language toLanguage)
         => await For(originalContent.Language, toLanguage);
+
+    internal static Language? GetLanguage(ClaimsPrincipal user, string? fallbackLanguageId = null)
+    {
+        if (Languages == null)
+            return null;
+
+        var languageClaim = user.FindFirstValue(ClaimTypes.Locality);
+        if (string.IsNullOrEmpty(languageClaim))
+            return null;
+
+        var language = languageClaim.Split(",")
+            .Select(x => x.Split(";").First().Trim())
+            .Select(id => new Language(id))
+            .Select(lang => Languages.FirstOrDefault(y => y.Id.Equals(lang.Id, StringComparison.CurrentCultureIgnoreCase)))
+            .FirstOrDefault(x => x != null);
+
+        language ??= Languages.FirstOrDefault(x => x.Id.Equals(fallbackLanguageId, StringComparison.CurrentCultureIgnoreCase));
+
+        return language;
+    }
 }
