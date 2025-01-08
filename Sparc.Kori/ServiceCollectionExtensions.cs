@@ -9,9 +9,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddLocalization();
         koriApiUri ??= new Uri("https://kori.page");
-        services.AddBlossomApi<KoriTextContent, IKoriContents>(koriApiUri, "Contents");
-        services.AddBlossomApi<KoriLanguage>(koriApiUri, "Languages");
-        services.AddBlossomApi<KoriPage, IKoriPages>(koriApiUri, "Pages");
+        services.AddBlossomApi<KoriTextContent, IKoriContents>(koriApiUri, "contents");
+        services.AddBlossomApi<KoriLanguage>(koriApiUri, "languages");
+        services.AddBlossomApi<KoriPage, IKoriPages>(koriApiUri, "pages");
 
 
         services.AddScoped<KoriEngine>()
@@ -19,7 +19,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<KoriEditor>()
             .AddScoped<KoriSearchEngine>()
             .AddScoped<KoriImageEngine>()
-            .AddScoped<KoriJsEngine>();
+            .AddScoped<KoriJsEngine>()
+            .AddScoped<KoriLocalizer>();
 
         services.AddTransient<IClaimsTransformation, KoriClaimsTransformation>();
 
@@ -27,6 +28,6 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddKori(this IServiceCollection services, string baseUri)
-     => services.AddKori(new Uri(baseUri));
+    public static IServiceCollection AddKori(this IServiceCollection services, string baseUri, string? hostApi = null)
+     => services.AddKori(new Uri(baseUri), hostApi != null ? new Uri(hostApi) : null);
 }
