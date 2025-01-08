@@ -11,11 +11,12 @@ internal class DeepLTranslator(IConfiguration configuration) : ITranslator
 
     public int Priority => 1;
 
-    public async Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, IEnumerable<Language> toLanguages)
+    public async Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, IEnumerable<Language> toLanguages, string? additionalContext = null)
     {
         var options = new TextTranslateOptions
         {
-            SentenceSplittingMode = SentenceSplittingMode.Off
+            SentenceSplittingMode = SentenceSplittingMode.Off,
+            Context = additionalContext
         };
 
         var fromLanguages = messages.GroupBy(x => x.Language);
@@ -33,9 +34,6 @@ internal class DeepLTranslator(IConfiguration configuration) : ITranslator
 
         return translatedMessages;
     }
-
-    public async Task<Content?> TranslateAsync(Content message, Language toLanguage)
-        => (await TranslateAsync([message], [toLanguage])).FirstOrDefault();
    
     public async Task<List<Language>> GetLanguagesAsync()
     {

@@ -13,7 +13,7 @@ internal class AzureTranslator(IConfiguration configuration) : ITranslator
 
     public int Priority => 2;
 
-    public async Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, IEnumerable<Language> toLanguages)
+    public async Task<List<Content>> TranslateAsync(IEnumerable<Content> messages, IEnumerable<Language> toLanguages, string? additionalContext = null)
     {
         var translatedMessages = new List<Content>();
         var batches = Batch(toLanguages, 10);
@@ -37,9 +37,6 @@ internal class AzureTranslator(IConfiguration configuration) : ITranslator
 
         return translatedMessages;
     }
-
-    public async Task<Content?> TranslateAsync(Content message, Language toLanguage)
-        => (await TranslateAsync([message], [toLanguage])).FirstOrDefault();
 
     public async Task<List<Language>> GetLanguagesAsync()
     {
