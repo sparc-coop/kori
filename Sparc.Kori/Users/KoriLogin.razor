@@ -246,7 +246,7 @@
                         <button class="kori-login__account-btn kori-login__btn" @onclick=ToggleAccountSettings>
                             <img src="_content/Sparc.Kori/icons/User Profile.svg" />
                             <div class="kori-login__login-btn-content">
-                                <figcaption class="kori-login__text-primary">@Auth.User?.Username</figcaption>
+                                <figcaption class="kori-login__text-primary">@Auth.Principal?.Username</figcaption>
                                 <aside class="kori-login__text-secondary">Set up your passkey</aside>
                             </div>
                         </button>
