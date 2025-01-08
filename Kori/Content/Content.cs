@@ -1,4 +1,5 @@
-﻿using Markdig;
+﻿using DeepL.Model;
+using Markdig;
 using Markdig.Renderers;
 
 namespace Kori;
@@ -9,9 +10,12 @@ public record AudioContent(string? Url, long Duration, string Voice)
     public List<Word> Words { get; set; } = [];
 }
 
-public record ContentTranslation(string Id, Language Language, string? SourceContentId = null);
+public record ContentTranslation(string Id, Language Language, string? SourceContentId = null)
+{
+    public ContentTranslation(string id) : this(id, new()) { }
+}
 
-public class Content : BlossomEntity<string>
+    public class Content : BlossomEntity<string>
 {
     public string Domain { get; private set; }
     public string Path { get; private set; }
@@ -32,14 +36,14 @@ public class Content : BlossomEntity<string>
     public string Html { get; set; }
     public string PageId { get; internal set; }
 
-    protected Content(string pageId, Language language)
+    protected Content(string pageId)
     {
         Id = Guid.NewGuid().ToString();
         PageId = pageId;
         Domain = new Uri(pageId).Host;
         Path = new Uri(pageId).AbsolutePath;
         User = new KoriUser().Avatar;
-        Language = language;
+        Language = new();
         Translations = [];
         EditHistory = [];
         Html = string.Empty;
@@ -48,7 +52,7 @@ public class Content : BlossomEntity<string>
     }
 
     public Content(string pageId, Language language, string text, KoriUser? user = null, string? originalText = null, string contentType = "Text") 
-        : this(pageId, language)
+        : this(pageId)
     {
         User = user?.Avatar;
         Language = user?.Avatar.Language ?? language;
@@ -59,7 +63,7 @@ public class Content : BlossomEntity<string>
         SetTextAndHtml(text);
     }
 
-    internal Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.PageId, toLanguage)
+    internal Content(Content sourceContent, Language toLanguage, string text) : this(sourceContent.PageId)
     {
         SourceContentId = sourceContent.Id;
         User = sourceContent.User;

@@ -19,6 +19,17 @@ public class Page : BlossomEntity<string>
     public AudioContent? Audio { get; private set; }
     private ICollection<Content> Contents { get; set; } = [];
 
+    internal Page(string pageId)
+    {
+        Id = pageId;
+        Domain = new Uri(pageId).Host;
+        Path = new Uri(pageId).AbsolutePath;
+        Name = "New Page";
+        Languages = [];
+        StartDate = DateTime.UtcNow;
+        LastActiveDate = DateTime.UtcNow;
+    }
+
     private Page(string domain, string path)
     {
         Id = new Uri(new Uri(domain), path).ToString();
