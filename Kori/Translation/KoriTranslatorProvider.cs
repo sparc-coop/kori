@@ -85,10 +85,9 @@ public class KoriTranslatorProvider(IEnumerable<ITranslator> translators, IRepos
     public async Task<ITranslator?> For(Content originalContent, Language toLanguage)
         => await For(originalContent.Language, toLanguage);
 
-    internal static Language? GetLanguage(ClaimsPrincipal user, string? fallbackLanguageId = null)
+    internal async Task<Language?> GetLanguageAsync(ClaimsPrincipal user, string? fallbackLanguageId = null)
     {
-        if (Languages == null)
-            return null;
+        Languages ??= await GetLanguagesAsync();
 
         var languageClaim = user.FindFirstValue(ClaimTypes.Locality);
         if (string.IsNullOrEmpty(languageClaim))

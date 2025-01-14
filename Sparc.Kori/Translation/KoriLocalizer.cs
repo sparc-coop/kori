@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using Sparc.Blossom.Api;
 using System.Collections.Concurrent;
 
 namespace Sparc.Kori;
 
-public class KoriLocalizer(IKoriContents content, NavigationManager nav, KoriJsEngine js) : IStringLocalizer
+public class KoriLocalizer(BlossomApi api, NavigationManager nav, KoriJsEngine js) : IStringLocalizer
 {
-    public IKoriContents Contents { get; } = content;
+    internal Contents Contents { get; } = api.Contents;
     public NavigationManager Nav { get; } = nav;
     public string? CurrentPageId { get; private set; }
 
@@ -35,10 +36,13 @@ public class KoriLocalizer(IKoriContents content, NavigationManager nav, KoriJsE
     {
         get
         {
-            if (!Translations.TryGetValue(name, out var value))
-                return value ?? new LocalizedString(name, name);
+            bool exists = Translations.TryGetValue(name, out var value);
+            if (exists && value != null)
+                return value;
 
-            Translations.TryAdd(name, null);
+            if (!exists)
+                Translations.TryAdd(name, null);
+            
             return new LocalizedString(name, name);
         }
     }
@@ -57,7 +61,7 @@ public class KoriLocalizer(IKoriContents content, NavigationManager nav, KoriJsE
 
         missingTranslations = Translations.Keys.Where(x => Translations[x] == null);
 
-        var translations = await Contents.ExecuteQuery("GetAll", CurrentPageId!, missingTranslations);
+        var translations = await Contents.GetAll(CurrentPageId, null, missingTranslations);
         if (translations != null)
             Update(translations);
 
@@ -75,12 +79,12 @@ public class KoriLocalizer(IKoriContents content, NavigationManager nav, KoriJsE
         Translations.TryAdd(name, null);
     }
 
-    private void Update(KoriTextContent translation)
+    private void Update(Blossom.Api.Content translation)
     {
         Translations.AddOrUpdate(translation.Id, x => new KoriLocalizedString(translation), (x, v) => new KoriLocalizedString(translation));
     }
 
-    private void Update(IEnumerable<KoriTextContent> translations)
+    private void Update(IEnumerable<Blossom.Api.Content> translations)
     {
         foreach (var translation in translations)
             Update(translation);

@@ -11,12 +11,12 @@ public class KoriEditor(IJSRuntime js)
         throw new NotImplementedException();
         // await js.ApplyMarkdown(symbol, position);
 
-    public async Task PlayAsync(KoriTextContent content)
+    internal async Task PlayAsync(Blossom.Api.Content content)
     {
-        if (content?.Audio?.Url == null)
+        if (content?.Audio == null)
             return;
 
-        await js.InvokeVoidAsync("playAudio", content.Audio.Url);
+        await js.InvokeVoidAsync("playAudio", content.Audio);
     }
 
     public async Task BeginEditAsync()

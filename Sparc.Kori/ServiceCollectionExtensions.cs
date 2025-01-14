@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Sparc.Kori;
 
@@ -9,9 +8,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddLocalization();
         koriApiUri ??= new Uri("https://kori.page");
-        services.AddBlossomApi<KoriTextContent, IKoriContents>(koriApiUri, "contents");
+        services.AddBlossomApi<Blossom.Api.Content>(koriApiUri, "contents");
         services.AddBlossomApi<KoriLanguage>(koriApiUri, "languages");
-        services.AddBlossomApi<KoriPage, IKoriPages>(koriApiUri, "pages");
+        services.AddBlossomApi<Blossom.Api.Page>(koriApiUri, "pages");
 
 
         services.AddScoped<KoriEngine>()
@@ -21,8 +20,6 @@ public static class ServiceCollectionExtensions
             .AddScoped<KoriImageEngine>()
             .AddScoped<KoriJsEngine>()
             .AddScoped<KoriLocalizer>();
-
-        services.AddTransient<IClaimsTransformation, KoriClaimsTransformation>();
 
         KoriEngine.BaseUri = baseUri;
         return services;

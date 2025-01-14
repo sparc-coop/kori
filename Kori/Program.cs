@@ -1,9 +1,12 @@
 ﻿using Kori;
+using Microsoft.AspNetCore.Authentication;
 using Sparc.Kori;
 
 var builder = BlossomApplication.CreateBuilder(args);
 
-builder.AddAuthentication<Kori.KoriUser>();
+builder.AddAuthentication<KoriUser>();
+builder.Services.AddTransient<IClaimsTransformation, KoriClaimsTransformation>();
+
 
 builder.Services.AddCosmos<KoriContext>(builder.Configuration.GetConnectionString("CosmosDb")!, "kori", ServiceLifetime.Scoped)
         .AddAzureStorage(builder.Configuration.GetConnectionString("Storage")!)
@@ -12,7 +15,5 @@ builder.Services.AddCosmos<KoriContext>(builder.Configuration.GetConnectionStrin
         .AddScoped<ITranslator, AzureTranslator>()
         .AddScoped<ISpeaker, AzureSpeaker>();
 
-builder.Services.AddKori("https://kori.page");
-
 var app = builder.Build();
-await app.RunAsync<Html>();
+await app.RunAsync();

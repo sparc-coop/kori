@@ -59,11 +59,3 @@ public record Language
         return Id + (DialectId != null ? "-" + DialectId : "");
     }
 }
-
-public static class LanguageExtensions
-{
-    public static Language? Language(this ClaimsPrincipal user, string? fallbackLanguageId = null)
-    {
-        return KoriTranslatorProvider.GetLanguage(user, fallbackLanguageId);
-    }
-}

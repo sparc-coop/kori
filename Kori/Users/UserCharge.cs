@@ -2,8 +2,9 @@
 
 namespace Kori;
 
-public class UserCharge : BlossomEntity<string>
+public class UserCharge
 {
+    public string Id { get; private set; }
     internal string UserId { get; set; }
     internal string? RoomId { get; set; }
     internal string? MessageId { get; set; }

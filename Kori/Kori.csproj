@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<UserSecretsId>ab289277-1ea0-4ea1-bf15-8f0e5ccf4d1a</UserSecretsId>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>../Sparc.Kori/_Api</CompilerGeneratedFilesOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,7 +22,10 @@
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom\Sparc.Blossom.csproj" />
-		<ProjectReference Include="..\Sparc.Kori\Sparc.Kori.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 
 </Project>

@@ -19,4 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\blossom\Sparc.Blossom.Client\Sparc.Blossom.Client.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="_Api/Microsoft.CodeAnalysis.Razor.Compiler/**/*.cs" />
+	</ItemGroup>
 </Project>

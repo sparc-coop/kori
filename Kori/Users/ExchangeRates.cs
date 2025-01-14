@@ -2,7 +2,7 @@
 
 namespace Kori;
 
-public class ExchangeRates
+internal class ExchangeRates
 {
     readonly string ApiKey;
     static Dictionary<string, decimal> Rates = [];
@@ -10,7 +10,7 @@ public class ExchangeRates
     public DateTime? AsOfDate { get; private set; }
     public IFileRepository<Sparc.Blossom.Data.BlossomFile> Files { get; }
 
-    public ExchangeRates(IConfiguration configuration, IFileRepository<Sparc.Blossom.Data.BlossomFile> files)
+    internal ExchangeRates(IConfiguration configuration, IFileRepository<Sparc.Blossom.Data.BlossomFile> files)
     {
         ApiKey = configuration["ExchangeRatesApi"]!;
         Files = files;

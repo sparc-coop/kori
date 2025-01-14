@@ -1,5 +1,4 @@
-﻿using DeepL.Model;
-using Markdig;
+﻿using Markdig;
 using Markdig.Renderers;
 
 namespace Kori;

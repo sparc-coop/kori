@@ -19,38 +19,27 @@ public class Page : BlossomEntity<string>
     public AudioContent? Audio { get; private set; }
     private ICollection<Content> Contents { get; set; } = [];
 
-    internal Page(string pageId)
+    internal Page(string id)
     {
-        Id = pageId;
-        Domain = new Uri(pageId).Host;
-        Path = new Uri(pageId).AbsolutePath;
+        Id = id;
+        Domain = new Uri(id).Host;
+        Path = new Uri(id).AbsolutePath;
         Name = "New Page";
         Languages = [];
         StartDate = DateTime.UtcNow;
         LastActiveDate = DateTime.UtcNow;
     }
 
-    private Page(string domain, string path)
-    {
-        Id = new Uri(new Uri(domain), path).ToString();
-        Domain = domain;
-        Path = path;
-        Name = "New Page";
-        Languages = [];
-        StartDate = DateTime.UtcNow;
-        LastActiveDate = DateTime.UtcNow;
-    }
-
-    public Page(string domain, string path, string name) : this(domain, path)
+    public Page(string id, string name) : this(id)
     {
         Name = name;
     }
 
-    public Page(Uri uri, string name) : this(uri.Host, uri.AbsolutePath, name)
+    public Page(Uri uri, string name) : this(uri.ToString(), name)
     {
     }
 
-    internal Page(Page page, Content content) : this(page.Domain, page.Path, page.Name)
+    internal Page(Page page, Content content) : this(page.Id, page.Name)
     {
         // Create a subpage from a message
 
@@ -104,18 +93,10 @@ public class Page : BlossomEntity<string>
     
     internal void UpdateName(string name) => Name = name;
 
-    internal Task<ICollection<Content>> LoadOriginalContentAsync(IRepository<Content> repository)
+    internal async Task<IEnumerable<Content>> TranslateAsync(ICollection<Content> contents, Language language, KoriTranslatorProvider translator)
     {
-        Contents = repository.Query.Where(x => x.PageId == Id && x.SourceContentId == null).ToList();
-        return Task.FromResult(Contents);
-    }
-
-    internal async Task<IEnumerable<Content>> LoadContentAsync(Language language, IRepository<Content> repository, KoriTranslatorProvider translator)
-    {
-        await LoadOriginalContentAsync(repository);
-        var translatedContent = await TranslateAsync(language, translator);
-        Contents = Contents.Union(translatedContent).ToList();
-        return Contents;
+        Contents = contents;
+        return await TranslateAsync(language, translator);
     }
 }
 
