@@ -34,7 +34,7 @@ async function update(dbName, doc) {
 }
 
 async function remove(dbName, doc) {
-    var result = await get(dbName, doc.id);
+    var result = await find(dbName, doc.id);
     await getDb(dbName).remove(doc.id, result._rev);
 }
 
