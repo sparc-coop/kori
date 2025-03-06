@@ -57,6 +57,7 @@ async function index(dbName, spec) {
 async function query(dbName, spec) {
     var db = getDb(dbName);
     var result = await db.find(spec);
+    return result.docs;
 }
 
 export { find, add, bulkAdd, update, remove, bulkRemove, getAll, index, query };
