@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Kori", "Sparc.Kori\Sp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Example.Single", "..\blossom\Sparc.Blossom.Example.Server\Sparc.Blossom.Example.Single.csproj", "{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Example.PWA", "..\blossom\Sparc.Blossom.Example.PWA\Sparc.Blossom.Example.PWA.csproj", "{B5976956-9A8A-4A24-AF0A-82906DE67839}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Example.PWA2", "..\blossom\Sparc.Blossom.Example.PWA2\Sparc.Blossom.Example.PWA2.csproj", "{829D80CF-0F42-4154-A648-3EBC529D47A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,14 @@ Global
 		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829D80CF-0F42-4154-A648-3EBC529D47A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829D80CF-0F42-4154-A648-3EBC529D47A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829D80CF-0F42-4154-A648-3EBC529D47A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829D80CF-0F42-4154-A648-3EBC529D47A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +75,8 @@ Global
 		{A9C56F88-7F9F-460C-921A-FD5C35FF9D05} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 		{C1C74A5C-A3CE-459B-B4C4-47C2BEA96A32} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
+		{B5976956-9A8A-4A24-AF0A-82906DE67839} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
+		{829D80CF-0F42-4154-A648-3EBC529D47A9} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA22A9DA-4301-45E8-993F-2CE7EAAF73A2}
