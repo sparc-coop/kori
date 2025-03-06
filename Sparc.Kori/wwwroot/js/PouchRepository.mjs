@@ -27,7 +27,8 @@ async function bulkAdd(dbName, docs) {
 }
 
 async function update(dbName, doc) {
-    var result = await get(dbName, doc.id);
+    var result = await find(dbName, doc.id);
+    doc._id = doc.id;
     doc._rev = result._rev;
     await getDb(dbName).put(doc);
 }
