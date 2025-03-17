@@ -1,0 +1,24 @@
+﻿@page "/_kori/{AggregateName}"
+
+<div class="kori-aggregate">
+    <h1>
+        @AggregateName Explorer
+    </h1>
+
+    @if (AggregateType != null)
+    {
+        <DynamicComponent Type="AggregateType" />
+    }
+</div>
+
+@code {
+    [Parameter] public required string AggregateName { get; set; }
+    Type AggregateType { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        var entity = Api.Entity(AggregateName);
+        if (entity != null)
+            AggregateType = typeof(KoriList<>).MakeGenericType(entity);
+    }
+}

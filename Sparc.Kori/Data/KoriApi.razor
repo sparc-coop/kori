@@ -1,0 +1,26 @@
+﻿@using System.Reflection
+
+<header>
+    <h1>Welcome to the Data Explorer.</h1>
+    <p>Click any of the cards below to begin exploring your app's data.</p>
+</header>
+@foreach (var aggregate in Aggregates)
+{
+    <article @onclick="@(() => Go(aggregate))">
+        <h1>@aggregate.Name</h1>
+    </article>
+}
+
+@code {
+    List<PropertyInfo> Aggregates = [];
+
+    protected override void OnInitialized()
+    {
+        Aggregates = Api.GetType().GetProperties().ToList();
+    }
+
+    void Go(PropertyInfo aggregate)
+    {
+        Nav.NavigateTo($"/_kori/{aggregate.Name}");
+    }
+}

@@ -1,0 +1,90 @@
+﻿@typeparam TEntity
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using System.Reflection
+@using System.Collections
+
+<div class="kori-grid">
+    @if (CanSearch)
+    {
+        <KoriSearch Items="Items" OnSearch="Search" />
+    }
+
+    @if (Metadata != null)
+    {
+        <QuickGrid Items="QueryableItems" ItemsProvider="Query" ItemSize="50" Virtualize="ShouldVirtualize" @ref=Grid>
+            @foreach (var prop in Metadata.Properties.Where(x => x.CanRead))
+            {
+                <TemplateColumn Title="@prop.Name">
+                    <div @onclick="() => Select(context)">
+                        @prop.ToString(context)
+                    </div>
+                </TemplateColumn>
+            }
+        </QuickGrid>
+    }
+
+    @if (SelectedItem != null)
+    {
+        <KoriEntity Entity="SelectedItem" OnClose="Close" />
+    }
+</div>
+
+
+@code {
+    [Parameter] public IEnumerable<TEntity>? Items { get; set; }
+
+    BlossomAggregateMetadata? Metadata;
+    QuickGrid<TEntity>? Grid;
+    GridItemsProvider<TEntity>? Query;
+    TEntity? SelectedItem;
+    string? searchTerm;
+
+    IQueryable<TEntity>? QueryableItems => Items?.AsQueryable();
+    bool ShouldVirtualize => Query != null;
+    bool CanSearch => Query != null;
+    bool isLoading;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var aggregate = Api.Aggregate<TEntity>();
+        if (aggregate != null)
+        {
+            Metadata = await aggregate.Metadata();
+            if (Items == null)
+                Query = async req =>
+                {
+                    while (isLoading)
+                    {
+                        await Task.Delay(100);
+                    }
+
+                    isLoading = true;
+                    var results = await aggregate.Query(new(req.StartIndex, req.Count, searchTerm));
+                    isLoading = false;
+                    //Total = results.TotalCount;
+                    return GridItemsProviderResult.From<TEntity>(results.Items, results.TotalCount);
+                };
+        }
+        else
+        {
+            Metadata = new(typeof(TEntity));
+        }
+    }
+
+    async Task<IEnumerable<TEntity>> Search(string? query)
+    {
+        searchTerm = query;
+        await Grid!.RefreshDataAsync();
+        return [];
+    }
+
+    void Select(TEntity item)
+    {
+        SelectedItem = item;
+    }
+
+    void Close()
+    {
+        SelectedItem = default;
+    }
+}

@@ -1,0 +1,11 @@
+﻿article {
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  background: #f5f9ff;
+  font-weight: bold;
+  color: #1e5696;
+}
+article:hover {
+  background: #e6f0ff;
+  cursor: pointer;
+}

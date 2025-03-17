@@ -1,0 +1,70 @@
+div {
+    position: relative;
+}
+
+ul {
+    position: absolute;
+    top: 32px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    list-style: none;
+    padding-left: 0;
+    z-index: 10;
+    border: 1px solid var(--text-gray);
+    border-top: 0;
+    padding: 20px;
+
+    li {
+    }
+}
+
+label {
+    border: 1px solid var(--text-gray);
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    width: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 16px auto;
+    gap: 16px;
+    align-items: center;
+
+    ::deep svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    input[type=search] {
+        font-size: 14px;
+        font-weight: 100;
+        width: 100%;
+        border: none;
+        outline: none;
+
+        ::placeholder {
+            color: var(--text-light-gray);
+        }
+    }
+
+    &.better-search-loading {
+        .search-icon {
+            animation: rotate 1.5s linear infinite;
+
+            .material-icons {
+                color: var(--primary-500);
+            }
+        }
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,33 @@
+﻿@using System.Reflection
+@using System.Collections
+@typeparam TEntity
+
+<label class="kori-property">
+    <header>@Method.FriendlyName</header>
+
+    @if (Method.Parameters.Any())
+    {
+        <form>
+            @foreach (var prop in Method.Parameters)
+            {
+                <KoriProperty TEntity="TEntity" Entity="Entity" Property="prop" />
+            }
+
+            <footer>
+                <button type="button" class="admin" @onclick="Run">Run</button>
+            </footer>
+        </form>
+    }
+</label>
+
+@code
+{
+    [Parameter] public required TEntity Entity { get; set; }
+    [Parameter] public required BlossomMethod Method { get; set; }
+
+    async Task Run()
+    {
+        if (Entity != null)
+            await Method.InvokeAsync(Entity);
+    }
+}

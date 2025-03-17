@@ -1,0 +1,60 @@
+﻿@using System.Reflection
+@using System.Collections
+@typeparam TEntity
+
+<label class="kori-property">
+    @if (Num != null)
+    {
+        <i>@Num.Value.ToString("D2")</i>
+    }
+    <header>@Property.FriendlyName</header>
+
+    @if (Property.IsEnumerable)
+    {
+        <DynamicComponent Type="ListType" Parameters="ListParameters" />
+        @if (Property.CanEdit && Property.AvailableValues.Any())
+        {
+            <DynamicComponent Type="SearchType" Parameters="SearchParameters" />
+        }
+    }
+    else if (Property.CanEdit && Entity != null)
+    {
+        <input value="@Property.Value(Entity)" @onchange="Edit" />
+    }
+    else if (Entity != null)
+    {
+        <span>
+            @Property.Value(Entity)
+        </span>
+    }
+</label>
+
+@code {
+    [Parameter] public required BlossomProperty Property { get; set; }
+    [Parameter] public required TEntity Entity { get; set; }
+    [Parameter] public int? Num { get; set; }
+    PropertyInfo? EntityProperty;
+
+    Type UnderlyingType => EntityProperty!.PropertyType.GetGenericArguments()[0]!;
+    Type ListType => typeof(KoriList<>).MakeGenericType(UnderlyingType);
+    Type SearchType => typeof(KoriSearch<>).MakeGenericType(UnderlyingType);
+
+    protected override void OnInitialized()
+    {
+        EntityProperty = typeof(TEntity).GetProperty(Property.Name);
+    }
+
+    void Edit(ChangeEventArgs e)
+    {
+        Property.SetValue(Entity!, e.Value);
+    }
+
+    Dictionary<string, object?> ListParameters => new Dictionary<string, object?> {
+        { "Items", (Property.Value(Entity!) as IEnumerable)?.AsQueryable() }
+    };
+
+    Dictionary<string, object?> SearchParameters => new Dictionary<string, object?> {
+        { "Items", Property.GetAvailableValues(UnderlyingType) },
+        { "Placeholder", $"Search to add a {UnderlyingType.Name}..." }
+    };
+}

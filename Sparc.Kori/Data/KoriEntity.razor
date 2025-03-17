@@ -1,0 +1,77 @@
+﻿@using System.Reflection
+@using System.Collections
+@typeparam TEntity
+
+<div class="dialog-overlay" @onclick=Cancel></div>
+<aside class="kori-entity">
+    <header>
+        <h1>
+            @Title
+        </h1>
+        <p>Make any necessary changes to the data below, then hit the Save button at the bottom to update this record.</p>
+        <button type="button" class="link" @onclick=Delete>Delete this</button>
+    </header>
+    @if (Metadata != null)
+    {
+        <form>
+            @foreach (var prop in Metadata.Properties.Where(x => x.CanRead))
+            {
+                <KoriProperty TEntity="TEntity" Entity="Entity" Property="prop" Num="num++" />
+            }
+
+            @* @foreach (var method in Metadata.Methods)
+            {
+                <KoriMethod TEntity="TEntity" Entity="Entity" Method="method" />
+            } *@
+
+            <footer>
+                <button type="button" class="secondary" @onclick="Cancel">Cancel</button>
+                <button type="button" class="admin" @onclick="Save">Save</button>
+            </footer>
+        </form>
+    }
+</aside>
+
+@code
+{
+    [Parameter] public required TEntity Entity { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    string Title = typeof(TEntity).Name;
+    BlossomAggregateMetadata? Metadata;
+    int num = 1;
+    IBlossomEntityProxy Proxy => Entity as IBlossomEntityProxy;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        num = 1;
+        Metadata = await Api.Metadata<TEntity>();
+    }
+
+    async Task Save()
+    {
+        //await ((IBlossomEntityProxy)Entity).Update();
+        await Close();
+    }
+
+    async Task Delete()
+    {
+        var confirm = await JS.InvokeAsync<bool>("confirm", "Are you sure you want to delete this item?");
+
+        if (!confirm)
+            return;
+
+        //await ((IBlossomEntityProxy)Entity).Delete();
+        Cancel();
+    }
+
+    void Cancel()
+    {
+        Nav.Refresh(true);
+    }
+
+    async Task Close()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

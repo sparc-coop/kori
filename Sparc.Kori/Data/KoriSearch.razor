@@ -1,0 +1,94 @@
+﻿@using System.Reflection
+@typeparam TEntity
+
+<div class="kori-search">
+    <label class="@(IsLoading ? "better-search-loading" : "")">
+        <SearchIcon />
+        <input type="search" placeholder="@Placeholder" @bind="_searchText" @bind:event="oninput" @bind:after="PerformSearch" />
+    </label>
+
+    @if (ItemTemplate != null && _results.Any())
+    {
+        <ul>
+            @foreach (var product in _results)
+            {
+                <li @onclick=@(() => Select(product))>
+                    @ItemTemplate(product)
+                </li>
+            }
+        </ul>
+    }
+    else if (OnSearch == null && _results.Any())
+    {
+        <KoriList TEntity="TEntity" Items="_results" />
+    }
+
+</div>
+
+@code {
+    [Parameter] public string Placeholder { get; set; } = "Search...";
+    [Parameter] public Func<string?, Task<IEnumerable<TEntity>>> OnSearch { get; set; } = null!;
+    [Parameter] public EventCallback<TEntity> OnSelect { get; set; }
+    [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public RenderFragment<TEntity> ItemTemplate { get; set; } = null!;
+    [Parameter] public IEnumerable<TEntity>? Items { get; set; }
+
+    string? _searchText;
+    bool _isQueued;
+    IEnumerable<TEntity> _results = Array.Empty<TEntity>();
+    List<PropertyInfo>? _properties;
+
+    protected override void OnParametersSet()
+    {
+        if (Items != null)
+            _properties = typeof(TEntity).GetProperties().ToList();
+        else
+            _properties = null;
+    }
+
+    async Task PerformSearch()
+    {
+        if (string.IsNullOrWhiteSpace(_searchText))
+        {
+            _results = await Search();
+            return;
+        }
+
+        // Stealing search approach from https://blog.jeremylikness.com/blog/an-easier-blazor-debounce/
+        if (IsLoading)
+        {
+            _isQueued = true;
+            return;
+        }
+
+        do
+        {
+            IsLoading = true;
+            _isQueued = false;
+            _results = await Search();
+            IsLoading = false;
+        } while (_isQueued);
+    }
+
+    async Task Select(TEntity item)
+    {
+        _searchText = null;
+        _results = Array.Empty<TEntity>();
+        await OnSelect.InvokeAsync(item);
+    }
+
+    async Task<IEnumerable<TEntity>> Search()
+    {
+        var trimmedSearch = _searchText?.Trim();
+
+        if (OnSearch != null)
+            return await OnSearch(trimmedSearch);
+
+        if (Items != null && trimmedSearch != null)
+        {
+            return Items.Where(x => _properties!.Any(y => y.GetValue(x)!.ToString()!.Contains(trimmedSearch, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        return [];
+    }
+}
