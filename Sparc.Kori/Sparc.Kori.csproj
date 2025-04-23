@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -17,11 +17,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
+		<Folder Include="wwwroot\js\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\js\" />
+	  <ProjectReference Include="..\..\blossom\Sparc.Blossom\Sparc.Blossom.csproj" />
 	</ItemGroup>
 
 </Project>
