@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kori", "Kori\Kori.csproj", "{527BCC57-856F-4054-BB5D-F57F3453D714}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Blossom", "_Blossom", "{B984CE67-6336-4204-B1B6-DB413ED59D96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.Cosmos", "..\blossom\Sparc.Blossom.Data.Cosmos\Sparc.Blossom.Data.Cosmos.csproj", "{B3D9AB2C-765A-4BF3-8B06-C75515583E3E}"
@@ -15,15 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom", "..\blossom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.ApiGenerator", "..\blossom\Sparc.Blossom.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj", "{C1C74A5C-A3CE-459B-B4C4-47C2BEA96A32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Kori", "Sparc.Kori\Sparc.Kori.csproj", "{40EE431C-F698-4D05-91DD-8DF37FDAE2ED}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Example.Single", "..\blossom\Sparc.Blossom.Example.Server\Sparc.Blossom.Example.Single.csproj", "{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Example.PWA", "..\blossom\Sparc.Blossom.Example.PWA\Sparc.Blossom.Example.PWA.csproj", "{B5976956-9A8A-4A24-AF0A-82906DE67839}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.Pouch", "..\blossom\Sparc.Blossom.Data.Pouch\Sparc.Blossom.Data.Pouch.csproj", "{C9F27AB5-EF9B-4637-A6E7-C461F7147D5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Client", "..\blossom\Sparc.Blossom.Client\Sparc.Blossom.Client.csproj", "{FC6D58E9-909C-9B0F-6F3C-4A3881ED505E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Cloud", "..\blossom\Sparc.Blossom.Cloud\Sparc.Blossom.Cloud.csproj", "{2C23B637-48C4-4A7F-AF75-4B50CF00C761}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Cloud.AuthExample", "..\blossom\Sparc.Blossom.Cloud.AuthExample\Sparc.Blossom.Cloud.AuthExample.csproj", "{EFA022CB-A6F3-40AC-B49E-7301A99F2E6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{527BCC57-856F-4054-BB5D-F57F3453D714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{527BCC57-856F-4054-BB5D-F57F3453D714}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{527BCC57-856F-4054-BB5D-F57F3453D714}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{527BCC57-856F-4054-BB5D-F57F3453D714}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B3D9AB2C-765A-4BF3-8B06-C75515583E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3D9AB2C-765A-4BF3-8B06-C75515583E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3D9AB2C-765A-4BF3-8B06-C75515583E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,26 +41,18 @@ Global
 		{C1C74A5C-A3CE-459B-B4C4-47C2BEA96A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1C74A5C-A3CE-459B-B4C4-47C2BEA96A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1C74A5C-A3CE-459B-B4C4-47C2BEA96A32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40EE431C-F698-4D05-91DD-8DF37FDAE2ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40EE431C-F698-4D05-91DD-8DF37FDAE2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40EE431C-F698-4D05-91DD-8DF37FDAE2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40EE431C-F698-4D05-91DD-8DF37FDAE2ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5976956-9A8A-4A24-AF0A-82906DE67839}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9F27AB5-EF9B-4637-A6E7-C461F7147D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9F27AB5-EF9B-4637-A6E7-C461F7147D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9F27AB5-EF9B-4637-A6E7-C461F7147D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9F27AB5-EF9B-4637-A6E7-C461F7147D5E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC6D58E9-909C-9B0F-6F3C-4A3881ED505E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC6D58E9-909C-9B0F-6F3C-4A3881ED505E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC6D58E9-909C-9B0F-6F3C-4A3881ED505E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC6D58E9-909C-9B0F-6F3C-4A3881ED505E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C23B637-48C4-4A7F-AF75-4B50CF00C761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C23B637-48C4-4A7F-AF75-4B50CF00C761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C23B637-48C4-4A7F-AF75-4B50CF00C761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C23B637-48C4-4A7F-AF75-4B50CF00C761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFA022CB-A6F3-40AC-B49E-7301A99F2E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA022CB-A6F3-40AC-B49E-7301A99F2E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA022CB-A6F3-40AC-B49E-7301A99F2E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA022CB-A6F3-40AC-B49E-7301A99F2E6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,10 +62,9 @@ Global
 		{251280AD-73A1-4B16-A03D-28C447406BC4} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 		{A9C56F88-7F9F-460C-921A-FD5C35FF9D05} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 		{C1C74A5C-A3CE-459B-B4C4-47C2BEA96A32} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
-		{2BF4BAF0-DD6C-F0AB-27E3-5B2C1FAAF416} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
-		{B5976956-9A8A-4A24-AF0A-82906DE67839} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 		{C9F27AB5-EF9B-4637-A6E7-C461F7147D5E} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
-		{FC6D58E9-909C-9B0F-6F3C-4A3881ED505E} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
+		{2C23B637-48C4-4A7F-AF75-4B50CF00C761} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
+		{EFA022CB-A6F3-40AC-B49E-7301A99F2E6B} = {B984CE67-6336-4204-B1B6-DB413ED59D96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA22A9DA-4301-45E8-993F-2CE7EAAF73A2}
