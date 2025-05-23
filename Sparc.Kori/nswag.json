@@ -1,0 +1,23 @@
+{
+  "runtime": "Net90",
+  "defaultVariables": null,
+  "documentGenerator": {
+    "fromDocument": {
+      "url": "../../blossom/Sparc.Blossom.Cloud/Sparc.Blossom.Cloud.json"
+    }
+  },
+  "codeGenerators": {
+    "openApiToCSharpClient": {
+      "className": "IBlossomCloudApi",
+      "namespace": "Sparc.Blossom.Cloud.Api",
+      "generateClientClasses": true,
+      "generateClientInterfaces": true,
+      "generateDtoTypes": true,
+      "useHttpClientCreationMethod": false,
+      "injectHttpClient": false,
+      "useBaseUrl": true,
+      "output": "Generated/IBlossomCloudApi.g.cs",
+      "jsonLibrary": "SystemTextJson"
+    }
+  }
+}
