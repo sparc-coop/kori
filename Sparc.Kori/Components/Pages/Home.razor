@@ -1,0 +1,51 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@if (CurrentUser != null)
+{
+    <p>@CurrentUser.Id</p>
+    @if (CurrentUser.Products.Count > 0)
+    {
+        <ul>
+            @foreach (var p in CurrentUser.Products)
+            {
+               <li>@p.ProductName</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No products.</p>
+    }
+
+}
+
+
+@inject IBlossomCloud Auth
+@inject IJSRuntime JS
+
+@code
+{
+    BlossomUser? CurrentUser;
+    const string ApiKey = "blossomcloud:public:3a16c78de07641e5b82f270d278ace2b";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initBlossomCloudAuthenticator", ApiKey);
+            await FetchUserInfo();
+        }
+    }
+
+    async Task FetchUserInfo()
+    {
+        CurrentUser = await Auth.UserInfo();
+        StateHasChanged();
+    }
+}
