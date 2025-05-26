@@ -5,12 +5,14 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+<br />
 
 @if (CurrentUser != null)
 {
-    <p>@CurrentUser.Id</p>
+    <p><b>UserId</b> @CurrentUser.Id</p>
     @if (CurrentUser.Products.Count > 0)
     {
+        <b>Products</b>
         <ul>
             @foreach (var p in CurrentUser.Products)
             {
