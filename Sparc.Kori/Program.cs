@@ -1,10 +1,13 @@
-﻿using Sparc.Kori.Components;
+﻿using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Sparc.Blossom;
+using Sparc.Kori;
 
 var builder = BlossomApplication.CreateBuilder<App>(args);
+//builder.AddBlossomCloud();
+//builder.RootComponents.Add<App>("#app");
+//builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.AddBlossomCloud();
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-var app = builder.Build();
-
-await app.RunAsync<App>();
-
+await builder.Build().RunAsync();
