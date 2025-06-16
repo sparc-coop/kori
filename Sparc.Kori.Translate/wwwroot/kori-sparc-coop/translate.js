@@ -10,7 +10,7 @@ if (typeof PouchDB === 'undefined') {
     throw new Error('translate.js requires PouchDB. Include PouchDB before this script.');
 }
 
-const db = new PouchDB('translations');
+const db = new PouchDB('kori-translations');
 
 function hashString(str) {
     let hash = 2166136261;
