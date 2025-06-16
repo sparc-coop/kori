@@ -1,4 +1,16 @@
-﻿const db = new PouchDB('translations');
+﻿/**
+ * translate.js
+ * 
+ * Dependency: PouchDB (https://pouchdb.com/)
+ * Include this before this script:
+ * <script src="https://cdn.jsdelivr.net/npm/pouchdb@9.0.0/dist/pouchdb.min.js"></script>
+ */
+
+if (typeof PouchDB === 'undefined') {
+    throw new Error('translate.js requires PouchDB. Include PouchDB before this script.');
+}
+
+const db = new PouchDB('translations');
 
 function hashString(str) {
     let hash = 2166136261;
@@ -6,7 +18,7 @@ function hashString(str) {
         hash ^= str.charCodeAt(i);
         hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
     }
-    // Garante que o hash seja positivo e em string
+    // hash positive and as string
     return (hash >>> 0).toString(36);
 }
 
