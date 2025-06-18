@@ -36,16 +36,30 @@ function getTextNodes(node, nodes = []) {
 
 // save text nodes to PouchDB
 async function saveTextNodes(nodes) {
+    console.debug('navigator.language', navigator.language);
+    const userLang = navigator.language || navigator.userLanguage || "en";
+
     for (let n of nodes) {
         const path = getNodePath(n);
         const text = n.nodeValue.trim();
         const hash = hashString(text);
         const id = `textnode_${path}_${hash}`;
+        const parentElement = n.parentElement;
+        const html = parentElement ? parentElement.outerHTML : "";
+
         const doc = {
             _id: id,
             text: text,
+            original: text,
+            html: html,
             path: path,
-            hash: hash
+            hash: hash,
+            translations: [
+                {
+                    text: text,
+                    language: userLang
+                }
+            ]
         };
         try {
             await db.put(doc);
