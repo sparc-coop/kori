@@ -36,12 +36,13 @@ async function saveTextNodesAsync(nodes) {
 async function saveKoriTextContentAsync(node) {
     console.debug('navigator.language', navigator.language);
 
+    const text = node.nodeValue.trim();
     const doc = {
         "$type": 'TextContent',
         _id: text.replace(/[\/\\#]/g, '_'),
         Domain: window.location.host,
         LanguageId: node.parentElement ? node.parentElement.lang || navigator.language : navigator.language,
-        Text: node.nodeValue.trim()
+        Text: text
     };
 
     try {
