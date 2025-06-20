@@ -10,8 +10,8 @@ if (typeof PouchDB === 'undefined') {
     throw new Error('translate.js requires PouchDB. Include PouchDB before this script.');
 }
 
-const db = new PouchDB('kori-translations');
-const remote = 'https://localhost:7185/data/kori-translations';
+const db = new PouchDB('translations-sync-opt-2');
+const remote = 'https://localhost:7185/data/translations-sync-opt-2';
 function hashString(str) {
     let hash = 2166136261;
     for (let i = 0; i < str.length; i++) {
@@ -137,19 +137,42 @@ async function initTranslationCrawlerAsync() {
     startObserving();
     setupPageChangeListener();
 
-    // wait 5 seconds and then sync
-    setTimeout(syncKoriTextContent, 15000);
+    syncKoriTextContent();
 }
 
 function syncKoriTextContent() {
     console.debug('syncKoriTextContent');
-    db.replicate.to(remote)
-        .on('complete', info => {
-            console.log('Sync complete:', info);
-        })
-        .on('error', err => {
-            console.error('Sync error:', err);
-        });
+    //replicate to is uni-directional, so it will not pull changes from remote
+    //db.replicate.to(remote)
+    //    .on('complete', info => {
+    //        console.log('Sync complete:', info);
+    //    })
+    //    .on('error', err => {
+    //        console.error('Sync error:', err);
+    //    });
+
+    PouchDB.sync(db, remote, {
+        live: true,
+        retry: true
+    })
+    .on('change', info => {
+        console.log('Sync change:', info);
+    })
+    .on('paused', err => {
+        if (err) console.warn('Sync paused due to error:', err);
+    })
+    .on('active', () => {
+        console.log('Sync active');
+    })
+    .on('denied', err => {
+        console.error('Sync denied:', err);
+    })
+    .on('complete', info => {
+        console.log('Sync complete:', info);
+    })
+    .on('error', err => {
+        console.error('Sync error:', err);
+    });
 }
 
 // run on DOMContentLoaded
