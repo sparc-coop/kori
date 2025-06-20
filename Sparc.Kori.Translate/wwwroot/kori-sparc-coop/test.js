@@ -103,7 +103,7 @@ async function initTranslationCrawlerAsync() {
 function syncKoriTextContent() {
     console.debug('syncKoriTextContent');
     const sync = db.sync(remote, {
-        live: true,
+        live: false,
         retry: true
     })
     .on('change', info => {
