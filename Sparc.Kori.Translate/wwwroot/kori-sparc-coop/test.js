@@ -92,23 +92,26 @@ function setupPageChangeListener() {
 
 // initialize everything
 async function initTranslationCrawlerAsync() {
+    await db.replicate.from(remote);
     await crawlAndSaveAsync();
     startObserving();
     setupPageChangeListener();
-
-    // wait 5 seconds and then sync
-    setTimeout(syncKoriTextContent, 15000);
+    syncKoriTextContent();
 }
 
 function syncKoriTextContent() {
     console.debug('syncKoriTextContent');
-    db.replicate.to(remote)
-        .on('complete', info => {
-            console.log('Sync complete:', info);
-        })
-        .on('error', err => {
-            console.error('Sync error:', err);
-        });
+    const sync = db.sync(remote, {
+        live: true,
+        retry: true
+    })
+    .on('change', info => {
+        console.log('Change detected:', info);
+        // put pull logic here
+    })
+    .on('error', err => {
+        console.error('Sync error:', err);
+    });
 }
 
 // run on DOMContentLoaded
