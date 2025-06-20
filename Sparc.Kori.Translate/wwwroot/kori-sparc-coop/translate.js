@@ -11,7 +11,7 @@ if (typeof PouchDB === 'undefined') {
 }
 
 const db = new PouchDB('kori-translations');
-
+const remote = 'https://localhost:7185/data/kori-translations';
 function hashString(str) {
     let hash = 2166136261;
     for (let i = 0; i < str.length; i++) {
@@ -35,38 +35,49 @@ function getTextNodes(node, nodes = []) {
 }
 
 // save text nodes to PouchDB
-async function saveTextNodes(nodes) {
+async function saveTextNodesAsync(nodes) {
+    for (let n of nodes) {
+        await saveKoriTextContentAsync(n);
+    }
+}
+
+async function saveKoriTextContentAsync(node) {
     console.debug('navigator.language', navigator.language);
     const userLang = navigator.language || navigator.userLanguage || "en";
 
-    for (let n of nodes) {
-        const path = getNodePath(n);
-        const text = n.nodeValue.trim();
-        const hash = hashString(text);
-        const id = `textnode_${path}_${hash}`;
-        const parentElement = n.parentElement;
-        const html = parentElement ? parentElement.outerHTML : "";
+    const path = getNodePath(node);
+    const text = node.nodeValue.trim();
+    const hash = hashString(text);
+    const safePath = path.replace(/[\/\\#]/g, '_');
+    const id = `node_${safePath}_${hash}`;
+    const parentElement = node.parentElement;
+    const html = parentElement ? parentElement.outerHTML : "";
+    const tag = parentElement ? parentElement.tagName.toLowerCase() : "unknown";
+    const contentType = "text";
 
-        const doc = {
-            _id: id,
-            text: text,
-            original: text,
-            html: html,
-            path: path,
-            hash: hash,
-            translations: [
-                {
-                    text: text,
-                    language: userLang
-                }
-            ]
-        };
-        try {
-            await db.put(doc);
-        } catch (e) {
-            if (e.status !== 409) { // 409 = conflict already exists
-                console.error(e);
+    const doc = {
+        _id: id,
+        tag: tag,
+        text: text,
+        html: html,
+        contentType: contentType,
+        audio: null,
+        //nodes: [parentElement],
+        path: path,
+        hash: hash,
+        translations: [
+            {
+                text: text,
+                language: userLang
             }
+        ]
+    };
+
+    try {
+        await db.put(doc);
+    } catch (e) {
+        if (e.status !== 409) { // 409 = conflict already exists
+            console.error(e);
         }
     }
 }
@@ -83,10 +94,10 @@ function getNodePath(node) {
 }
 
 // initial crawl
-function crawlAndSave() {
-    console.debug('crawlAndSave');
+async function crawlAndSaveAsync() {
+    console.debug('crawlAndSaveAsync');
     const nodes = getTextNodes(document.body);
-    saveTextNodes(nodes);
+    await saveTextNodesAsync(nodes);
 }
 
 // mutation observer to watch for new text nodes
@@ -95,7 +106,7 @@ const observer = new MutationObserver(mutations => {
         for (let node of mutation.addedNodes) {
             const newTextNodes = getTextNodes(node);
             if (newTextNodes.length) {
-                saveTextNodes(newTextNodes);
+                saveTextNodesAsync(newTextNodes).catch(console.error);
             }
         }
     }
@@ -113,19 +124,33 @@ function setupPageChangeListener() {
     console.debug('setupPageChangeListener');
 
     window.addEventListener('popstate', () => {
-        crawlAndSave();
+        crawlAndSaveAsync().catch(console.error);
     });
     window.addEventListener('pushstate', () => {
-        crawlAndSave();
+        crawlAndSaveAsync().catch(console.error)
     });
 }
 
 // initialize everything
-function initTranslationCrawl() {
-    crawlAndSave();
+async function initTranslationCrawlerAsync() {
+    await crawlAndSaveAsync();
     startObserving();
     setupPageChangeListener();
+
+    // wait 5 seconds and then sync
+    setTimeout(syncKoriTextContent, 15000);
+}
+
+function syncKoriTextContent() {
+    console.debug('syncKoriTextContent');
+    db.replicate.to(remote)
+        .on('complete', info => {
+            console.log('Sync complete:', info);
+        })
+        .on('error', err => {
+            console.error('Sync error:', err);
+        });
 }
 
 // run on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', initTranslationCrawl);
+document.addEventListener('DOMContentLoaded', initTranslationCrawlerAsync);
