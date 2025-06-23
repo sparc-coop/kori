@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Página de Teste de Tradução</title>
+    <title>Sparc.Kori.Translate</title>
     <base href="/" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
@@ -16,67 +16,23 @@
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1>Bem-vindo à página de teste de tradução</h1>
-        <p>Este é um parágrafo em português. Ele será usado para testar a tradução automática do sistema.</p>
-        <kori-langselect></kori-langselect>
-
-        <ul>
-            <li>Primeiro item da lista</li>
-            <li>Segundo item da lista</li>
-            <li>Terceiro item da lista</li>
-        </ul>
-        <h2>Seção de Informações</h2>
-        <p>
-            O objetivo desta página é fornecer conteúdo variado em português para validar a precisão das traduções.
-        </p>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Idade</th>
-                    <th>Cidade</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>João</td>
-                    <td>28</td>
-                    <td>Lisboa</td>
-                </tr>
-                <tr>
-                    <td>Maria</td>
-                    <td>34</td>
-                    <td>Porto</td>
-                </tr>
-                <tr>
-                    <td>Carlos</td>
-                    <td>22</td>
-                    <td>Coimbra</td>
-                </tr>
-            </tbody>
-        </table>
-        <h3>Formulário de Contato</h3>
-        <form>
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" placeholder="Digite seu nome">
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail">
-            </div>
-            <div class="mb-3">
-                <label for="mensagem" class="form-label">Mensagem</label>
-                <textarea class="form-control" id="mensagem" rows="3" placeholder="Digite sua mensagem"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
-        <footer class="mt-5">
-            <p>&copy; 2024 Página de Teste de Tradução. Todos os direitos reservados.</p>
-        </footer>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
     </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script type="module" src="https://localhost:7185/kori-translate.js"></script>
+    <kori-translate for="#app" live></kori-translate>
 </body>
 
 </html>

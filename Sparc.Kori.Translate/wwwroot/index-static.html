@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página de Teste de Tradução</title>
+    <base href="/" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="Sparc.Kori.Translate.styles.css" rel="stylesheet" />
+    <link href="manifest.webmanifest" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Bem-vindo à página de teste de tradução</h1>
+        <p>Este é um parágrafo em português. Ele será usado para testar a tradução automática do sistema.</p>
+        <kori-langselect></kori-langselect>
+
+        <ul>
+            <li>Primeiro item da lista</li>
+            <li>Segundo item da lista</li>
+            <li>Terceiro item da lista</li>
+        </ul>
+        <h2>Seção de Informações</h2>
+        <p>
+            O objetivo desta página é fornecer conteúdo variado em português para validar a precisão das traduções.
+        </p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Cidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>João</td>
+                    <td>28</td>
+                    <td>Lisboa</td>
+                </tr>
+                <tr>
+                    <td>Maria</td>
+                    <td>34</td>
+                    <td>Porto</td>
+                </tr>
+                <tr>
+                    <td>Carlos</td>
+                    <td>22</td>
+                    <td>Coimbra</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Formulário de Contato</h3>
+        <form>
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nome" placeholder="Digite seu nome">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail">
+            </div>
+            <div class="mb-3">
+                <label for="mensagem" class="form-label">Mensagem</label>
+                <textarea class="form-control" id="mensagem" rows="3" placeholder="Digite sua mensagem"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+        <footer class="mt-5">
+            <p>&copy; 2024 Página de Teste de Tradução. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+    <script type="module" src="https://localhost:7185/kori-translate.js"></script>
+</body>
+
+</html>
