@@ -10,6 +10,10 @@ a, .btn-link {
     color: #0071c1;
 }
 
+kori-t.kori-translating {
+    opacity: 0.3;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
