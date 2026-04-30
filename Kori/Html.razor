@@ -10,6 +10,66 @@
     <link rel="stylesheet" href="@Assets["app.css"]" />
     <link rel="stylesheet" href="@Assets["Kori.styles.css"]" />
     <ImportMap />
+    <meta name="description"
+          content="Modern, clean, and responsive one-page site to buy digital products with instant download." />
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+        theme: {
+        extend: {
+        colors: {
+        brand: {
+        50: "#eef2ff",
+        100: "#e0e7ff",
+        500: "#6366f1",
+        600: "#4f46e5",
+        700: "#4338ca",
+        },
+        accent: {
+        500: "#10b981",
+        600: "#059669",
+        700: "#047857",
+        },
+        },
+        fontFamily: {
+        sans: [
+        "ui-sans-serif",
+        "system-ui",
+        "-apple-system",
+        "Segoe UI",
+        "Roboto",
+        "Inter",
+        "Noto Sans",
+        "Ubuntu",
+        "Cantarell",
+        "Helvetica Neue",
+        "Arial",
+        "sans-serif",
+        ],
+        },
+        boxShadow: {
+        card: "0 10px 20px rgba(0,0,0,0.06), 0 6px 6px rgba(0,0,0,0.08)",
+        },
+        },
+        },
+        };
+    </script>
+
+    <style>
+        /* Smooth scrolling and focus ring tweak */
+        html {
+        scroll-behavior: smooth;
+        }
+
+        :focus-visible {
+        outline: 2px solid #6366f1;
+        outline-offset: 2px;
+        }
+    </style>
+    <script src="kori.js"></script>
+
     <HeadOutlet @rendermode="new InteractiveServerRenderMode(false)" />
 </head>
 

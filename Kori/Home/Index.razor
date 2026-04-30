@@ -1,9 +1,425 @@
 ﻿@page "/"
 
-<PageTitle>Kori</PageTitle>
+<PageTitle>Digital Store — Premium Downloadable Products</PageTitle>
 
+<header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="#" class="font-semibold text-lg tracking-tight">Digital Store</a>
+        <nav class="hidden md:flex gap-6 text-sm">
+            <a href="#hero" class="hover:text-brand-600">Home</a>
+            <a href="#products" class="hover:text-brand-600">Products</a>
+            <a href="#ebooks" class="hover:text-brand-600">eBooks</a>
+            <a href="#templates" class="hover:text-brand-600">Templates</a>
+            <a href="#photos" class="hover:text-brand-600">Photos</a>
+            <a href="#how" class="hover:text-brand-600">How it works</a>
+            <a href="#about" class="hover:text-brand-600">About</a>
+        </nav>
+        <a href="#products"
+           class="ml-4 inline-flex items-center rounded-full bg-brand-600 text-white text-sm px-4 py-2 shadow hover:bg-brand-700 focus-visible:outline-none">Explore Products</a>
+    </div>
+</header>
 
+<main>
+    <!-- Hero Section -->
+    <section id="hero" class="relative overflow-hidden">
+        <div class="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 to-white"></div>
+        <div class="max-w-7xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                    Premium digital products to level up your work
+                </h1>
+                <p class="mt-4 text-lg text-slate-600">
+                    Ebooks, templates, and resources crafted to save time and
+                    accelerate results. Instant download after secure checkout.
+                </p>
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a href="#products"
+                       class="inline-flex items-center justify-center rounded-lg bg-accent-600 text-white px-6 py-3 font-medium shadow hover:bg-accent-700">Explore Products</a>
+                    <a href="#how"
+                       class="inline-flex items-center justify-center rounded-lg border border-slate-300 text-slate-700 px-6 py-3 font-medium hover:bg-slate-50">How it works</a>
+                </div>
+            </div>
+            <div class="relative">
+                <img src="https://placehold.co/640x420/png?text=Digital+Products+Preview"
+                     alt="Preview of digital products"
+                     class="w-full rounded-2xl shadow-card ring-1 ring-slate-100" />
+                <div class="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-card p-4 hidden sm:flex items-center gap-3 ring-1 ring-slate-100">
+                    <div class="text-2xl">⚡</div>
+                    <div>
+                        <p class="text-sm font-semibold">Instant Download</p>
+                        <p class="text-xs text-slate-500">
+                            Available immediately after purchase
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-@code {
+    <!-- Featured Products Section -->
+    <section id="products" class="py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-end justify-between gap-4">
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight">
+                    Featured Products
+                </h2>
+                <p class="text-slate-500 text-sm">
+                    No account needed • Secure payment • Instant access
+                </p>
+            </div>
 
-}
+            <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Product 1 (links to eBooks collection) -->
+                <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <a href="#ebooks" class="block h-full w-full">
+                            <img src="https://placehold.co/800x600/png?text=Ebook+Guide"
+                                 alt="Ebook guide cover"
+                                 class="h-full w-full object-cover" />
+                        </a>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold">Ultimate Productivity eBook</h3>
+                        <p class="mt-2 text-sm text-slate-600">
+                            A 120-page actionable guide packed with frameworks and
+                            templates.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <a href="#ebooks" class="text-sm text-brand-600 hover:text-brand-700">View</a>
+                                <span class="text-slate-400">•</span>
+                                <span class="text-brand-700 font-semibold text-lg">$19</span>
+                            </div>
+                            <a href="#"
+                               class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 2 (links to Templates collection) -->
+                <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <a href="#templates" class="block h-full w-full">
+                            <img src="https://placehold.co/800x600/png?text=Design+Templates"
+                                 alt="Design templates preview"
+                                 class="h-full w-full object-cover" />
+                        </a>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold">Social Media Templates</h3>
+                        <p class="mt-2 text-sm text-slate-600">
+                            50+ ready-to-use Canva templates to boost your brand presence.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <a href="#templates" class="text-sm text-brand-600 hover:text-brand-700">View</a>
+                                <span class="text-slate-400">•</span>
+                                <span class="text-brand-700 font-semibold text-lg">$29</span>
+                            </div>
+                            <a href="#"
+                               class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 3 (links to Photos collection) -->
+                <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <a href="#photos" class="block h-full w-full">
+                            <img src="https://placehold.co/800x600/png?text=Photo+Presets"
+                                 alt="Photo presets preview"
+                                 class="h-full w-full object-cover" />
+                        </a>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold">Lightroom Preset Pack</h3>
+                        <p class="mt-2 text-sm text-slate-600">
+                            15 pro-grade presets for stunning, consistent edits in one
+                            click.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <a href="#photos" class="text-sm text-brand-600 hover:text-brand-700">View</a>
+                                <span class="text-slate-400">•</span>
+                                <span class="text-brand-700 font-semibold text-lg">$15</span>
+                            </div>
+                            <a href="#"
+                               class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- eBooks Collection Detail -->
+    <section id="ebooks" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-end justify-between gap-4">
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight">eBooks</h2>
+                <a href="#products" class="text-sm text-brand-600 hover:text-brand-700">Back to Featured</a>
+            </div>
+            <p class="mt-3 text-slate-600 max-w-3xl">
+                Explore our collection of actionable eBooks. Each product shows a preview of the first page.
+            </p>
+            <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- eBook Item 1 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="relative aspect-[3/4] bg-slate-100">
+                        <img src="https://placehold.co/600x800/png?text=eBook+1+\nPage+1" alt="eBook 1 first page preview" class="h-full w-full object-cover" />
+                        <span class="absolute top-3 left-3 text-xs px-2 py-1 rounded bg-white/90 border border-slate-200">First Page</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Productivity Playbook</h3>
+                        <p class="mt-2 text-sm text-slate-600">Systems to get more done with less stress.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$19</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+                <!-- eBook Item 2 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="relative aspect-[3/4] bg-slate-100">
+                        <img src="https://placehold.co/600x800/png?text=eBook+2+\nPage+1" alt="eBook 2 first page preview" class="h-full w-full object-cover" />
+                        <span class="absolute top-3 left-3 text-xs px-2 py-1 rounded bg-white/90 border border-slate-200">First Page</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Marketing Fundamentals</h3>
+                        <p class="mt-2 text-sm text-slate-600">Practical strategies for audience growth.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$24</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+                <!-- eBook Item 3 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="relative aspect-[3/4] bg-slate-100">
+                        <img src="https://placehold.co/600x800/png?text=eBook+3+\nPage+1" alt="eBook 3 first page preview" class="h-full w-full object-cover" />
+                        <span class="absolute top-3 left-3 text-xs px-2 py-1 rounded bg-white/90 border border-slate-200">First Page</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Design for Non-Designers</h3>
+                        <p class="mt-2 text-sm text-slate-600">Make polished visuals without a design degree.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$17</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Templates Collection Detail -->
+    <section id="templates" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-end justify-between gap-4">
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Templates</h2>
+                <a href="#products" class="text-sm text-brand-600 hover:text-brand-700">Back to Featured</a>
+            </div>
+            <p class="mt-3 text-slate-600 max-w-3xl">
+                Professional templates ready to customize. Drag-and-drop friendly.
+            </p>
+            <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Template Item 1 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <img src="https://placehold.co/800x600/png?text=Template+Pack+1" alt="Template pack 1 preview" class="h-full w-full object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Brand Kit Templates</h3>
+                        <p class="mt-2 text-sm text-slate-600">Logos, palettes, and typography system.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$35</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+                <!-- Template Item 2 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <img src="https://placehold.co/800x600/png?text=Template+Pack+2" alt="Template pack 2 preview" class="h-full w-full object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Instagram Carousel Kit</h3>
+                        <p class="mt-2 text-sm text-slate-600">30 slide layouts to tell better stories.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$29</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+                <!-- Template Item 3 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <img src="https://placehold.co/800x600/png?text=Template+Pack+3" alt="Template pack 3 preview" class="h-full w-full object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Pitch Deck Template</h3>
+                        <p class="mt-2 text-sm text-slate-600">Polished deck for startups and freelancers.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$39</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photos/Presets Collection Detail -->
+    <section id="photos" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-end justify-between gap-4">
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Photos & Presets</h2>
+                <a href="#products" class="text-sm text-brand-600 hover:text-brand-700">Back to Featured</a>
+            </div>
+            <p class="mt-3 text-slate-600 max-w-3xl">
+                Photo packs and presets to speed up your editing workflow.
+            </p>
+            <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Photo Item 1 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <img src="https://placehold.co/800x600/png?text=Preset+Pack+1" alt="Preset pack 1 preview" class="h-full w-full object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Warm Film Presets</h3>
+                        <p class="mt-2 text-sm text-slate-600">Vintage tones for cozy, cinematic shots.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$15</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+                <!-- Photo Item 2 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <img src="https://placehold.co/800x600/png?text=Preset+Pack+2" alt="Preset pack 2 preview" class="h-full w-full object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Clean Studio Presets</h3>
+                        <p class="mt-2 text-sm text-slate-600">Bright, minimal edits for products and portraits.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$18</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+                <!-- Photo Item 3 -->
+                <article class="rounded-2xl border border-slate-200 overflow-hidden bg-white hover:shadow-card transition-shadow">
+                    <div class="aspect-[4/3] bg-slate-100">
+                        <img src="https://placehold.co/800x600/png?text=Photo+Pack+1" alt="Photo pack 1 preview" class="h-full w-full object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold">Landscape Photo Pack</h3>
+                        <p class="mt-2 text-sm text-slate-600">20 high-res shots for commercial use.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-brand-700 font-semibold text-lg">$22</span>
+                            <a href="#" class="inline-flex items-center rounded-lg bg-accent-600 text-white px-4 py-2 text-sm font-medium hover:bg-accent-700">Buy Now</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight">
+                How it works
+            </h2>
+            <div class="mt-10 grid gap-8 sm:grid-cols-3">
+                <div class="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
+                    <div class="text-3xl">🛒</div>
+                    <h3 class="mt-3 font-semibold">1. Choose your product</h3>
+                    <p class="mt-2 text-sm text-slate-600">
+                        Browse the collection and pick the item that fits your needs.
+                    </p>
+                </div>
+                <div class="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
+                    <div class="text-3xl">🔒</div>
+                    <h3 class="mt-3 font-semibold">2. Secure checkout</h3>
+                    <p class="mt-2 text-sm text-slate-600">
+                        You’ll be redirected to a trusted payment provider to complete
+                        purchase.
+                    </p>
+                </div>
+                <div class="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
+                    <div class="text-3xl">⚡</div>
+                    <h3 class="mt-3 font-semibold">3. Instant download</h3>
+                    <p class="mt-2 text-sm text-slate-600">
+                        Access your files immediately via an emailed link or on-screen
+                        download.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About / FAQ -->
+    <section id="about" class="py-20">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight">
+                About the creator
+            </h2>
+            <p class="mt-4 text-slate-700">
+                Hi, I’m Ajay. I create high-quality digital resources that help
+                creators, freelancers, and small teams move faster. Every product is
+                field-tested and designed to be practical and easy to use.
+            </p>
+
+            <div class="mt-10 divide-y divide-slate-200 border border-slate-200 rounded-xl overflow-hidden">
+                <details class="group" open>
+                    <summary class="cursor-pointer list-none p-5 bg-slate-50 hover:bg-slate-100 flex items-center justify-between">
+                        <span class="font-medium">What format are the files?</span>
+                        <span class="text-slate-500 group-open:rotate-180 transition">⌄</span>
+                    </summary>
+                    <div class="p-5 text-sm text-slate-600">
+                        File formats vary by product and may include PDF, PNG/JPG, ZIP,
+                        or DNG. Details are listed on each product.
+                    </div>
+                </details>
+                <details class="group">
+                    <summary class="cursor-pointer list-none p-5 bg-slate-50 hover:bg-slate-100 flex items-center justify-between">
+                        <span class="font-medium">What is your refund policy?</span>
+                        <span class="text-slate-500 group-open:rotate-180 transition">⌄</span>
+                    </summary>
+                    <div class="p-5 text-sm text-slate-600">
+                        Due to the nature of digital goods, all sales are final. If you
+                        have issues accessing files, contact support and we’ll help.
+                    </div>
+                </details>
+                <details class="group">
+                    <summary class="cursor-pointer list-none p-5 bg-slate-50 hover:bg-slate-100 flex items-center justify-between">
+                        <span class="font-medium">Can I use these commercially?</span>
+                        <span class="text-slate-500 group-open:rotate-180 transition">⌄</span>
+                    </summary>
+                    <div class="p-5 text-sm text-slate-600">
+                        Yes. Unless otherwise stated, your purchase includes a license
+                        for personal and commercial projects. Redistribution is not
+                        allowed.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-slate-500">
+            © <span id="year"></span> Digital Store. All rights reserved.
+        </p>
+        <div class="flex items-center gap-4 text-slate-600">
+            <a href="#" aria-label="Twitter" class="hover:text-brand-600">Twitter</a>
+            <a href="#" aria-label="Instagram" class="hover:text-brand-600">Instagram</a>
+            <a href="#" aria-label="YouTube" class="hover:text-brand-600">YouTube</a>
+            <a href="#" aria-label="Email" class="hover:text-brand-600">Contact</a>
+        </div>
+    </div>
+</footer>
