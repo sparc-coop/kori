@@ -6043,16 +6043,21 @@
                 this.observer.disconnect();
         }
         async translatePage(element, forceReload = false) {
-            if (!TovikEngine.detectedLang)
-                TovikEngine.registerVisit();
-            // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
-            if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
-                return;
+            try {
+                if (!TovikEngine.detectedLang)
+                    TovikEngine.registerVisit();
+                // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
+                if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
+                    document.documentElement.classList.remove('tovik-initializing');
+                    return;
+                }
+                await this.wrapTextNodes(element, forceReload);
+                await this.translateAttribute(element, 'placeholder', forceReload);
+                document.documentElement.classList.remove('tovik-initializing');
             }
-            document.documentElement.classList.add('tovik-translating');
-            await this.wrapTextNodes(element, forceReload);
-            await this.translateAttribute(element, 'placeholder', forceReload);
-            document.documentElement.classList.remove('tovik-translating');
+            catch {
+                document.documentElement.classList.remove('tovik-initializing');
+            }
         }
         async wrapTextNodes(element, forceReload = false) {
             var nodes = [];
@@ -6136,7 +6141,6 @@
                     //        textNode.parentElement.classList.add('tovik-translating');
                 }
             }));
-            document.documentElement.classList.remove('tovik-translating');
             if (window.parent && window.parent.postMessage)
                 window.parent.postMessage('tovik-translating');
             await TovikEngine.stream(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
@@ -6227,10 +6231,11 @@
         }
         static injectPreloadCSS() {
             const style = document.createElement('style');
-            style.textContent = 'html.tovik-translating, html.tovik-translating * { color: transparent !important; caret-color: transparent !important; }'
+            style.textContent = 'html.tovik-initializing, html.tovik-initializing * { color: transparent !important; caret-color: transparent !important; }'
                 + '.tovik-preview { position: fixed; bottom: 20px; right: 20px; z-index: 1000000; background-color: #1F5068; color: white; font-size: 16px; padding: 16px 24px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 16px; }'
                 + '.tovik-preview img { width: 36px; height: 36px; }';
             document.head.appendChild(style);
+            document.documentElement.classList.add('tovik-initializing');
         }
         static async hi() {
             let lang = await this.getUserLanguage();
