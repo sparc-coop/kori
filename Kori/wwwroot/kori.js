@@ -6019,16 +6019,8 @@
         #originalLang;
         constructor() {
             super();
-        }
-        async connectedCallback() {
-            this.#observedElement = this;
-            this.#originalLang = this.lang || TovikEngine.documentLang;
-            // if the attribute 'for' is set, observe the element with that selector
-            if (this.hasAttribute('for')) {
-                const selector = this.getAttribute('for');
-                this.#observedElement = selector == 'html' ? document.documentElement : document.querySelector(selector);
-            }
-            await this.translatePage(this.#observedElement);
+            this.#observedElement = document.documentElement;
+            this.#originalLang = TovikEngine.documentLang;
             document.addEventListener('tovik-language-changed', async (event) => {
                 await this.translatePage(this.#observedElement, true);
             });
@@ -6037,6 +6029,13 @@
             });
             this.observer = new MutationObserver(this.#observer);
             this.observer.observe(this.#observedElement, { childList: true, characterData: false, subtree: true });
+        }
+        async connectedCallback() {
+            // if the attribute 'for' is set, observe the element with that selector
+            if (this.hasAttribute('for')) {
+                const selector = this.getAttribute('for');
+                this.#observedElement = selector == 'html' ? document.documentElement : document.querySelector(selector);
+            }
         }
         disconnectedCallback() {
             if (this.observer)
@@ -6187,7 +6186,7 @@
                 return this.userLang;
             }
             // Check for data-lang on the body element
-            const htmlLang = document.body.getAttribute('data-toviklang');
+            const htmlLang = document.body?.getAttribute('data-toviklang');
             if (htmlLang) {
                 this.model = 'Live';
                 this.userLang = htmlLang;
@@ -6240,12 +6239,6 @@
         static async hi() {
             let lang = await this.getUserLanguage();
             this.documentLang = document.documentElement.lang;
-            if (this.isPreview) {
-                let languageName = new Intl.DisplayNames([navigator.language], { type: 'language' }).of(this.userLang);
-                var previewHtml = `<div class="tovik-preview" translate="no" onclick="document.dispatchEvent(new CustomEvent('tovik-exit-preview'))"><img src="https://tovik.app/images/TovikChar.svg" /> ${languageName} <span>✕</span></div>`;
-                document.body.insertAdjacentHTML('beforeend', previewHtml);
-                document.addEventListener('tovik-exit-preview', this.exitPreview);
-            }
             await this.setLanguage(lang);
             document.addEventListener('tovik-user-language-changed', async (event) => {
                 if (!this.isPreview)
@@ -6257,7 +6250,15 @@
             if (!document.querySelector('tovik-translate')) {
                 var bodyElement = document.createElement('tovik-translate');
                 bodyElement.setAttribute('for', 'html');
-                document.body.appendChild(bodyElement);
+                document.head.appendChild(bodyElement);
+            }
+        }
+        static async initBody() {
+            if (this.isPreview) {
+                let languageName = new Intl.DisplayNames([navigator.language], { type: 'language' }).of(this.userLang);
+                var previewHtml = `<div class="tovik-preview" translate="no" onclick="document.dispatchEvent(new CustomEvent('tovik-exit-preview'))"><img src="https://tovik.app/images/TovikChar.svg" /> ${languageName} <span>✕</span></div>`;
+                document.body.insertAdjacentHTML('beforeend', previewHtml);
+                document.addEventListener('tovik-exit-preview', this.exitPreview);
             }
         }
         static isRegisteringVisit = false;
