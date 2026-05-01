@@ -6025,7 +6025,10 @@
                 await this.translatePage(this.#observedElement, true);
             });
             document.addEventListener('tovik-content-changed', async (event) => {
-                await this.translatePage(this.#observedElement);
+                await this.translatePage(this.#observedElement, TovikEngine.isKoriEnabled);
+            });
+            document.addEventListener('kori-content-changed', async (event) => {
+                await this.translatePage(this.#observedElement, true);
             });
             this.observer = new MutationObserver(this.#observer);
             this.observer.observe(this.#observedElement, { childList: true, characterData: false, subtree: true });
@@ -6089,7 +6092,7 @@
         };
         #tovikIgnoreFilter = function (node) {
             var approvedNodes = ['#text'];
-            if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE')
+            if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE' || node.contentEditable == 'true')
                 return NodeFilter.FILTER_SKIP;
             var closest = node.parentElement.closest('[translate="no"]');
             if (closest)
@@ -6157,6 +6160,55 @@
         }
     }
 
+    class KoriElement extends HTMLElement {
+        target;
+        constructor() {
+            super();
+        }
+        async connectedCallback() {
+            document.addEventListener('click', async (event) => {
+                if (this.target != event.target) {
+                    if (this.target)
+                        await this.save();
+                    this.beginEdit(event.target);
+                    event.stopPropagation();
+                }
+            });
+        }
+        disconnectedCallback() {
+        }
+        beginEdit(element) {
+            var textNodes = Array.from(element.childNodes).filter(node => node['nodeType'] === Node.TEXT_NODE);
+            if (textNodes.length != 1)
+                return;
+            this.target = element;
+            if (!this.target.originalText)
+                this.target.originalText = this.target.innerText;
+            this.target.contentEditable = true;
+            this.target.focus();
+            console.log('Kori edit started on element:', this.target);
+        }
+        async save() {
+            if (!this.target)
+                return;
+            if (this.target.originalText == this.target.innerText) {
+                this.cancel();
+                return;
+            }
+            await TovikEngine.update(this.target);
+            this.target.contentEditable = false;
+            this.target = null;
+            console.log('Kori edit saved');
+        }
+        cancel() {
+            if (!this.target)
+                return;
+            this.target.innerText = this.target.originalText;
+            this.target.contentEditable = false;
+            this.target = null;
+        }
+    }
+
     function windowOrParentIncludes(str) {
         return window.location.href.includes(str)
             || (window.parent?.location && window.parent.location.href.includes(str));
@@ -6171,6 +6223,7 @@
         static model;
         static sampleText;
         static isPreview;
+        static isKoriEnabled;
         static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
         static async getUserLanguage() {
             // If query parameter lang is set, use it
@@ -6246,12 +6299,15 @@
             });
             customElements.define('tovik-language', TovikLanguageElement);
             customElements.define('tovik-translate', TovikElement);
+            customElements.define('kori-edit', KoriElement);
             // If the document does not have a <tovik-translate> element, create one and point it to the body
             if (!document.querySelector('tovik-translate')) {
                 var bodyElement = document.createElement('tovik-translate');
                 bodyElement.setAttribute('for', 'html');
                 document.head.appendChild(bodyElement);
             }
+            if (document.querySelector('kori-edit'))
+                this.isKoriEnabled = true;
         }
         static async initBody() {
             if (this.isPreview) {
@@ -6308,6 +6364,23 @@
             for (let translation of result.content)
                 this.replace(pendingTranslations, translation, onTranslation);
         }
+        static async update(element) {
+            const textNode = [...element.childNodes].find(x => x.nodeType === Node.TEXT_NODE);
+            const original = textNode?.originalText || element['originalText'] || element.element.innerText;
+            const hash = TovikEngine.idHash(original);
+            const request = {
+                content: [{
+                        id: hash,
+                        Text: element.innerText,
+                        OriginalText: original,
+                        LanguageId: this.userLang
+                    }]
+            };
+            console.log('Updating translation with request:', request);
+            await db.translations.delete(hash);
+            await this.fetch('content', request, this.userLang, 'PUT');
+            document.dispatchEvent(new CustomEvent('kori-content-changed'));
+        }
         static replace(pendingTranslations, translation, onTranslation) {
             const items = pendingTranslations.filter(item => item.hash === translation.id);
             for (let item of items)
@@ -6357,10 +6430,10 @@
             };
         }
         ;
-        static async fetch(url, body = null, language = null) {
+        static async fetch(url, body = null, language = null, method = null) {
             const options = {
                 credentials: 'include',
-                method: body ? 'POST' : 'GET',
+                method: method ?? (body ? 'POST' : 'GET'),
                 headers: new Headers(),
                 referrerPolicy: 'no-referrer-when-downgrade'
             };
@@ -6375,7 +6448,7 @@
             }
             const response = await fetch(`${baseUrl}/${url}`, options);
             if (response.ok)
-                return await response.json();
+                return response.status == 201 ? null : await response.json();
             else if (response.status === 429) {
                 console.warn(`Tovik tried to translate your website into ${language}, but your site has reached the Tovik translation limit!`);
             }
