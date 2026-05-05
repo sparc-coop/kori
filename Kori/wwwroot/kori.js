@@ -6183,13 +6183,14 @@
                 }
             });
             document.addEventListener('click', async (event) => {
-                if (this.target != event.target) {
-                    if (this.target)
-                        await this.save();
+                if (this.isEditable(event.target))
+                    event.preventDefault();
+                if (this.target != event.target && this.isEditable(event.target)) {
                     this.beginEdit(event.target);
                     event.stopPropagation();
                 }
             });
+            document.addEventListener('scroll', () => this.positionBoxes());
         }
         disconnectedCallback() {
         }
@@ -6207,40 +6208,48 @@
             }
             else {
                 this.potentialTarget = element;
-                const rect = this.potentialTarget.getBoundingClientRect();
-                this.verticalBox.style.left = `${rect.left}px`;
-                this.verticalBox.style.width = `${rect.width}px`;
-                this.verticalBox.style.display = 'block';
-                this.horizontalBox.style.top = `${rect.top}px`;
-                this.horizontalBox.style.height = `${rect.height}px`;
-                this.horizontalBox.style.display = 'block';
+                this.positionBoxes();
                 this.potentialTarget.classList.add('kori-editable');
-                this.potentialTarget.addEventListener('mouseleave', (event) => {
-                    if (this.potentialTarget == event.target) {
-                        this.markTarget(null);
-                    }
-                }, { once: true });
+                var self = this;
+                this.potentialTarget.addEventListener('mouseleave', function onMouseMove(event) {
+                    console.log('mouseleave', self.potentialTarget, self.target, event.target);
+                    if (self.potentialTarget == event.target && self.target != event.target)
+                        self.markTarget(null);
+                });
             }
         }
+        positionBoxes() {
+            if (!this.potentialTarget)
+                return;
+            const rect = this.potentialTarget.getBoundingClientRect();
+            this.verticalBox.style.left = `${rect.left}px`;
+            this.verticalBox.style.width = `${rect.width}px`;
+            this.verticalBox.style.display = 'block';
+            this.horizontalBox.style.top = `${rect.top}px`;
+            this.horizontalBox.style.height = `${rect.height}px`;
+            this.horizontalBox.style.display = 'block';
+        }
         beginEdit(element) {
+            this.markTarget(element);
             this.target = element;
             if (!this.target.originalText)
                 this.target.originalText = this.target.innerText;
             this.target.contentEditable = true;
             this.target.focus();
-            console.log('Kori edit started on element:', this.target);
+            var el = this.target;
+            this.target.addEventListener('blur', () => this.save(el), { once: true });
         }
-        async save() {
-            if (!this.target)
+        async save(element) {
+            if (!element)
                 return;
-            if (this.target.originalText == this.target.innerText) {
-                this.cancel();
-                return;
-            }
-            await TovikEngine.update(this.target);
-            this.target.contentEditable = false;
-            this.target = null;
-            console.log('Kori edit saved');
+            if (element.originalText != element.innerText)
+                await TovikEngine.update(element);
+            element.contentEditable = false;
+            element.classList.remove('kori-editable');
+            if (this.target == element)
+                this.target = null;
+            if (this.potentialTarget == element)
+                this.markTarget(null);
         }
         cancel() {
             if (!this.target)
@@ -6332,7 +6341,8 @@
                 + '.kori-box { border: 1px solid #8B83FF; position: fixed; z-index: 1000000; display: none; } '
                 + '.kori-box-vertical { top: -20px; bottom: -20px; } '
                 + '.kori-box-horizontal { left: -20px; right: -20px; } '
-                + '.kori-editable { background-color: rgba(139, 131, 255, 0.2); } ';
+                + '.kori-editable:not(:focus) { background-color: rgba(139, 131, 255, 0.2); cursor: text; } '
+                + '.kori-editable:focus { outline: none; } ';
             document.head.appendChild(style);
             document.documentElement.classList.add('tovik-initializing');
         }
