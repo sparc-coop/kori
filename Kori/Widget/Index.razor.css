@@ -1,0 +1,41 @@
+﻿form {
+    display: inline-flex;
+    border: 1px solid #bcbcbc;
+    border-radius: 12px;
+    padding: 0 20px;
+    background: #1b1b1b;
+    box-shadow: 0 0 6.3px 0 rgba(0, 0, 0, 0.25);
+}
+
+fieldset {
+    padding: 8px;
+    display: flex;
+    gap: 6px;
+
+    &:first-child {
+        border-right: 1px solid #555;
+    }
+}
+
+button {
+    height: 32px;
+    width: 32px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+
+    &.active {
+        background: #4e45d8;
+    }
+}
+
+.formatting button {
+    opacity: 0.5;
+
+    &.active {
+        opacity: 1;
+    }
+}

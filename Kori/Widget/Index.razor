@@ -1,0 +1,47 @@
+﻿@page "/"
+@using Kori.Widget.Icons
+
+<form>
+    <fieldset class="mode">
+        <button type="button" @onclick="Edit" class="@(Mode == "Edit" ? "active" : "")">
+            <EditIcon />
+        </button>
+        <button type="button" @onclick="Search" class="@(Mode == "Search" ? "active" : "")">
+            <SearchIcon />
+        </button>
+    </fieldset>
+    <fieldset class="formatting">
+        <button type="button" @onclick="Bold" class="@(IsBold ? "active" : "")">
+            <BoldIcon />
+        </button>
+        <button type="button" @onclick="Italic" class="@(IsItalic ? "active" : "")">
+            <ItalicIcon />
+        </button>
+    </fieldset>
+</form>
+
+@code {
+    string Mode = "Edit";
+    bool IsBold = false;
+    bool IsItalic = false;
+
+    async Task Edit()
+    {
+        Mode = "Edit";
+    }
+
+    async Task Search()
+    {
+        Mode = "Search";
+    }
+
+    async Task Bold()
+    {
+        IsBold = !IsBold;
+    }
+
+    async Task Italic()
+    {
+        IsItalic = !IsItalic;
+    }
+}
