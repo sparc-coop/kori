@@ -6165,6 +6165,7 @@
         target;
         verticalBox;
         horizontalBox;
+        iframe;
         constructor() {
             super();
         }
@@ -6176,6 +6177,10 @@
             this.horizontalBox = document.createElement('div');
             this.horizontalBox.classList.add('kori-box', 'kori-box-horizontal');
             this.appendChild(this.horizontalBox);
+            this.iframe = document.createElement('iframe');
+            this.iframe.classList.add('kori-iframe');
+            this.iframe.src = "https://localhost:7198/sites/abc123/widget";
+            this.appendChild(this.iframe);
             document.addEventListener('mouseover', (event) => {
                 if (!this.potentialTarget && this.isEditable(event.target)) {
                     this.markTarget(event.target);
@@ -6183,14 +6188,35 @@
                 }
             });
             document.addEventListener('click', async (event) => {
-                if (this.isEditable(event.target))
-                    event.preventDefault();
-                if (this.target != event.target && this.isEditable(event.target)) {
+                if (!this.isEditable(event.target))
+                    return;
+                event.preventDefault();
+                if (this.target != event.target) {
                     this.beginEdit(event.target);
                     event.stopPropagation();
                 }
             });
             document.addEventListener('scroll', () => this.positionBoxes());
+            window.addEventListener('message', async (event) => {
+                if (!event.data)
+                    return;
+                try {
+                    var data = JSON.parse(event.data);
+                    if (!data)
+                        return;
+                    switch (data.command) {
+                        case 'bold':
+                            document.execCommand('bold');
+                            event.source.postMessage(JSON.stringify({ type: "method", method: "Bolded" }), event.origin);
+                            break;
+                        case 'italic':
+                            document.execCommand('italic');
+                            event.source.postMessage(JSON.stringify({ type: "method", method: "Italicized" }), event.origin);
+                            break;
+                    }
+                }
+                catch (e) { }
+            });
         }
         disconnectedCallback() {
         }
@@ -6236,8 +6262,8 @@
                 this.target.originalText = this.target.innerText;
             this.target.contentEditable = true;
             this.target.focus();
-            var el = this.target;
-            this.target.addEventListener('blur', () => this.save(el), { once: true });
+            this.target;
+            //this.target.addEventListener('blur', () => this.save(el), { once: true });
         }
         async save(element) {
             if (!element)
@@ -6260,13 +6286,6 @@
         }
     }
 
-    function windowOrParentIncludes(str) {
-        return window.location.href.includes(str)
-            || (window.parent?.location && window.parent.location.href.includes(str));
-    }
-    const baseUrl = windowOrParentIncludes('localhost') ? 'https://localhost:7185'
-        : windowOrParentIncludes('tovik-staging') ? 'https://sparcengine-staging-asdagffkefgheqfm.centralus-01.azurewebsites.net'
-            : 'https://engine.sparc.coop';
     class TovikEngine {
         static userLang;
         static documentLang;
@@ -6276,6 +6295,13 @@
         static isPreview;
         static isKoriEnabled;
         static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
+        static windowOrParentIncludes(str) {
+            return window.location.href.includes(str)
+                || (window.parent?.location && window.parent.location.href.includes(str));
+        }
+        static baseUrl = TovikEngine.windowOrParentIncludes('localhost') ? 'https://localhost:7185'
+            : TovikEngine.windowOrParentIncludes('tovik-staging') ? 'https://sparcengine-staging-asdagffkefgheqfm.centralus-01.azurewebsites.net'
+                : 'https://engine.sparc.coop';
         static async getUserLanguage() {
             // If query parameter lang is set, use it
             const urlParams = new URLSearchParams(window.location.search);
@@ -6342,7 +6368,8 @@
                 + '.kori-box-vertical { top: -20px; bottom: -20px; } '
                 + '.kori-box-horizontal { left: -20px; right: -20px; } '
                 + '.kori-editable:not(:focus) { background-color: rgba(139, 131, 255, 0.2); cursor: text; } '
-                + '.kori-editable:focus { outline: none; } ';
+                + '.kori-editable:focus { outline: none; } '
+                + '.kori-iframe { border: none; position: fixed; pointer-events: all; z-index: 100000; bottom: 40px; background: transparent; width: 240px; height: 50px; left: 50%; transform: translateX(-50%); }';
             document.head.appendChild(style);
             document.documentElement.classList.add('tovik-initializing');
         }
@@ -6411,7 +6438,7 @@
             }
             var result = await this.fetch('translate/stream', { content: requests, options: { additionalContext: document.body.innerText } }, this.userLang);
             if (result.continuationToken) {
-                var source = new EventSource(`${baseUrl}/translate/stream/${result.continuationToken}`);
+                var source = new EventSource(`${TovikEngine.baseUrl}/translate/stream/${result.continuationToken}`);
                 source.addEventListener('done', () => source.close());
                 source.addEventListener('ContentTranslated', (event) => {
                     var translation = JSON.parse(event.data).data.translatedContent;
@@ -6503,7 +6530,7 @@
             if (language) {
                 options.headers.append('Accept-Language', language);
             }
-            const response = await fetch(`${baseUrl}/${url}`, options);
+            const response = await fetch(`${TovikEngine.baseUrl}/${url}`, options);
             if (response.ok)
                 return response.status == 201 ? null : await response.json();
             else if (response.status === 429) {
