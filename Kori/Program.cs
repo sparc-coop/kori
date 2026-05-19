@@ -1,6 +1,5 @@
 using Kori;
 using Sparc.Blossom;
-using Sparc.Blossom.Platforms.Server;
 
 var builder = BlossomApplication.CreateBuilder<Html>(args);
 

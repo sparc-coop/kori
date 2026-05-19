@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc.Blossom.Data.AzureSto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kori", "Kori\Kori.csproj", "{623B1414-9607-4CC9-BC14-0E47E700228D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kori.Example", "Kori.Example\Kori.Example.csproj", "{B7EBFD82-1521-4690-B445-19AA62BB2536}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{623B1414-9607-4CC9-BC14-0E47E700228D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{623B1414-9607-4CC9-BC14-0E47E700228D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{623B1414-9607-4CC9-BC14-0E47E700228D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7EBFD82-1521-4690-B445-19AA62BB2536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7EBFD82-1521-4690-B445-19AA62BB2536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7EBFD82-1521-4690-B445-19AA62BB2536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7EBFD82-1521-4690-B445-19AA62BB2536}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
