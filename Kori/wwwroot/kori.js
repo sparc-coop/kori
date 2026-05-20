@@ -5967,325 +5967,6 @@
         profiles: 'id'
     });
 
-    class TovikLanguageElement extends HTMLElement {
-        constructor() {
-            super();
-        }
-        connectedCallback() {
-            this.getLanguages();
-        }
-        getLanguages() {
-            db.languages.toArray().then(languages => {
-                if (languages.length > 0) {
-                    this.renderLanguages(languages);
-                }
-                else {
-                    TovikEngine.getLanguages().then(languages => {
-                        this.renderLanguages(languages);
-                        db.languages.bulkPut(languages);
-                    });
-                }
-            });
-        }
-        renderLanguages(languages) {
-            this.innerHTML = '';
-            let select = document.createElement('select');
-            select.translate = false;
-            languages.forEach(lang => {
-                const option = document.createElement('option');
-                option.value = lang.id;
-                option.textContent = lang.nativeName;
-                if (lang.id === TovikEngine.userLang) {
-                    option.selected = true;
-                }
-                select.appendChild(option);
-            });
-            document.addEventListener('tovik-language-set', async (event) => {
-                // select the language if it exists in the select options
-                if (languages.some(lang => lang.id === event.detail))
-                    select.value = event.detail;
-            });
-            select.addEventListener('change', () => {
-                document.dispatchEvent(new CustomEvent('tovik-user-language-changed', { detail: select.value }));
-            });
-            this.appendChild(select);
-        }
-    }
-
-    class TovikElement extends HTMLElement {
-        observer;
-        forceReload = false;
-        #observedElement;
-        #originalLang;
-        constructor() {
-            super();
-            this.#observedElement = document.documentElement;
-            this.#originalLang = TovikEngine.documentLang;
-            document.addEventListener('tovik-language-changed', async (event) => {
-                await this.translatePage(this.#observedElement, true);
-            });
-            document.addEventListener('tovik-content-changed', async (event) => {
-                await this.translatePage(this.#observedElement, TovikEngine.isKoriEnabled);
-            });
-            document.addEventListener('kori-content-changed', async (event) => {
-                await this.translatePage(this.#observedElement, true);
-            });
-            this.observer = new MutationObserver(this.#observer);
-            this.observer.observe(this.#observedElement, { childList: true, characterData: false, subtree: true });
-        }
-        async connectedCallback() {
-            // if the attribute 'for' is set, observe the element with that selector
-            if (this.hasAttribute('for')) {
-                const selector = this.getAttribute('for');
-                this.#observedElement = selector == 'html' ? document.documentElement : document.querySelector(selector);
-            }
-        }
-        disconnectedCallback() {
-            if (this.observer)
-                this.observer.disconnect();
-        }
-        async translatePage(element, forceReload = false) {
-            try {
-                if (!TovikEngine.detectedLang)
-                    TovikEngine.registerVisit();
-                // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
-                if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
-                    document.documentElement.classList.remove('tovik-initializing');
-                    return;
-                }
-                await this.wrapTextNodes(element, forceReload);
-                await this.translateAttribute(element, 'placeholder', forceReload);
-                document.documentElement.classList.remove('tovik-initializing');
-            }
-            catch {
-                document.documentElement.classList.remove('tovik-initializing');
-            }
-        }
-        async wrapTextNodes(element, forceReload = false) {
-            var nodes = [];
-            TovikEngine.sampleText = '';
-            var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, this.#tovikIgnoreFilter);
-            while (treeWalker.nextNode()) {
-                const node = treeWalker.currentNode;
-                if (node['originalText'])
-                    TovikEngine.sampleText += (node['preWhiteSpace'] ? ' ' : '') + node['originalText'] + (node['postWhiteSpace'] ? ' ' : '');
-                else
-                    TovikEngine.sampleText += node.textContent + ' ';
-                if (this.shouldTranslate(node, forceReload)) {
-                    node['translating'] = true;
-                    nodes.push(node);
-                }
-            }
-            await this.translateTextNodes(nodes);
-        }
-        shouldTranslate(node, forceReload) {
-            return node
-                && node.textContent
-                && (forceReload || !node.translating)
-                && (forceReload || !node.translated)
-                && /\p{Letter}/u.test(node.textContent) // Check if the text contains any letter
-                && !Date.parse(node.textContent) // Exclude text that can be parsed as a date
-                && !(node.parentElement && node.parentElement.tagName === 'TOVIK-T');
-        }
-        #observer = mutations => {
-            document.dispatchEvent(new CustomEvent('tovik-content-changed'));
-        };
-        #tovikIgnoreFilter = function (node) {
-            var approvedNodes = ['#text'];
-            if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE' || node.contentEditable == 'true')
-                return NodeFilter.FILTER_SKIP;
-            var closest = node.parentElement.closest('[translate="no"]');
-            if (closest)
-                return NodeFilter.FILTER_SKIP;
-            return NodeFilter.FILTER_ACCEPT;
-        };
-        async translateAttribute(element, attributeName, forceReload = false) {
-            const elements = element.querySelectorAll('[' + attributeName + ']');
-            let pendingTranslations = [];
-            for (const el of elements) {
-                const original = el['original-' + attributeName] || el.getAttribute(attributeName);
-                if (!el['original-' + attributeName]) {
-                    el['original-' + attributeName] = original;
-                }
-                const hash = TovikEngine.idHash(original);
-                const translation = await db.translations.get(hash);
-                if (translation && !forceReload) {
-                    el.setAttribute(attributeName, translation.text);
-                }
-                else {
-                    if (!pendingTranslations.some(e => e.hash === hash)) {
-                        pendingTranslations.push({ element: el, hash: hash });
-                    }
-                }
-            }
-            await TovikEngine.stream(pendingTranslations, x => x['original-' + attributeName], this.#originalLang, (el, translation) => el.setAttribute(attributeName, translation.text));
-        }
-        async translateTextNodes(textNodes) {
-            let pendingTranslations = [];
-            await Promise.all(textNodes.map(async (textNode) => {
-                if (!textNode.textContent)
-                    return;
-                if (!textNode.originalText) {
-                    textNode.originalText = textNode.textContent.trim();
-                    textNode.preWhiteSpace = /^\s/.test(textNode.textContent);
-                    textNode.postWhiteSpace = /\s$/.test(textNode.textContent);
-                }
-                textNode.hash = TovikEngine.idHash(textNode.originalText);
-                const translation = await db.translations.get(textNode.hash);
-                if (translation) {
-                    textNode.textContent = (textNode.preWhiteSpace ? ' ' : '')
-                        + translation.text
-                        + (textNode.postWhiteSpace ? ' ' : '');
-                }
-                else {
-                    pendingTranslations.push({ element: textNode, hash: textNode.hash });
-                    //    if (textNode.parentElement)
-                    //        textNode.parentElement.classList.add('tovik-translating');
-                }
-            }));
-            if (window.parent && window.parent.postMessage)
-                window.parent.postMessage('tovik-translating');
-            await TovikEngine.stream(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
-                el.textContent =
-                    (el.preWhiteSpace ? ' ' : '')
-                        + translation.text
-                        + (el.postWhiteSpace ? ' ' : '');
-                el.translating = false;
-                el.translated = true;
-                if (window.parent && window.parent.postMessage)
-                    window.parent.postMessage('tovik-translated');
-            });
-            if (window.parent && window.parent.postMessage)
-                window.parent.postMessage('tovik-translated');
-        }
-    }
-
-    class KoriElement extends HTMLElement {
-        potentialTarget;
-        target;
-        verticalBox;
-        horizontalBox;
-        iframe;
-        constructor() {
-            super();
-        }
-        async connectedCallback() {
-            // Add 2 boxes to this custom element, to be positioned absolutely on top of the target element as bordered identifiers for the element
-            this.verticalBox = document.createElement('div');
-            this.verticalBox.classList.add('kori-box', 'kori-box-vertical');
-            this.appendChild(this.verticalBox);
-            this.horizontalBox = document.createElement('div');
-            this.horizontalBox.classList.add('kori-box', 'kori-box-horizontal');
-            this.appendChild(this.horizontalBox);
-            this.iframe = document.createElement('iframe');
-            this.iframe.classList.add('kori-iframe');
-            this.iframe.src = "https://localhost:7198/sites/abc123/widget";
-            this.appendChild(this.iframe);
-            document.addEventListener('mouseover', (event) => {
-                if (!this.potentialTarget && this.isEditable(event.target)) {
-                    this.markTarget(event.target);
-                    event.stopPropagation();
-                }
-            });
-            document.addEventListener('click', async (event) => {
-                if (!this.isEditable(event.target))
-                    return;
-                event.preventDefault();
-                if (this.target != event.target) {
-                    this.beginEdit(event.target);
-                    event.stopPropagation();
-                }
-            });
-            document.addEventListener('scroll', () => this.positionBoxes());
-            window.addEventListener('message', async (event) => {
-                if (!event.data)
-                    return;
-                try {
-                    var data = JSON.parse(event.data);
-                    if (!data)
-                        return;
-                    switch (data.command) {
-                        case 'bold':
-                            document.execCommand('bold');
-                            event.source.postMessage(JSON.stringify({ type: "method", method: "Bolded" }), event.origin);
-                            break;
-                        case 'italic':
-                            document.execCommand('italic');
-                            event.source.postMessage(JSON.stringify({ type: "method", method: "Italicized" }), event.origin);
-                            break;
-                    }
-                }
-                catch (e) { }
-            });
-        }
-        disconnectedCallback() {
-        }
-        isEditable(element) {
-            var textNodes = Array.from(element.childNodes).filter(node => node['nodeType'] === Node.TEXT_NODE && node['nodeValue'].trim() !== '');
-            return textNodes.length == 1;
-        }
-        markTarget(element) {
-            if (!element) {
-                this.verticalBox.style.display = 'none';
-                this.horizontalBox.style.display = 'none';
-                if (this.potentialTarget)
-                    this.potentialTarget.classList.remove('kori-editable');
-                this.potentialTarget = null;
-            }
-            else {
-                this.potentialTarget = element;
-                this.positionBoxes();
-                this.potentialTarget.classList.add('kori-editable');
-                var self = this;
-                this.potentialTarget.addEventListener('mouseleave', function onMouseMove(event) {
-                    console.log('mouseleave', self.potentialTarget, self.target, event.target);
-                    if (self.potentialTarget == event.target && self.target != event.target)
-                        self.markTarget(null);
-                });
-            }
-        }
-        positionBoxes() {
-            if (!this.potentialTarget)
-                return;
-            const rect = this.potentialTarget.getBoundingClientRect();
-            this.verticalBox.style.left = `${rect.left}px`;
-            this.verticalBox.style.width = `${rect.width}px`;
-            this.verticalBox.style.display = 'block';
-            this.horizontalBox.style.top = `${rect.top}px`;
-            this.horizontalBox.style.height = `${rect.height}px`;
-            this.horizontalBox.style.display = 'block';
-        }
-        beginEdit(element) {
-            this.markTarget(element);
-            this.target = element;
-            if (!this.target.originalText)
-                this.target.originalText = this.target.innerText;
-            this.target.contentEditable = true;
-            this.target.focus();
-            this.target;
-            //this.target.addEventListener('blur', () => this.save(el), { once: true });
-        }
-        async save(element) {
-            if (!element)
-                return;
-            if (element.originalText != element.innerText)
-                await TovikEngine.update(element);
-            element.contentEditable = false;
-            element.classList.remove('kori-editable');
-            if (this.target == element)
-                this.target = null;
-            if (this.potentialTarget == element)
-                this.markTarget(null);
-        }
-        cancel() {
-            if (!this.target)
-                return;
-            this.target.innerText = this.target.originalText;
-            this.target.contentEditable = false;
-            this.target = null;
-        }
-    }
-
     class TovikEngine {
         static userLang;
         static documentLang;
@@ -6381,9 +6062,6 @@
                 if (!this.isPreview)
                     await this.setLanguage(event.detail);
             });
-            customElements.define('tovik-language', TovikLanguageElement);
-            customElements.define('tovik-translate', TovikElement);
-            customElements.define('kori-edit', KoriElement);
             // If the document does not have a <tovik-translate> element, create one and point it to the body
             if (!document.querySelector('tovik-translate')) {
                 var bodyElement = document.createElement('tovik-translate');
@@ -6542,10 +6220,335 @@
         }
     }
 
+    class KoriElement extends HTMLElement {
+        potentialTarget;
+        target;
+        verticalBox;
+        horizontalBox;
+        iframe;
+        constructor() {
+            super();
+        }
+        async connectedCallback() {
+            // Add 2 boxes to this custom element, to be positioned absolutely on top of the target element as bordered identifiers for the element
+            this.verticalBox = document.createElement('div');
+            this.verticalBox.classList.add('kori-box', 'kori-box-vertical');
+            this.appendChild(this.verticalBox);
+            this.horizontalBox = document.createElement('div');
+            this.horizontalBox.classList.add('kori-box', 'kori-box-horizontal');
+            this.appendChild(this.horizontalBox);
+            this.iframe = document.createElement('iframe');
+            this.iframe.classList.add('kori-iframe');
+            this.iframe.src = "https://localhost:7198/sites/abc123/widget";
+            this.appendChild(this.iframe);
+            document.addEventListener('mouseover', (event) => {
+                if (!this.potentialTarget && this.isEditable(event.target)) {
+                    this.markTarget(event.target);
+                    event.stopPropagation();
+                }
+            });
+            document.addEventListener('click', async (event) => {
+                if (!this.isEditable(event.target))
+                    return;
+                event.preventDefault();
+                if (this.target != event.target) {
+                    this.beginEdit(event.target);
+                    event.stopPropagation();
+                }
+            });
+            document.addEventListener('scroll', () => this.positionBoxes());
+            window.addEventListener('message', async (event) => {
+                if (!event.data)
+                    return;
+                try {
+                    var data = JSON.parse(event.data);
+                    if (!data)
+                        return;
+                    switch (data.command) {
+                        case 'bold':
+                            document.execCommand('bold');
+                            event.source.postMessage(JSON.stringify({ type: "method", method: "Bolded" }), event.origin);
+                            break;
+                        case 'italic':
+                            document.execCommand('italic');
+                            event.source.postMessage(JSON.stringify({ type: "method", method: "Italicized" }), event.origin);
+                            break;
+                    }
+                }
+                catch (e) { }
+            });
+        }
+        disconnectedCallback() {
+        }
+        isEditable(element) {
+            var textNodes = Array.from(element.childNodes).filter(node => node['nodeType'] === Node.TEXT_NODE && node['nodeValue'].trim() !== '');
+            return textNodes.length == 1;
+        }
+        markTarget(element) {
+            if (!element) {
+                this.verticalBox.style.display = 'none';
+                this.horizontalBox.style.display = 'none';
+                if (this.potentialTarget)
+                    this.potentialTarget.classList.remove('kori-editable');
+                this.potentialTarget = null;
+            }
+            else {
+                this.potentialTarget = element;
+                this.positionBoxes();
+                this.potentialTarget.classList.add('kori-editable');
+                var self = this;
+                this.potentialTarget.addEventListener('mouseleave', function onMouseMove(event) {
+                    console.log('mouseleave', self.potentialTarget, self.target, event.target);
+                    if (self.potentialTarget == event.target && self.target != event.target)
+                        self.markTarget(null);
+                });
+            }
+        }
+        positionBoxes() {
+            if (!this.potentialTarget)
+                return;
+            const rect = this.potentialTarget.getBoundingClientRect();
+            this.verticalBox.style.left = `${rect.left}px`;
+            this.verticalBox.style.width = `${rect.width}px`;
+            this.verticalBox.style.display = 'block';
+            this.horizontalBox.style.top = `${rect.top}px`;
+            this.horizontalBox.style.height = `${rect.height}px`;
+            this.horizontalBox.style.display = 'block';
+        }
+        beginEdit(element) {
+            this.markTarget(element);
+            this.target = element;
+            if (!this.target.originalText)
+                this.target.originalText = this.target.innerText;
+            this.target.contentEditable = true;
+            this.target.focus();
+            this.target;
+            //this.target.addEventListener('blur', () => this.save(el), { once: true });
+        }
+        async save(element) {
+            if (!element)
+                return;
+            if (element.originalText != element.innerText)
+                await TovikEngine.update(element);
+            element.contentEditable = false;
+            element.classList.remove('kori-editable');
+            if (this.target == element)
+                this.target = null;
+            if (this.potentialTarget == element)
+                this.markTarget(null);
+        }
+        cancel() {
+            if (!this.target)
+                return;
+            this.target.innerText = this.target.originalText;
+            this.target.contentEditable = false;
+            this.target = null;
+        }
+    }
+
+    class TovikElement extends HTMLElement {
+        observer;
+        forceReload = false;
+        #observedElement;
+        #originalLang;
+        constructor() {
+            super();
+            this.#observedElement = document.documentElement;
+            this.#originalLang = TovikEngine.documentLang;
+            document.addEventListener('tovik-language-changed', async (event) => {
+                await this.translatePage(this.#observedElement, true);
+            });
+            document.addEventListener('tovik-content-changed', async (event) => {
+                await this.translatePage(this.#observedElement, TovikEngine.isKoriEnabled);
+            });
+            document.addEventListener('kori-content-changed', async (event) => {
+                await this.translatePage(this.#observedElement, true);
+            });
+            this.observer = new MutationObserver(this.#observer);
+            this.observer.observe(this.#observedElement, { childList: true, characterData: false, subtree: true });
+        }
+        async connectedCallback() {
+            // if the attribute 'for' is set, observe the element with that selector
+            if (this.hasAttribute('for')) {
+                const selector = this.getAttribute('for');
+                this.#observedElement = selector == 'html' ? document.documentElement : document.querySelector(selector);
+            }
+        }
+        disconnectedCallback() {
+            if (this.observer)
+                this.observer.disconnect();
+        }
+        async translatePage(element, forceReload = false) {
+            try {
+                if (!TovikEngine.detectedLang)
+                    TovikEngine.registerVisit();
+                // Only translate if the first two characters of originalLang don't match the first two characters of TovikEngine.userLang
+                if (this.#originalLang && this.#originalLang.substring(0, 2) === TovikEngine.userLang.substring(0, 2) && !forceReload) {
+                    document.documentElement.classList.remove('tovik-initializing');
+                    return;
+                }
+                await this.wrapTextNodes(element, forceReload);
+                await this.translateAttribute(element, 'placeholder', forceReload);
+                document.documentElement.classList.remove('tovik-initializing');
+            }
+            catch {
+                document.documentElement.classList.remove('tovik-initializing');
+            }
+        }
+        async wrapTextNodes(element, forceReload = false) {
+            var nodes = [];
+            TovikEngine.sampleText = '';
+            var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, this.#tovikIgnoreFilter);
+            while (treeWalker.nextNode()) {
+                const node = treeWalker.currentNode;
+                if (node['originalText'])
+                    TovikEngine.sampleText += (node['preWhiteSpace'] ? ' ' : '') + node['originalText'] + (node['postWhiteSpace'] ? ' ' : '');
+                else
+                    TovikEngine.sampleText += node.textContent + ' ';
+                if (this.shouldTranslate(node, forceReload)) {
+                    node['translating'] = true;
+                    nodes.push(node);
+                }
+            }
+            await this.translateTextNodes(nodes);
+        }
+        shouldTranslate(node, forceReload) {
+            return node
+                && node.textContent
+                && (forceReload || !node.translating)
+                && (forceReload || !node.translated)
+                && /\p{Letter}/u.test(node.textContent) // Check if the text contains any letter
+                && !Date.parse(node.textContent) // Exclude text that can be parsed as a date
+                && !(node.parentElement && node.parentElement.tagName === 'TOVIK-T');
+        }
+        #observer = mutations => {
+            document.dispatchEvent(new CustomEvent('tovik-content-changed'));
+        };
+        #tovikIgnoreFilter = function (node) {
+            var approvedNodes = ['#text'];
+            if (!approvedNodes.includes(node.nodeName) || node.parentNode.nodeName == 'SCRIPT' || node.parentNode.nodeName == 'STYLE' || node.contentEditable == 'true')
+                return NodeFilter.FILTER_SKIP;
+            var closest = node.parentElement.closest('[translate="no"]');
+            if (closest)
+                return NodeFilter.FILTER_SKIP;
+            return NodeFilter.FILTER_ACCEPT;
+        };
+        async translateAttribute(element, attributeName, forceReload = false) {
+            const elements = element.querySelectorAll('[' + attributeName + ']');
+            let pendingTranslations = [];
+            for (const el of elements) {
+                const original = el['original-' + attributeName] || el.getAttribute(attributeName);
+                if (!el['original-' + attributeName]) {
+                    el['original-' + attributeName] = original;
+                }
+                const hash = TovikEngine.idHash(original);
+                const translation = await db.translations.get(hash);
+                if (translation && !forceReload) {
+                    el.setAttribute(attributeName, translation.text);
+                }
+                else {
+                    if (!pendingTranslations.some(e => e.hash === hash)) {
+                        pendingTranslations.push({ element: el, hash: hash });
+                    }
+                }
+            }
+            await TovikEngine.stream(pendingTranslations, x => x['original-' + attributeName], this.#originalLang, (el, translation) => el.setAttribute(attributeName, translation.text));
+        }
+        async translateTextNodes(textNodes) {
+            let pendingTranslations = [];
+            await Promise.all(textNodes.map(async (textNode) => {
+                if (!textNode.textContent)
+                    return;
+                if (!textNode.originalText) {
+                    textNode.originalText = textNode.textContent.trim();
+                    textNode.preWhiteSpace = /^\s/.test(textNode.textContent);
+                    textNode.postWhiteSpace = /\s$/.test(textNode.textContent);
+                }
+                textNode.hash = TovikEngine.idHash(textNode.originalText);
+                const translation = await db.translations.get(textNode.hash);
+                if (translation) {
+                    textNode.textContent = (textNode.preWhiteSpace ? ' ' : '')
+                        + translation.text
+                        + (textNode.postWhiteSpace ? ' ' : '');
+                }
+                else {
+                    pendingTranslations.push({ element: textNode, hash: textNode.hash });
+                    //    if (textNode.parentElement)
+                    //        textNode.parentElement.classList.add('tovik-translating');
+                }
+            }));
+            if (window.parent && window.parent.postMessage)
+                window.parent.postMessage('tovik-translating');
+            await TovikEngine.stream(pendingTranslations, node => node.originalText, this.#originalLang, (el, translation) => {
+                el.textContent =
+                    (el.preWhiteSpace ? ' ' : '')
+                        + translation.text
+                        + (el.postWhiteSpace ? ' ' : '');
+                el.translating = false;
+                el.translated = true;
+                if (window.parent && window.parent.postMessage)
+                    window.parent.postMessage('tovik-translated');
+            });
+            if (window.parent && window.parent.postMessage)
+                window.parent.postMessage('tovik-translated');
+        }
+    }
+
+    class TovikLanguageElement extends HTMLElement {
+        constructor() {
+            super();
+        }
+        connectedCallback() {
+            this.getLanguages();
+        }
+        getLanguages() {
+            db.languages.toArray().then(languages => {
+                if (languages.length > 0) {
+                    this.renderLanguages(languages);
+                }
+                else {
+                    TovikEngine.getLanguages().then(languages => {
+                        this.renderLanguages(languages);
+                        db.languages.bulkPut(languages);
+                    });
+                }
+            });
+        }
+        renderLanguages(languages) {
+            this.innerHTML = '';
+            let select = document.createElement('select');
+            select.translate = false;
+            languages.forEach(lang => {
+                const option = document.createElement('option');
+                option.value = lang.id;
+                option.textContent = lang.nativeName;
+                if (lang.id === TovikEngine.userLang) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+            document.addEventListener('tovik-language-set', async (event) => {
+                // select the language if it exists in the select options
+                if (languages.some(lang => lang.id === event.detail))
+                    select.value = event.detail;
+            });
+            select.addEventListener('change', () => {
+                document.dispatchEvent(new CustomEvent('tovik-user-language-changed', { detail: select.value }));
+            });
+            this.appendChild(select);
+        }
+    }
+
     TovikEngine.injectPreloadCSS();
-    if (/complete|interactive|loaded/.test(document.readyState))
+    function initialize() {
+        customElements.define('tovik-language', TovikLanguageElement);
+        customElements.define('tovik-translate', TovikElement);
+        customElements.define('kori-edit', KoriElement);
         TovikEngine.hi();
+    }
+    if (/complete|interactive|loaded/.test(document.readyState))
+        initialize();
     else
-        window.addEventListener('DOMContentLoaded', () => TovikEngine.hi());
+        window.addEventListener('DOMContentLoaded', () => initialize());
 
 })();
