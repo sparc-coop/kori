@@ -28,14 +28,26 @@
     bool IsBold = false;
     bool IsItalic = false;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+            await BroadcastAsync("mode", Mode);
+    }
+
     async Task Edit()
     {
         Mode = "Edit";
+        await BroadcastAsync("mode", Mode);
     }
 
     async Task Search()
     {
         Mode = "Search";
+        IsBold = false;
+        IsItalic = false;
+        await BroadcastAsync("mode", Mode);
     }
 
     async Task Bold() => await BroadcastAsync("bold", () => IsBold = !IsBold);

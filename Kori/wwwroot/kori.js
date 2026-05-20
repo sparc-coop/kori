@@ -6258,8 +6258,14 @@
         verticalBox;
         horizontalBox;
         iframe;
+        mode;
         constructor() {
             super();
+            // Lock the context of these functions to this class, so they can be added and removed as event listeners without losing the context of 'this'
+            this.highlightTarget = this.highlightTarget.bind(this);
+            this.beginEdit = this.beginEdit.bind(this);
+            this.positionBoxes = this.positionBoxes.bind(this);
+            this.setMode = this.setMode.bind(this);
         }
         async connectedCallback() {
             // Add 2 boxes to this custom element, to be positioned absolutely on top of the target element as bordered identifiers for the element
@@ -6274,22 +6280,7 @@
             this.iframe.classList.add('kori-iframe');
             this.iframe.src = "https://localhost:7198/sites/abc123/widget";
             this.appendChild(this.iframe);
-            document.addEventListener('mouseover', (event) => {
-                if (!this.potentialTarget && this.isEditable(event.target)) {
-                    this.markTarget(event.target);
-                    event.stopPropagation();
-                }
-            });
-            document.addEventListener('click', async (event) => {
-                if (!this.isEditable(event.target))
-                    return;
-                event.preventDefault();
-                if (this.target != event.target) {
-                    this.beginEdit(event.target);
-                    event.stopPropagation();
-                }
-            });
-            document.addEventListener('scroll', () => this.positionBoxes());
+            BlossomEvents.on('mode', (mode) => this.setMode(mode));
             BlossomEvents.on('bold', () => document.execCommand('bold'));
             BlossomEvents.on('italic', () => document.execCommand('italic'));
         }
@@ -6299,7 +6290,23 @@
             var textNodes = Array.from(element.childNodes).filter(node => node['nodeType'] === Node.TEXT_NODE && node['nodeValue'].trim() !== '');
             return textNodes.length == 1;
         }
+        setMode(mode) {
+            console.log('Setting mode to', mode);
+            if (mode == 'Edit') {
+                document.addEventListener('mouseover', this.highlightTarget);
+                document.addEventListener('click', this.beginEdit);
+                document.addEventListener('scroll', this.positionBoxes);
+            }
+            else if (this.mode == 'Edit') {
+                document.removeEventListener('mouseover', this.highlightTarget);
+                document.removeEventListener('click', this.beginEdit);
+                document.removeEventListener('scroll', this.positionBoxes);
+                this.markTarget(null);
+            }
+            this.mode = mode;
+        }
         markTarget(element) {
+            console.log('marking target', element);
             if (!element) {
                 this.verticalBox.style.display = 'none';
                 this.horizontalBox.style.display = 'none';
@@ -6313,10 +6320,15 @@
                 this.potentialTarget.classList.add('kori-editable');
                 var self = this;
                 this.potentialTarget.addEventListener('mouseleave', function onMouseMove(event) {
-                    console.log('mouseleave', self.potentialTarget, self.target, event.target);
                     if (self.potentialTarget == event.target && self.target != event.target)
                         self.markTarget(null);
                 });
+            }
+        }
+        highlightTarget(event) {
+            if (!this.potentialTarget && this.isEditable(event.target)) {
+                this.markTarget(event.target);
+                event.stopPropagation();
             }
         }
         positionBoxes() {
@@ -6330,15 +6342,21 @@
             this.horizontalBox.style.height = `${rect.height}px`;
             this.horizontalBox.style.display = 'block';
         }
-        beginEdit(element) {
-            this.markTarget(element);
-            this.target = element;
-            if (!this.target.originalText)
-                this.target.originalText = this.target.innerText;
-            this.target.contentEditable = true;
-            this.target.focus();
-            this.target;
-            //this.target.addEventListener('blur', () => this.save(el), { once: true });
+        beginEdit(event) {
+            if (!this.isEditable(event.target))
+                return;
+            event.preventDefault();
+            if (this.target != event.target) {
+                this.markTarget(event.target);
+                this.target = event.target;
+                if (!this.target.originalText)
+                    this.target.originalText = this.target.innerText;
+                this.target.contentEditable = true;
+                this.target.focus();
+                this.target;
+                //this.target.addEventListener('blur', () => this.save(el), { once: true });
+                event.stopPropagation();
+            }
         }
         async save(element) {
             if (!element)
