@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@inherits Sparc.Blossom.Api.BlossomWidget
+@page "/"
 @page "/sites/{Id}/widget"
 @using Kori.Widget.Icons
 
@@ -21,22 +22,11 @@
     </fieldset>
 </form>
 
-@inject IJSRuntime Js
 @code {
     [Parameter] public required string Id { get; set; } = "";
     string Mode = "Edit";
     bool IsBold = false;
     bool IsItalic = false;
-    IJSObjectReference Kori = null!;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            Kori = await Js.ImportAsync("./Widget/Index.razor.js");
-            await Kori.InvokeVoidAsync("initialize", DotNetObjectReference.Create(this));
-        }
-    }
 
     async Task Edit()
     {
@@ -48,21 +38,7 @@
         Mode = "Search";
     }
 
-    async Task Bold() => await Kori.InvokeVoidAsync("bold");
+    async Task Bold() => await BroadcastAsync("bold", () => IsBold = !IsBold);
 
-    [JSInvokable]
-    public void Bolded()
-    {
-        IsBold = !IsBold;
-        StateHasChanged();
-    }
-
-    async Task Italic() => await Kori.InvokeVoidAsync("italic");
-
-    [JSInvokable]
-    public void Italicized()
-    {
-        IsItalic = !IsItalic;
-        StateHasChanged();
-    }
+    async Task Italic() => await BroadcastAsync("italic", () => IsItalic = !IsItalic);
 }
