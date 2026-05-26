@@ -7,7 +7,7 @@
 
 <form>
     <fieldset class="mode">
-        <button type="button" @onclick="Edit" class="@(Mode == "Edit" ? "active" : "")">
+        <button type="button" @onclick="Edit" class="@(Mode == "Edit" ? "active" : "")" title="@(Result?.Text)">
             <EditIcon />
         </button>
         <button type="button" @onclick="Search" class="@(Mode == "Search" ? "active" : "")">
@@ -33,6 +33,7 @@
     bool IsItalic = false;
     SparcDomain? Domain;
     string? UserId;
+    TextContent? Result = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -68,8 +69,9 @@
     [JSInvokable]
     public async Task Save(TextContent content)
     {
-        var request = new ContentRequest([content], new(Language.Find(content.LanguageId)), Domain!.Domain);
-        await Content.UpdateAsync(request);
+        var request = new ContentRequest([content], new(Language.Find(content.LanguageId)), Domain!.ToAbsoluteUrl());
+        Result = await Content.UpdateAsync(request);
+        await InvokeAsync(StateHasChanged);
     }
 
     async Task Bold() => await BroadcastAsync("bold", () => IsBold = !IsBold);

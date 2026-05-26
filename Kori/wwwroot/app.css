@@ -1,3 +1,8 @@
+html {
+    background: transparent;
+    color-scheme: light;
+}
+
 h1:focus {
     outline: none;
 }
