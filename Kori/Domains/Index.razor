@@ -1,0 +1,37 @@
+﻿@page "/"
+@using Sparc.Blossom.Authentication
+@using Sparc.Blossom.Spaces
+
+<div>   
+    <h1>User: @UserId</h1>
+
+    @foreach (var domain in Domains)
+    {
+        <div>
+            <h2>@domain.Domain</h2>
+            <button @onclick="@(() => Edit(domain))">Edit</button>
+        </div>
+    }
+</div>
+
+@inject ISparcSpaces Spaces
+@inject ISparcAura Aura
+@inject IJSRuntime Js
+@code {
+    List<SparcDomain> Domains = [];
+    string? UserId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Domains = await Spaces.GetDomainsAsync();
+        UserId = (await Aura.UserInfo())?.Id;
+    }
+
+    async Task Edit(SparcDomain domain)
+    {
+        var code = await Aura.GetSparcCode();
+        var url = $"https://{domain.Domain}/?_kori={domain.Id}&_auth=totp:{code}";
+        
+        await Js.InvokeVoidAsync("open", url, "_blank");
+    }
+}

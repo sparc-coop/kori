@@ -1,9 +1,11 @@
 ﻿@inherits Sparc.Blossom.Api.BlossomWidget
-@page "/"
 @page "/sites/{Id}/widget"
 @using Kori.Widget.Icons
+@using Sparc.Blossom.Spaces
+@using Sparc.Blossom.Authentication
 
 <form>
+    <div>@UserId</div>
     <fieldset class="mode">
         <button type="button" @onclick="Edit" class="@(Mode == "Edit" ? "active" : "")">
             <EditIcon />
@@ -22,18 +24,35 @@
     </fieldset>
 </form>
 
+@inject ISparcSpaces Spaces
+@inject ISparcAura Aura
 @code {
-    [Parameter] public required string Id { get; set; } = "";
-    string Mode = "Edit";
-    bool IsBold = false;
-    bool IsItalic = false;
+        [Parameter] public required string Id { get; set; } = "";
+        string Mode = "";
+        bool IsBold = false;
+        bool IsItalic = false;
+        SparcDomain? Domain;
+        string? UserId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserId = (await Aura.UserInfo())?.Id;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
 
         if (firstRender)
-            await BroadcastAsync("mode", Mode);
+        {
+            if (!string.IsNullOrEmpty(Id))
+            {
+                Domain = await Spaces.GetDomainAsync(Id);
+                if (Domain is not null)
+                    Mode = "Edit";
+                await BroadcastAsync("mode", Mode);
+            }
+        }
     }
 
     async Task Edit()

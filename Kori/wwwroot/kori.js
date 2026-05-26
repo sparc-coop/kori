@@ -6006,7 +6006,6 @@
         static model;
         static sampleText;
         static isPreview;
-        static isKoriEnabled;
         static rtlLanguages = ['ar', 'fa', 'he', 'ur', 'ps', 'ku', 'dv', 'yi', 'sd', 'ug'];
         static windowOrParentIncludes(str) {
             return window.location.href.includes(str)
@@ -6100,8 +6099,12 @@
                 bodyElement.setAttribute('for', 'html');
                 document.head.appendChild(bodyElement);
             }
-            if (document.querySelector('kori-edit'))
-                this.isKoriEnabled = true;
+            // Enable the Kori editor if the _kori query parameter is present
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('_kori')) {
+                var koriElement = document.createElement('kori-edit');
+                document.body.appendChild(koriElement);
+            }
         }
         static async initBody() {
             if (this.isPreview) {
@@ -6276,9 +6279,12 @@
             this.horizontalBox.classList.add('kori-box', 'kori-box-horizontal');
             this.appendChild(this.horizontalBox);
             // TODO: Pull auth code from query string, attach to iframe src, and save to local storage
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get('_auth');
+            const domain = urlParams.get('_kori');
             this.iframe = document.createElement('iframe');
             this.iframe.classList.add('kori-iframe');
-            this.iframe.src = "https://localhost:7198/sites/abc123/widget";
+            this.iframe.src = `https://localhost:7198/sites/${domain}/widget?_auth=${authCode}`;
             this.appendChild(this.iframe);
             BlossomEvents.on('mode', (mode) => this.setMode(mode));
             BlossomEvents.on('bold', () => document.execCommand('bold'));
@@ -6392,7 +6398,7 @@
                 await this.translatePage(this.#observedElement, true);
             });
             document.addEventListener('tovik-content-changed', async (event) => {
-                await this.translatePage(this.#observedElement, TovikEngine.isKoriEnabled);
+                await this.translatePage(this.#observedElement, false);
             });
             document.addEventListener('kori-content-changed', async (event) => {
                 await this.translatePage(this.#observedElement, true);
