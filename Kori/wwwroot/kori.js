@@ -6162,21 +6162,8 @@
             for (let translation of result.content)
                 this.replace(pendingTranslations, translation, onTranslation);
         }
-        static async update(element) {
-            const textNode = [...element.childNodes].find(x => x.nodeType === Node.TEXT_NODE);
-            const original = textNode?.originalText || element['originalText'] || element.element.innerText;
-            const hash = TovikEngine.idHash(original);
-            const request = {
-                content: [{
-                        id: hash,
-                        Text: element.innerText,
-                        OriginalText: original,
-                        LanguageId: this.userLang
-                    }]
-            };
-            console.log('Updating translation with request:', request);
+        static async update(hash) {
             await db.translations.delete(hash);
-            await this.fetch('content', request, this.userLang, 'PUT');
             document.dispatchEvent(new CustomEvent('kori-content-changed'));
         }
         static replace(pendingTranslations, translation, onTranslation) {
@@ -6293,9 +6280,12 @@
         }
         disconnectedCallback() {
         }
-        isEditable(element) {
+        textNode(element) {
             var textNodes = Array.from(element.childNodes).filter(node => node['nodeType'] === Node.TEXT_NODE && node['nodeValue'].trim() !== '');
-            return textNodes.length == 1;
+            return textNodes.length == 1 ? textNodes[0] : null;
+        }
+        isEditable(element) {
+            return this.textNode(element) !== null;
         }
         setMode(mode) {
             console.log('Setting mode to', mode);
@@ -6356,8 +6346,6 @@
             if (this.target != event.target) {
                 this.markTarget(event.target);
                 this.target = event.target;
-                if (!this.target.originalText)
-                    this.target.originalText = this.target.innerText;
                 this.target.contentEditable = true;
                 this.target.focus();
                 var el = this.target;
@@ -6368,15 +6356,17 @@
         async save(element) {
             if (!element)
                 return;
-            if (element.originalText != element.innerText) {
-                const hash = TovikEngine.idHash(element.originalText);
+            var originalText = this.textNode(element)['originalText'];
+            if (originalText != element.textContent.trim()) {
+                const hash = TovikEngine.idHash(originalText);
                 const request = {
                     id: hash,
-                    Text: element.innerText,
-                    OriginalText: element.originalText,
+                    Text: element.textContent.trim(),
+                    OriginalText: originalText,
                     LanguageId: TovikEngine.userLang
                 };
                 BlossomEvents.broadcast(this.iframe, 'Save', request);
+                await TovikEngine.update(hash);
             }
             element.contentEditable = false;
             element.classList.remove('kori-editable');
@@ -6388,7 +6378,8 @@
         cancel() {
             if (!this.target)
                 return;
-            this.target.innerText = this.target.originalText;
+            var originalText = this.textNode(this.target)['originalText'];
+            this.target.innerText = originalText;
             this.target.contentEditable = false;
             this.target = null;
         }
@@ -6412,6 +6403,7 @@
             document.addEventListener('kori-content-changed', async (event) => {
                 await this.translatePage(this.#observedElement, true);
             });
+            this.translatePage(this.#observedElement, true);
             this.observer = new MutationObserver(this.#observer);
             this.observer.observe(this.#observedElement, { childList: true, characterData: false, subtree: true });
         }
