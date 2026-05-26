@@ -3,6 +3,7 @@
 @using Kori.Widget.Icons
 @using Sparc.Blossom.Spaces
 @using Sparc.Blossom.Authentication
+@using Sparc.Blossom.Content
 
 <form>
     <fieldset class="mode">
@@ -24,6 +25,7 @@
 </form>
 
 @inject ISparcSpaces Spaces
+@inject ISparcContent Content
 @code {
     [Parameter] public required string Id { get; set; } = "";
     string Mode = "";
@@ -31,10 +33,6 @@
     bool IsItalic = false;
     SparcDomain? Domain;
     string? UserId;
-
-    protected override async Task OnInitializedAsync()
-    {
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -65,6 +63,12 @@
         IsBold = false;
         IsItalic = false;
         await BroadcastAsync("mode", Mode);
+    }
+
+    [JSInvokable]
+    public async Task Save(TextContent content)
+    {
+        Console.WriteLine("Saving content:" + content.Text);
     }
 
     async Task Bold() => await BroadcastAsync("bold", () => IsBold = !IsBold);
