@@ -30,7 +30,7 @@
     async Task Edit(SparcDomain domain)
     {
         var code = await Aura.GetSparcCode();
-        var url = $"https://{domain.Domain}/?_kori={domain.Id}&_auth=totp:{code}";
+        var url = $"https://{domain.Domain}/?_kori={domain.Id}&_wauth=totp:{code}";
         
         await Js.InvokeVoidAsync("open", url, "_blank");
     }
