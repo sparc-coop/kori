@@ -68,7 +68,8 @@
     [JSInvokable]
     public async Task Save(TextContent content)
     {
-        Console.WriteLine("Saving content:" + content.Text);
+        var request = new ContentRequest([content], new(Language.Find(content.LanguageId)), Domain!.Domain);
+        await Content.UpdateAsync(request);
     }
 
     async Task Bold() => await BroadcastAsync("bold", () => IsBold = !IsBold);
