@@ -1,0 +1,59 @@
+﻿h1 {
+    text-align: center;
+}
+
+p {
+    max-width: 600px;
+    text-align: center;
+}
+
+.hero {
+    padding: 24px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+    justify-content: center;
+}
+
+ul.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px;
+    width: 100%;
+    padding: 32px 0;
+
+    li, figure {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    li {
+        border-radius: 100px;
+        border: 8px solid #f2f2ec;
+        background: #fcfcf6;
+        padding: 32px;
+
+        header {
+            border-radius: 32px;
+            border: 4px dashed #aea9ff;
+            padding: 11px 10px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 0.875rem;
+        }
+    }
+
+    figcaption {
+        font-size: 1.25rem;
+        font-family: var(--text-serif-800);
+        letter-spacing: -0.0375rem;
+        text-align: center;
+    }
+}

@@ -1,3 +1,44 @@
+header {
+    padding: 14px 20px;
+    margin-bottom: 84px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav {
+    ul {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        li {
+        }
+
+        a {
+            font-size: 0.875rem;
+            font-family: var(--text-sans-serif-800);
+            text-decoration: none;
+            padding: 16px 20px;
+            display: inline-block;
+        }
+    }
+}
+
+::deep figure.avatar {
+    height: 32px;
+    width: 32px;
+}
+
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;

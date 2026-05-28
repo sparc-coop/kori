@@ -1,6 +1,35 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<header>
+    <a href="/">
+        <figure>
+            <img src="img/logo.svg" alt="Kori" />
+        </figure>
+    </a>
+    <nav>
+        <ul>
+            <li>
+                <a href="/pricing">Pricing</a>
+            </li>
+            <li>
+                <a href="/install">Install</a>
+            </li>
+            <li>
+                <a href="/guide">Guide</a>
+            </li>
+            <li>
+                <a href="/start" class="button">Start</a>
+            </li>
+            <li>
+                <Sparc.Blossom.Authentication.SparcAura />
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    @Body
+</main>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
