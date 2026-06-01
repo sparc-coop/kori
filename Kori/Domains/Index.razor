@@ -1,10 +1,10 @@
 ﻿@page "/"
 @using Sparc.Blossom.Authentication
 @using Sparc.Blossom.Spaces
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
 
 <div>   
-    <h1>User: @UserId</h1>
-
     @foreach (var domain in Domains)
     {
         <div>
@@ -14,17 +14,33 @@
     }
 </div>
 
+<div style="border: 1px solid black; padding: 10px; margin-top: 20px;">
+    <h3>User Info</h3>
+    <p>Kori User ID: @KoriUser?.Id()</p>
+    <p>Sparc User ID: @UserId</p>
+    <p>Claims</p>
+    <ul>
+        @foreach (var claim in KoriUser?.Claims ?? Enumerable.Empty<Claim>())
+        {
+            <li>@claim.Type: @claim.Value</li>
+        }
+    </ul>
+</div>
+
 @inject ISparcSpaces Spaces
 @inject ISparcAura Aura
 @inject IJSRuntime Js
+@inject AuthenticationStateProvider Auth
 @code {
     List<SparcDomain> Domains = [];
     string? UserId;
+    ClaimsPrincipal? KoriUser;
 
     protected override async Task OnInitializedAsync()
     {
         Domains = await Spaces.GetDomainsAsync();
         UserId = (await Aura.UserInfo())?.Id;
+        KoriUser = (await Auth.GetAuthenticationStateAsync())?.User;
     }
 
     async Task Edit(SparcDomain domain)
