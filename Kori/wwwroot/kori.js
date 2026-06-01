@@ -6164,9 +6164,9 @@
             for (let translation of result.content)
                 this.replace(pendingTranslations, translation, onTranslation);
         }
-        static async update(hash) {
-            await db.translations.delete(hash);
-            document.dispatchEvent(new CustomEvent('kori-content-changed'));
+        static async update(item) {
+            console.log('updating', item);
+            await db.translations.put(item);
         }
         static replace(pendingTranslations, translation, onTranslation) {
             const items = pendingTranslations.filter(item => item.hash === translation.id);
@@ -6245,6 +6245,15 @@
         }
     }
 
+    const debounce = (callback, wait) => {
+        let timeoutId = null;
+        return (...args) => {
+            window.clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(() => {
+                callback.apply(null, args);
+            }, wait);
+        };
+    };
     class KoriElement extends HTMLElement {
         potentialTarget;
         target;
@@ -6252,6 +6261,7 @@
         horizontalBox;
         iframe;
         mode;
+        debounceSave;
         constructor() {
             super();
             // Lock the context of these functions to this class, so they can be added and removed as event listeners without losing the context of 'this'
@@ -6259,6 +6269,10 @@
             this.beginEdit = this.beginEdit.bind(this);
             this.positionBoxes = this.positionBoxes.bind(this);
             this.setMode = this.setMode.bind(this);
+            this.format = this.format.bind(this);
+            this.endEdit = this.endEdit.bind(this);
+            this.save = this.save.bind(this);
+            this.debounceSave = debounce(this.save, 500);
         }
         async connectedCallback() {
             // Add 2 boxes to this custom element, to be positioned absolutely on top of the target element as bordered identifiers for the element
@@ -6277,8 +6291,9 @@
             this.iframe.src = `${TovikEngine.widgetUrl}/sites/${domain}/widget?_wauth=${authCode}`;
             this.appendChild(this.iframe);
             BlossomEvents.on('mode', (mode) => this.setMode(mode));
-            BlossomEvents.on('bold', () => document.execCommand('bold'));
-            BlossomEvents.on('italic', () => document.execCommand('italic'));
+            BlossomEvents.on('bold', () => this.format('bold'));
+            BlossomEvents.on('italic', () => this.format('italic'));
+            BlossomEvents.on('saved', (item) => TovikEngine.update(item));
         }
         disconnectedCallback() {
         }
@@ -6288,6 +6303,9 @@
         }
         isEditable(element) {
             return this.textNode(element) !== null;
+        }
+        format(command) {
+            document.execCommand(command);
         }
         setMode(mode) {
             console.log('Setting mode to', mode);
@@ -6305,7 +6323,6 @@
             this.mode = mode;
         }
         markTarget(element) {
-            console.log('marking target', element);
             if (!element) {
                 this.verticalBox.style.display = 'none';
                 this.horizontalBox.style.display = 'none';
@@ -6350,32 +6367,38 @@
                 this.target = event.target;
                 this.target.contentEditable = true;
                 this.target.focus();
-                var el = this.target;
-                this.target.addEventListener('input', () => el.isDirty = true, { once: true });
-                this.target.addEventListener('blur', () => this.save(el), { once: true });
+                this.target.addEventListener('input', this.debounceSave);
+                this.target.addEventListener('blur', this.endEdit);
                 event.stopPropagation();
             }
         }
-        async save(element) {
-            if (!element || !element.isDirty)
+        async save() {
+            console.log('saving', this.target);
+            if (!this.target)
                 return;
-            var originalText = this.textNode(element)['originalText'];
+            var originalText = this.textNode(this.target)['originalText'];
             const hash = TovikEngine.idHash(originalText);
             const request = {
                 id: hash,
-                Text: element.textContent.trim(),
+                Text: this.target.textContent.trim(),
                 OriginalText: originalText,
                 LanguageId: TovikEngine.userLang
             };
             BlossomEvents.broadcast(this.iframe, 'Save', request);
-            await TovikEngine.update(hash);
-            element.contentEditable = false;
-            element.isDirty = false;
-            element.classList.remove('kori-editable');
-            if (this.target == element)
-                this.target = null;
-            if (this.potentialTarget == element)
-                this.markTarget(null);
+            this.target.isDirty = false;
+        }
+        endEdit(blurEvent) {
+            // Don't end edit if user clicked on widget (i.e. formatting, etc.)
+            if (blurEvent.relatedTarget && blurEvent.relatedTarget.closest('.kori-widget'))
+                return;
+            if (this.target) {
+                this.target.classList.remove('kori-editable');
+                this.target.contentEditable = false;
+                this.target.isDirty = false;
+                this.target.removeEventListener('input', this.debounceSave);
+                this.target.removeEventListener('blur', this.endEdit);
+            }
+            this.target = null;
         }
         cancel() {
             if (!this.target)

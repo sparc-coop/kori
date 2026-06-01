@@ -73,6 +73,7 @@
     {
         var request = new ContentRequest([content], new(Language.Find(content.LanguageId)), Domain!.ToAbsoluteUrl());
         Result = await Content.UpdateAsync(request);
+        await BroadcastAsync("saved", Result);
         await InvokeAsync(StateHasChanged);
     }
 
