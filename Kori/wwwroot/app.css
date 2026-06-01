@@ -1,5 +1,9 @@
 :root {
-    --button-filled: #4e45d8;
+    --purple-600: rgb(62, 53, 204);
+    --purple-500: rgb(78, 69, 216);
+    --purple-200: rgb(115, 108, 229);
+    --background-primary: #f7f7f1;
+    --background-inverse: #262626;
     --text-primary: #191919;
     --text-secondary: #333;
     --text-inverse: #f2f2f2;
@@ -15,7 +19,7 @@ html {
     color-scheme: light;
     font-size: 16px;
     font: 400 1rem/130% var(--text-sans-serif);
-    background-color: #f7f7f1;
+    background-color: var(--background-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -38,10 +42,18 @@ a {
 
     button, a.button {
         border-radius: 999px;
-        background: var(--button-filled);
+        background: var(--purple-500);
         padding: 19px 20px;
         font-size: 0.875rem;
         color: var(--text-inverse);
         line-height: 100%;
         font-family: var(--text-sans-serif-800);
+
+        &:hover {
+            background: var(--purple-200);
+        }
+
+        &:active {
+            background: var(--purple-600);
+        }
     }
