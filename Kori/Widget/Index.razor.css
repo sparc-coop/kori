@@ -26,9 +26,15 @@ button {
     align-items: center;
     justify-content: center;
     border-radius: 8px;
+    padding: 0;
 
     &.active {
         background: #4e45d8;
+    }
+
+    ::deep svg {
+        block-size: 80%;
+        inline-size: auto;
     }
 }
 
