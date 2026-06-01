@@ -11,10 +11,6 @@ fieldset {
     padding: 8px;
     display: flex;
     gap: 6px;
-
-    &:first-child {
-        border-right: 1px solid #555;
-    }
 }
 
 button {

@@ -16,14 +16,6 @@
             <SearchIcon />
         </button>
     </fieldset>
-    <fieldset class="formatting">
-        <button type="button" @onclick="Bold" class="@(IsBold ? "active" : "")">
-            <BoldIcon />
-        </button>
-        <button type="button" @onclick="Italic" class="@(IsItalic ? "active" : "")">
-            <ItalicIcon />
-        </button>
-    </fieldset>
 </form>
 
 @inject ISparcSpaces Spaces
@@ -31,8 +23,6 @@
 @code {
     [Parameter] public required string Id { get; set; } = "";
     string Mode = "";
-    bool IsBold = false;
-    bool IsItalic = false;
     SparcDomain? Domain;
     string? UserId;
     TextContent? Result = null;
@@ -63,8 +53,6 @@
     async Task Search()
     {
         Mode = "Search";
-        IsBold = false;
-        IsItalic = false;
         await BroadcastAsync("mode", Mode);
     }
 
@@ -76,8 +64,4 @@
         await BroadcastAsync("saved", Result);
         await InvokeAsync(StateHasChanged);
     }
-
-    async Task Bold() => await BroadcastAsync("bold", () => IsBold = !IsBold);
-
-    async Task Italic() => await BroadcastAsync("italic", () => IsItalic = !IsItalic);
 }
