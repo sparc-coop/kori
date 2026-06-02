@@ -1,6 +1,5 @@
 header {
     padding: 14px 20px;
-    margin-bottom: 84px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -9,13 +8,19 @@ header {
     width: 100%;
     z-index: 1000;
     background: var(--background-primary);
+    border-bottom: 2px solid #ebebe8;
 }
 
 main {
-    margin-top: 140px;
+    padding-top: 83px;
+    background: var(--background-primary);
 }
 
 nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
     ul {
         display: flex;
         align-items: center;

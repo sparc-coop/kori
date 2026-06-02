@@ -1,74 +1,110 @@
-﻿@page "/home"
+﻿@page "/"
 
-<section class="hero">
-    <h1>
-        Finally,<br />
-        edit your copy yourself
-    </h1>
+<section class="instructions">
+    <article class="hero">
+        <header>
+            <h1>
+                Finally,<br />
+                edit your copy
+                yourself
+            </h1>
+            <p>
+                Simple problem needs simple solution. Kori makes your live content directly editable. Just click the text you want to change and save it instantly.
+            </p>
+        </header>
+        <footer>
+            <button>Try Demo</button>
+        </footer>
+    </article>
 
-    <p>
-        Simple problem needs simple solution. Kori makes your live content directly editable. Just click the text you want to change and save it instantly.
-    </p>
+    <article>
+        <header>
+            <span>01</span>
+            <h2>Editing Text</h2>
+        </header>
+            <img src="img/char-editingtext.svg" alt="Editing Text" />
+            <p>
+                Select [Edit mode] icon to start editing, then select any text and start typing to edit.
+            </p>
+    </article>
 
-    <button>Try Demo</button>
+    <article>
+        <header>
+            <span>02</span>
+            <h2>Changing linked text</h2>
+        </header>
+            <div class="buttons">
+                <button class="secondary">Learn More</button>
+                <button class="secondary">Learn More</button>
+                <button class="secondary">Learn More</button>
+                <button class="secondary">Learn More</button>
+            </div>
+            <p>
+                If you change any linked text, it will automatically change other linked text.
+            </p>
+    </article>
+
+    <article>
+        <header>
+            <span>03</span>
+            <h2>Search text</h2>
+        </header>
+            <img src="img/char-searchtext.svg" alt="Search Text" />
+            <p>
+                Click [Search] icon, then type words you'd like to find. Then click the search result to jump to the location.
+            </p>
+    </article>
+
+    <article>
+        <header>
+            <span>04</span>
+            <h2>Version history</h2>
+        </header>
+            <img src="img/char-versionhistory.svg" alt="Version History" />
+            <p>
+                The circular nodes indicate histories. Click the node to view histories. Version history will be saved xyz.
+            </p>
+    </article>
+
+    <article>
+        <header>
+            <span>05</span>
+            <h2>Publish version</h2>
+        </header>
+            <img src="img/char-publishversion.svg" alt="Publish Version" />
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+    </article>
 </section>
 
-<ul class="features">
-    <li>
-        <h2>No Backend</h2>
-        <figure>
-            <img src="img/char-edit.svg" alt="I can write copy right on the page" />
-            <figcaption>"I can write copy right on the page"</figcaption>
-        </figure>
-    </li>
-    <li>
-        <h2>Lightweight</h2>
-        <figure>
-            <img src="img/char-balance.svg" alt="All I needed is a simple tool" />
-            <figcaption>"All I needed is a simple tool"</figcaption>
-        </figure>
-    </li>
-    <li>
-        <h2>No Backend</h2>
-        <figure>
-            <img src="img/char-money.svg" alt="No more subscription!" />
-            <figcaption>"No more subscription!"</figcaption>
-        </figure>
-    </li>
-</ul>
+<section class="faq">
 
-<section class="tools">
-    <h2>Tools We Support</h2>
-    <ul>
-        <li>
-            <figure>
-                <img src="icons/edit.svg" alt="On-page Editing"/>
-                <figcaption>On-page Editing</figcaption>
-            </figure>
-            <p>Update copies exactly where they live on the site, without needing to access the backend.</p>
-        </li>
-        <li>
-            <figure>
-                <img src="icons/search.svg" alt="Content Search"/>
-                <figcaption>Content Search</figcaption>
-            </figure>
-            <p>Search for the copy you need, then click to head straight to the editing area.</p>
-        </li>
-        <li>
-            <figure>
-                <img src="icons/abtesting.svg" alt="A/B Testing" />
-                <figcaption>A/B Testing</figcaption>
-            </figure>
-            <p>Set up a new test version by clicking and changing elements directly on the page.</p>
-        </li>
-        <li>
-            <figure>
-                <img src="icons/timeline.svg" alt="Timeline" />
-                <figcaption>Timeline</figcaption>
-            </figure>
-            <p>Track your edit history and switch between different page versions anytime.</p>
-        </li>
-    </ul>
+</section>
+
+<section class="crosslinks">
+    <article class="tovik">
+        <figure>
+            <img src="img/char-tovikandkori.svg" alt="Tovik and Kori" />
+            <figcaption>
+                Now, it's time to meet global readers.
+            </figcaption>
+        </figure>
+        <footer>
+            <button>Visit Tovik Site</button>
+        </footer>
+    </article>
+    <article class="youtube">
+        <figure>
+            <img src="img/char-youtubeandkori.svg" alt="YouTube and Kori" />
+            <figcaption>
+                Some text for the Youtube channel or the page here
+            </figcaption>
+        </figure>
+        <footer>
+            <button>Visit Sparc Channel</button>
+        </footer>
+    </article>
 </section>
 
 @code {

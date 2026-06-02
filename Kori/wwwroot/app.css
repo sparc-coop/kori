@@ -27,14 +27,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 5.5625rem;
-    letter-spacing: -0.16688rem;
+    font-size: 2.5rem;
+    letter-spacing: -0.075rem;
 }
 
     h1:focus {
         outline: none;
     }
 
+h2 {
+    font-size: 1.25rem;
+    letter-spacing: -0.0375rem;
+}
 a {
     color: var(--text-secondary);
 }
@@ -54,5 +58,11 @@ a {
 
         &:active {
             background: var(--purple-600);
+        }
+
+        &.secondary {
+            border: 2px solid var(--purple-500);
+            background: transparent;
+            color: var(--purple-500);
         }
     }
