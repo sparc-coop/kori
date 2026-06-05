@@ -24,7 +24,6 @@
     [Parameter] public required string Id { get; set; } = "";
     string Mode = "";
     SparcDomain? Domain;
-    string? UserId;
     TextContent? Result = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -38,7 +37,7 @@
                 Domain = await Spaces.GetDomainAsync(Id);
                 if (Domain is not null)
                     Mode = "Edit";
-                await BroadcastAsync("mode", Mode);
+                await BroadcastAsync("initialized", UserId);
                 StateHasChanged();
             }
         }
